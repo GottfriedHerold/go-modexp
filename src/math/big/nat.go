@@ -978,7 +978,11 @@ func (z nat) expNN(x, y, m nat, slow bool) nat {
 		// and a CRT-decomposed Montgomery method for the remaining values
 		// (even values times non-trivial odd values, which decompose into one
 		// instance of each of the first two cases).
-		if len(y) > 1 && !slow {
+
+		// we use the more elaborate algorithm once the exponents has at least this many bits.
+		const threshold_for_elaborate_case_in_bits = 4
+
+		if !slow && (len(y) > 1 || (len(y) == 1 && nlz(y[0]) < _W-threshold_for_elaborate_case_in_bits)) {
 			if m[0]&1 == 1 {
 				return z.expNNMontgomery(x, y, m)
 			}
@@ -1098,32 +1102,47 @@ func (z nat) expNNMontgomeryEven(x, y, m nat) nat {
 // expNNWindowed calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
 func (z nat) expNNWindowed(x, y nat, logM uint) nat {
-	if len(y) <= 1 {
-		panic("big: misuse of expNNWindowed")
+	// The original algorithm would not work for len(y) <= 1;
+	// I made some modifications to make it work, although this is not as efficient as it could be.
+	// This should be OK, as for our use-case, we only care about worst-case performance (for given bit-lengths of the exponents)
+	/*
+		if len(y) <= 1 {
+			panic("big: misuse of expNNWindowed")
+		}
+	*/
+
+	if len(y) == 1 && y[0] == 0 {
+		panic("big: called expNNWindowed for exponent 0")
 	}
-	if x[0]&1 == 0 {
+
+	if (len(y) > 1) && (x[0]&1 == 0) {
 		// len(y) > 1, so y  > logM.
 		// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
 		return z.setWord(0)
 	}
-	if logM == 1 {
-		return z.setWord(1)
+	if logM == 1 { // i.e. m == 2;
+		return z.setWord(x[0] & 1) // since the exponent is at least 1, we just take the parity of the base x.
 	}
 
 	// zz is used to avoid allocating in mul as otherwise
 	// the arguments would alias.
-	w := int((logM + _W - 1) / _W)
+	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
 	zzp := getNat(w)
 	zz := *zzp
 
-	const n = 4
-	// powers[i] contains x^i.
+	const n = 4 // size of precomputed windows. We precompute x^i for any i with at most n bits.
+	// n must be at least 1.
+
+	// We build a precomputation table, where powers[i] contains x^i.
 	var powers [1 << n]*nat
 	for i := range powers {
 		powers[i] = getNat(w)
 	}
 	*powers[0] = powers[0].set(natOne)
 	*powers[1] = powers[1].trunc(x, logM)
+	// While we could compute each powers[i] as powers[i-1] * x,
+	// we instead compute powers[i] and powers[i+1] from powers[i/2].
+	// This replaced half the multiplications needed by squarings, which is more efficient.
 	for i := 2; i < 1<<n; i += 2 {
 		p2, p, p1 := powers[i/2], powers[i], powers[i+1]
 		*p = p.sqr(*p2)
@@ -1131,21 +1150,45 @@ func (z nat) expNNWindowed(x, y nat, logM uint) nat {
 		*p1 = p1.mul(*p, x)
 		*p1 = p1.trunc(*p1, logM)
 	}
+	// finished computing the precomputation table.
+
+	// Gotti: This is only true if gcd(x, m) = 1, i.e. if x is odd.
+	// The original implementation fully handled the case of even x above;
+	// our generalization now needs to handle that case as well.
+	// While we could still essentially truncate y by splitting
+	// x = 2^k * odd and then handling the even part separately (which reduces m),
+	// I do not believe this optimization by splitting x is helpful for the worst-case, so to keep the changes simple
+	// we just deactivate the y -> y mod phi(n) - optimization in case it does not work easily.
 
 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
 	// so we can compute x**(y mod 2**(logM-1)) instead of x**y.
 	// That is, we can throw away all but the bottom logM-1 bits of y.
 	// Instead of allocating a new y, we start reading y at the right word
 	// and truncate it appropriately at the start of the loop.
-	i := len(y) - 1
-	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
-	mmask := ^Word(0)
-	if mbits := (logM - 1) & (_W - 1); mbits != 0 {
-		mmask = (1 << mbits) - 1
+
+	var (
+		i     int  // i ranges over the words of y, going down and starting from mtop
+		mtop  int  // index of the highest *relevant* word of y
+		mmask Word // bitmask for y[mtop]
+	)
+
+	if (len(y) > 1) || (x[0]&1 == 1) {
+		i = len(y) - 1
+		mtop = int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
+		mmask = ^Word(0)
+		if mbits := (logM - 1) & (_W - 1); mbits != 0 {
+			mmask = (1 << mbits) - 1
+		}
+		if i > mtop {
+			i = mtop
+		}
+	} else { // x is even and len(y) == 0. In this case, we don't try to do anything clever.
+		i = 0
+		mtop = 0
+		mmask = ^Word(0)
+		mmask >>= nlz(y[0])
 	}
-	if i > mtop {
-		i = mtop
-	}
+
 	advance := false
 	z = z.setWord(1)
 	for ; i >= 0; i-- {
