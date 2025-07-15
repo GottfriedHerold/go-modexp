@@ -896,3 +896,61 @@ func TestIssue42552(t *testing.T) {
 	q := nat(nil).make(16)
 	q.div(q, u, v)
 }
+
+// computeModExpGasSimplfied computes the (simplified) gas cost corresponding to a ModExp-precompile call with a
+// base and modulus of a given length (in bytes) and an exponents of a given length in bits.
+//
+// version must be either "EIP2565" or "EIP7883" to select the corresponding gas pricing function.
+//
+// Note that this does not 100% match the gas cost specified in the EIP. The latter may differ in case of (a large number of) leading zeros.
+// The reason here is that we use this to benchmark the implementation of nat.expNN and creating a nat will normalize away leading zeros. Also, we don't really care about overflows.
+func computeModExpGasSimplified(baseByteLength uint, modulusByteLength uint, exponentBitLenght uint, version string) uint64 {
+	if modulusByteLength == 0 {
+		panic("called computeModExpGasSimplified with a modulus byte length of 0") // This would correspond to an exponentiation in Z, rather than a modular exponentiation.
+	}
+
+	// maxLen := Max{baseByteLength, modulusByteLength}
+	var maxLen uint = baseByteLength
+	if modulusByteLength > maxLen {
+		maxLen = modulusByteLength
+	}
+	switch version {
+	case "EIP2565":
+		WordLength := (maxLen + 7) / 8 // number of 64-bit words in max{modulus,base}
+		MultComplexity := uint64(WordLength) * uint64(WordLength)
+		var iteration_count uint64
+		if exponentBitLenght <= 1 {
+			iteration_count = 1
+		} else {
+			iteration_count = uint64(exponentBitLenght - 1) // the case distinction exponentBitLength > 32 from the EIP is not needed due to not considering leading 0s.
+		}
+		result := (MultComplexity * iteration_count) / 2
+		if result < 200 {
+			result = 200
+		}
+		return result
+
+	case "EIP7883":
+		WordLength := (maxLen + 7) / 8 // number of 64-bit words in max{modulus,base}
+		MultComplexity := uint64(16)
+		if maxLen > 32 {
+			MultComplexity = 2 * uint64(WordLength) * uint64(WordLength) // strangely discontinuous formula, but that's what the EIP says.
+		}
+		var iteration_count uint64
+		if exponentBitLenght <= 1 {
+			iteration_count = 1
+		} else if exponentBitLenght <= 256 {
+			iteration_count = uint64(exponentBitLenght - 1)
+		} else {
+			iteration_count = uint64(exponentBitLenght-1) + 8*((uint64(exponentBitLenght)+7)/8-32)
+		}
+		result := MultComplexity * iteration_count
+		if result < 500 {
+			result = 500
+		}
+		return result
+
+	default:
+		panic(fmt.Sprintf("math/big/computeModExpGasSimplied: could not recognize version string %v. Valid inputs are \"EIP2565\" and \"EIP7883\"", version))
+	}
+}
