@@ -7,6 +7,7 @@ package big
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"runtime"
 	"strings"
 	"testing"
@@ -953,4 +954,72 @@ func computeModExpGasSimplified(baseByteLength uint, modulusByteLength uint, exp
 	default:
 		panic(fmt.Sprintf("math/big/computeModExpGasSimplied: could not recognize version string %v. Valid inputs are \"EIP2565\" and \"EIP7883\"", version))
 	}
+}
+
+func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, gasScheduleVersion string, modulus2adicity uint, nsPerGas *float64) func(*testing.B) {
+	if modulus2adicity > 8*modulusByteLength {
+		modulus2adicity = 8*modulusByteLength - 1
+	}
+	if baseByteLength == 0 {
+		panic("baseByteLength set to 0")
+	}
+	if modulusByteLength == 0 {
+		panic("modulusByteLength set to 0")
+	}
+	if exponentBitLength == 0 {
+		panic("exponentBitLength set to 0")
+	}
+
+	gasCost := computeModExpGasSimplified(baseByteLength, modulusByteLength, exponentBitLength, gasScheduleVersion)
+
+	// We setup base, modulus and exponent below. This is a very inefficient way to do it, but we don't care.
+
+	// create a random number for modulus with *exactly* modulusByteLength bytes with the highest bit set.
+	// we also ensure that exactly modulus2adicity least significant bits are 0, followed by a 1.
+	modulusPowerOf2 := nat{}.setBit(nat{}, 8*modulusByteLength-1, 1)             // set highest bit to 1
+	modulusTail := nat{}.random(rand, modulusPowerOf2, 8*int(modulusByteLength)) // set other bits randomly
+	modulus := modulusTail.add(modulusTail, modulusPowerOf2)
+
+	// set modulus2adicity many least significant bits to 0 and the next one to 1.
+	for i := uint(0); i < modulus2adicity; i++ {
+		modulus = modulus.setBit(modulus, i, 0)
+	}
+	modulus = modulus.setBit(modulus, modulus2adicity, 0)
+
+	// set base to a random number with exactly baseByteLength many bytes, again with the highest bit forcibly set to 1.
+	basePowerOf2 := nat{}.setBit(nat{}, 8*baseByteLength-1, 1)
+	baseTail := nat{}.random(rand, basePowerOf2, 8*int(baseByteLength))
+	base := baseTail.add(baseTail, basePowerOf2)
+
+	// set exponent to a random number with exactly exponentBitLenght bits (again, msb set to 1)
+	// NOTE: Using a random bit-pattern for the exponent is expected to be the worst case for a fixed-window exponentiation.
+	// If we use a different exponentiation algorithm, this might no longer be true.
+	exponentPowerOf2 := nat{}.setBit(nat{}, exponentBitLength-1, 1)
+	exponentTail := nat{}.random(rand, exponentPowerOf2, int(exponentBitLength))
+	exponent := exponentPowerOf2.add(exponentPowerOf2, exponentTail)
+
+	return func(b *testing.B) {
+		var z nat = nat{}.set(modulus) // reserve space. We copy the modulus to reserve as much space as the modulus. Note that using nat{}.make() would have us make an assumption on the Word-size.
+		for b.Loop() {
+			z = z.expNN(base, exponent, modulus, false)
+		}
+		b.ReportMetric(float64(gasCost), "Gas/op")
+		reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
+		if nsPerGas != nil {
+			*nsPerGas = reportedNsPerGas
+		}
+		b.ReportMetric(reportedNsPerGas, "ns/Gas")
+	}
+}
+
+func BenchmarkNatExpNN(b *testing.B) {
+	rand := rand.New(rand.NewSource(100))
+	var maxGas float64
+	for modulusByteLength := 32; modulusByteLength < 320; modulusByteLength += 32 {
+		for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 32, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas))
+		}
+	}
+
+	//b.Run("Foo", benchmarkNatExpNN(rand, 256, 256, 1000, "EIP7883", 0, nil))
 }
