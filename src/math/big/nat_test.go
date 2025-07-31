@@ -904,7 +904,7 @@ func TestIssue42552(t *testing.T) {
 // version must be either "EIP2565" or "EIP7883" to select the corresponding gas pricing function.
 //
 // Note that this does not 100% match the gas cost specified in the EIP. The latter may differ in case of (a large number of) leading zeros.
-// The reason here is that we use this to benchmark the implementation of nat.expNN and creating a nat will normalize away leading zeros. Also, we don't really care about overflows.
+// The reason why this simplification is allowed here is that we only use this to benchmark the implementation of nat.expNN and creating a nat will normalize away leading zeros. Also, we don't really care about overflows.
 func computeModExpGasSimplified(baseByteLength uint, modulusByteLength uint, exponentBitLenght uint, version string) uint64 {
 	if modulusByteLength == 0 {
 		panic("called computeModExpGasSimplified with a modulus byte length of 0") // This would correspond to an exponentiation in Z, rather than a modular exponentiation.
@@ -956,8 +956,20 @@ func computeModExpGasSimplified(baseByteLength uint, modulusByteLength uint, exp
 	}
 }
 
-func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, gasScheduleVersion string, modulus2adicity uint, nsPerGas *float64) func(*testing.B) {
-	if modulus2adicity > 8*modulusByteLength {
+// benchmarkNatExpNN returns a benchmarking function (intendend for use with *testing.B.Run) that runs
+// a benchmark on nat.expNN with the given parameters.
+//
+// Notably, it calls nat.expNN to compute base^exponent modulo modulus, where
+// base, exponent resp. modulus have exactly baseByteLength, modulusByteLength resp. exponentBitLength many bytes/bits.
+// Note that having exactly the given number of bytes/bits means that the leading byte/bit is guaranteed to be 1.
+// modulus2adicty is used to select the number of trailing 0 bits of the modulus (this is, because the exponentiation algorithm need to treat that differently).
+// Selecting a modulus2adicity >= 8*modulusByteLength will set it to the maximum meaningful value instead.
+//
+// The returned benchmarking function records custom entries Gas/op and ns/Gas in addition to the usual ones.
+// To select a gas schedule, gasScheduleVersion needs to be one of "EIP2565" or "EIP7833".
+// To simplify reading out the ns/Gas value (and not just printing it), e.g. to take a maximum among multiple benchmarks, that value will also be stored in *nsPerGas, unless nsPerGas == nil.
+func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, gasScheduleVersion string, modulus2adicity uint, nsPerGas *float64, slow bool) func(*testing.B) {
+	if modulus2adicity >= 8*modulusByteLength {
 		modulus2adicity = 8*modulusByteLength - 1
 	}
 	if baseByteLength == 0 {
@@ -1001,7 +1013,7 @@ func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength u
 	return func(b *testing.B) {
 		var z nat = nat{}.set(modulus) // reserve space. We copy the modulus to reserve as much space as the modulus. Note that using nat{}.make() would have us make an assumption on the Word-size.
 		for b.Loop() {
-			z = z.expNN(base, exponent, modulus, false)
+			z = z.expNN(base, exponent, modulus, slow)
 		}
 		b.ReportMetric(float64(gasCost), "Gas/op")
 		reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
@@ -1012,14 +1024,21 @@ func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength u
 	}
 }
 
+// BenchmarkNatExpNN will run a set of benchmarks for nat.expNN for varying input lengths and report each of those. This is a very slow benchmark.
 func BenchmarkNatExpNN(b *testing.B) {
 	rand := rand.New(rand.NewSource(100))
 	var maxGas float64
 	for modulusByteLength := 32; modulusByteLength < 320; modulusByteLength += 32 {
-		for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 32, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
-			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas))
+		for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 32, 40, 48, 56, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, false))
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, false))
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, false))
+			if exponentBitLengh <= 64 {
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, true))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, true))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, true))
+			}
 		}
 	}
-
 	//b.Run("Foo", benchmarkNatExpNN(rand, 256, 256, 1000, "EIP7883", 0, nil))
 }
