@@ -1107,12 +1107,52 @@ func BenchmarkNatExpNN(b *testing.B) {
 	//b.Run("Foo", benchmarkNatExpNN(rand, 256, 256, 1000, "EIP7883", 0, nil))
 }
 
+// Benchmark for selecting threshold when to switch algorithms.
 func BenchmarkNatExpMontgomeryVaryingWindows(b *testing.B) {
 	rand := rand.New(rand.NewSource(101))
 	for modulusByteLength := 32; modulusByteLength < 384; modulusByteLength += 32 {
 		baseByteLength := modulusByteLength
 		for _, exponentBitLength := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 32, 40, 48, 56, 64, 72, 80, 88, 96, 128, 256, 512, 1024, 2048, 3 * 1024} {
 			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit", baseByteLength, modulusByteLength, exponentBitLength), benchmarkExpNNMontgomery(rand, uint(baseByteLength), uint(modulusByteLength), exponentBitLength, true))
+		}
+	}
+}
+
+func TestImprovedExpNNWindowed(t *testing.T) {
+	rand := rand.New(rand.NewSource(101))
+	for _, modulusBitLength := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 24, 25, 31, 32, 33, 64, 63, 65, 127, 128, 129, 256, 255, 257, 1024} {
+
+		for _, exponentBitLength := range []uint{2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 64, 65, 128, 256, 257, 512, 1024} {
+
+			modulus := nat{}.setBit(nat{}, modulusBitLength, 1)
+			logM := modulusBitLength
+
+			exponentPowerOf2 := nat{}.setBit(nat{}, exponentBitLength-1, 1)
+			exponentTail := nat{}.random(rand, exponentPowerOf2, int(exponentBitLength))
+			exponent := exponentPowerOf2.add(exponentPowerOf2, exponentTail)
+
+			for _, baseUnred := range []nat{nat{3}, nat{6}, nat{2}, nat{0x100000000000}} {
+				base := nat{1}
+				base = base.rem(baseUnred, modulus)
+				if base.cmp(nil) == 0 {
+					continue
+				}
+
+				naiveResult := nat{}.expNN(base, exponent, modulus, true)
+				result2Window := nat{1}.expNNWindowedSize2(base, exponent, logM)
+				result4Window := nat{1}.expNNWindowedSize4(base, exponent, logM)
+
+				if naiveResult.cmp(result2Window) != 0 {
+					t.Logf("correct result = %v, got result = %v\n", naiveResult, result2Window)
+					t.Fatalf("big: expNNWindowedSize2 gives mismatching result.\nexponent = %b\nlogM = %v\nbase=%v", exponent, logM, base)
+				}
+
+				if naiveResult.cmp(result4Window) != 0 {
+					t.Logf("correct result = %v, got result = %v\n", naiveResult, result4Window)
+					t.Logf("exponentLenght = %v\n", exponentBitLength)
+					t.Fatalf("big: expNNWindowedSize4 gives mismatching result.\nexponent = %b\nlogM = %v\nbase=%v", exponent, logM, base)
+				}
+			}
 		}
 	}
 }

@@ -982,14 +982,32 @@ func (z nat) expNN(x, y, m nat, slow bool) nat {
 		// instance of each of the first two cases).
 
 		// we use the more elaborate algorithm once the exponents has at least this many bits.
-		const threshold_for_elaborate_case_in_bits = 4
 
-		if !slow && (len(y) > 1 || (len(y) == 1 && nlz(y[0]) < _W-threshold_for_elaborate_case_in_bits)) {
+		// compute bit length of exponent. If it it very large, we may take a (large) replacement value.
+		// This is merely to avoid overflows. We only care about this value to select the exponentiation algorithm.
+		exponentBitLength := len(y)
+		if exponentBitLength < 100000 {
+			exponentBitLength *= _W
+			exponentBitLength += _W - int(nlz(y[len(y)-1]))
+		}
+
+		const threshold_for_slow_algorithm = 4 // we use the slow algorithm for bit-lengths <= this
+		const threshold_for_window_size4 = 128 // we use a 4-bit windows for bitlengths >= this
+
+		if !slow && (exponentBitLength > threshold_for_slow_algorithm) {
 			if m[0]&1 == 1 {
-				return z.expNNMontgomerySize4(x, y, m)
+				if exponentBitLength > threshold_for_window_size4 {
+					return z.expNNMontgomerySize4(x, y, m)
+				} else {
+					return z.expNNMontgomerySize2(x, y, m)
+				}
 			}
 			if logM, ok := m.isPow2(); ok {
-				return z.expNNWindowedSize4(x, y, logM)
+				if exponentBitLength > threshold_for_window_size4 {
+					return z.expNNWindowedSize4(x, y, logM)
+				} else {
+					return z.expNNWindowedSize2(x, y, logM)
+				}
 			}
 			return z.expNNMontgomeryEven(x, y, m)
 		}
@@ -1155,12 +1173,21 @@ func (z nat) expNNWindowedSize4(x, y nat, logM uint) nat {
 		panic("big: called expNNWindowed for exponent 0")
 	}
 
+	// Gotti: NOTE: setWord does not work correctly on nil, so we need to catch this when handling special cases.
+	// This does not matter for the calls from expNN, but it causes issues in testing.
+
 	if (len(y) > 1) && (x[0]&1 == 0) {
 		// len(y) > 1, so y  > logM.
 		// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
+		if z == nil {
+			return nat{0}.norm()
+		}
 		return z.setWord(0)
 	}
 	if logM == 1 { // i.e. m == 2;
+		if z == nil {
+			return nat{x[0] & 1}.norm()
+		}
 		return z.setWord(x[0] & 1) // since the exponent is at least 1, we just take the parity of the base x.
 	}
 
@@ -1171,7 +1198,7 @@ func (z nat) expNNWindowedSize4(x, y nat, logM uint) nat {
 	zz := *zzp
 
 	const window_size = 4 // size of precomputed windows. We precompute x^i for any i with at most n bits.
-	// window_size must be at least 1.
+	// window_size must be at least 1 and divide _W.
 
 	// We build a precomputation table, where powers[i] contains x^i.
 	var powers [1 << window_size]*nat
@@ -1195,10 +1222,15 @@ func (z nat) expNNWindowedSize4(x, y nat, logM uint) nat {
 	var (
 		i     int  // i ranges over the words of y, going down and starting from mtop
 		mtop  int  // index of the highest *relevant* word of y
-		mmask Word // bitmask for y[mtop]
+		mmask Word // bitmask for y[mtop], to set unneeded bits to zero (due to reduction mod phi(2**logM)).
 	)
 
-	if (len(y) > 1) || (x[0]&1 == 1) {
+	// Gotti: Actually, the mmask was not doing anything at all in the code.
+	// The reason is that setting some bits in y[mtop] to 0 did not improve the algorithm at all:
+	// The algorithm still performed pretty much the same work for those zeroed bits (squaring 1's).
+	// Fixed this.
+
+	if (len(y) > 1) || (x[0]&1 == 1) { // Note: conditions are exclusive, because the && - case has been handled before
 		i = len(y) - 1
 		mtop = int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
 		mmask = ^Word(0)
@@ -1209,8 +1241,8 @@ func (z nat) expNNWindowedSize4(x, y nat, logM uint) nat {
 			i = mtop
 		}
 	} else { // Gotti (New case): x is even and len(y) == 1. In this case, we don't try to do anything clever.
-		i = 0
-		mtop = 0
+		i = 0    // == len(y) - 1
+		mtop = 0 // == len(y) - 1
 		mmask = ^Word(0)
 		mmask >>= nlz(y[0])
 	}
@@ -1221,49 +1253,103 @@ func (z nat) expNNWindowedSize4(x, y nat, logM uint) nat {
 		panic("big: window_size must divide the word size")
 	}
 
-	advance := false
-	z = z.setWord(1)
+	// Gotti: Special - case the first loop iteration for the mtop - word:
+	yi := y[i]
+	if i == mtop { // if i == mtop, we can skip some bits of yi due to reducing modulo phi(m)
+		yi &= mmask
+	}
+
+	// ensure that the top (remaining, relevant)  word is != 0.
+	for yi == 0 {
+		if i == 0 {
+			*zzp = zz
+			putNat(zzp)
+			for i := range powers {
+				putNat(powers[i])
+			}
+			if z == nil {
+				return nat{1}
+			}
+			z.setWord(1)
+			return z.norm()
+		}
+		i--
+		mmask = ^Word(0) // unneeded, but added for clarity.
+		yi = y[i]
+	}
+
+	bitLenYi := 64 - bits.LeadingZeros64(uint64(yi))  // bit-lengh of yi
+	k := (bitLenYi + (window_size - 1)) / window_size // number of window_size parts needed to process yi. Note k >= 1, since yi != 0.
+
+	// we directly copy in the first iteration, rather than multiplying 1 with a precomputed value.
+	k -= 1
+	z = z.set(*powers[yi>>(k*window_size)])
+
+	// process rest of yi
+	for j := int(k - 1); j >= 0; j-- {
+		if window_size != 4 {
+			panic("big: optimization for window size 4 invalid")
+		}
+		// square 4 times
+		zz = zz.sqr(z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		zz = zz.sqr(z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		zz = zz.sqr(z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		zz = zz.sqr(z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		// multiply by appropriate power
+		zz = zz.mul(z, *powers[(yi>>(j*window_size))&((1<<window_size)-1)])
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+	}
+
+	// process y[:i]
+	i -= 1
 	for ; i >= 0; i-- {
 		yi := y[i]
-		if i == mtop {
-			yi &= mmask
-		}
 		for j := 0; j < _W; j += window_size {
-			if advance {
 
-				// Gotti: Loop unrolled for window size 4. We make the assumption explicit, so changing
-				// window_size will panic here. The check here should be optimized away by any reasonable compiler, since window_size is const.
-				if window_size != 4 {
-					panic("big: optimization for window size 4 invalid")
-				}
-
-				// Account for use of 4 bits in previous iteration.
-				// Unrolled loop for significant performance
-				// gain. Use go test -bench=".*" in crypto/rsa
-				// to check performance before making changes.
-				zz = zz.sqr(z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
-
-				zz = zz.sqr(z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
-
-				zz = zz.sqr(z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
-
-				zz = zz.sqr(z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
+			// Gotti: Loop is unrolled for window size 4. We make the assumption explicit, so changing
+			// window_size will panic here. The check here should be optimized away by any reasonable compiler, since window_size is const.
+			if window_size != 4 {
+				panic("big: optimization for window size 4 invalid")
 			}
+
+			// Account for use of 4 bits in previous iteration.
+			// Unrolled loop for significant performance
+			// gain. Use go test -bench=".*" in crypto/rsa
+			// to check performance before making changes.
+			zz = zz.sqr(z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
+
+			zz = zz.sqr(z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
+
+			zz = zz.sqr(z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
+
+			zz = zz.sqr(z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
 
 			zz = zz.mul(z, *powers[yi>>(_W-window_size)])
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 
 			yi <<= window_size
-			advance = true
 		}
 	}
 
@@ -1295,12 +1381,21 @@ func (z nat) expNNWindowedSize2(x, y nat, logM uint) nat {
 		panic("big: called expNNWindowed for exponent 0")
 	}
 
+	// Gotti: NOTE: setWord does not work correctly on nil, so we need to catch this when handling special cases.
+	// This does not matter for the calls from expNN, but it causes issues in testing.
+
 	if (len(y) > 1) && (x[0]&1 == 0) {
 		// len(y) > 1, so y  > logM.
 		// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
+		if z == nil {
+			return nat{0}.norm()
+		}
 		return z.setWord(0)
 	}
 	if logM == 1 { // i.e. m == 2;
+		if z == nil {
+			return nat{x[0] & 1}.norm()
+		}
 		return z.setWord(x[0] & 1) // since the exponent is at least 1, we just take the parity of the base x.
 	}
 
@@ -1311,7 +1406,7 @@ func (z nat) expNNWindowedSize2(x, y nat, logM uint) nat {
 	zz := *zzp
 
 	const window_size = 2 // size of precomputed windows. We precompute x^i for any i with at most n bits.
-	// window_size must be at least 1.
+	// window_size must be at least 1 and divide _W.
 
 	// We build a precomputation table, where powers[i] contains x^i.
 	var powers [1 << window_size]*nat
@@ -1335,10 +1430,15 @@ func (z nat) expNNWindowedSize2(x, y nat, logM uint) nat {
 	var (
 		i     int  // i ranges over the words of y, going down and starting from mtop
 		mtop  int  // index of the highest *relevant* word of y
-		mmask Word // bitmask for y[mtop]
+		mmask Word // bitmask for y[mtop], to set unneeded bits to zero (due to reduction mod phi(2**logM)).
 	)
 
-	if (len(y) > 1) || (x[0]&1 == 1) {
+	// Gotti: Actually, the mmask was not doing anything at all in the code.
+	// The reason is that setting some bits in y[mtop] to 0 did not improve the algorithm at all:
+	// The algorithm still performed pretty much the same work for those zeroed bits (squaring 1's).
+	// Fixed this.
+
+	if (len(y) > 1) || (x[0]&1 == 1) { // Note: conditions are exclusive, because the && - case has been handled before
 		i = len(y) - 1
 		mtop = int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
 		mmask = ^Word(0)
@@ -1349,8 +1449,8 @@ func (z nat) expNNWindowedSize2(x, y nat, logM uint) nat {
 			i = mtop
 		}
 	} else { // Gotti (New case): x is even and len(y) == 1. In this case, we don't try to do anything clever.
-		i = 0
-		mtop = 0
+		i = 0    // == len(y) - 1
+		mtop = 0 // == len(y) - 1
 		mmask = ^Word(0)
 		mmask >>= nlz(y[0])
 	}
@@ -1361,41 +1461,86 @@ func (z nat) expNNWindowedSize2(x, y nat, logM uint) nat {
 		panic("big: window_size must divide the word size")
 	}
 
-	advance := false
-	z = z.setWord(1)
+	// Gotti: Special - case the first loop iteration for the mtop - word:
+	yi := y[i]
+	if i == mtop { // if i == mtop, we can skip some bits of yi due to reducing modulo phi(m)
+		yi &= mmask
+	}
+
+	// ensure that the top (remaining, relevant)  word is != 0.
+	for yi == 0 {
+		if i == 0 {
+			*zzp = zz
+			putNat(zzp)
+			for i := range powers {
+				putNat(powers[i])
+			}
+			if z == nil {
+				return nat{1}
+			}
+			z.setWord(1)
+			return z.norm()
+		}
+		i--
+		mmask = ^Word(0) // unneeded, but added for clarity.
+		yi = y[i]
+	}
+
+	bitLenYi := 64 - bits.LeadingZeros64(uint64(yi))  // bit-lengh of yi
+	k := (bitLenYi + (window_size - 1)) / window_size // number of window_size parts needed to process yi. Note k >= 1, since yi != 0.
+
+	// we directly copy in the first iteration, rather than multiplying 1 with a precomputed value.
+	k -= 1
+	z = z.set(*powers[yi>>(k*window_size)])
+
+	// process rest of yi
+	for j := int(k - 1); j >= 0; j-- {
+		if window_size != 2 {
+			panic("big: optimization for window size 2 invalid")
+		}
+		// square 2 times
+		zz = zz.sqr(z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		zz = zz.sqr(z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		// multiply by appropriate power
+		zz = zz.mul(z, *powers[(yi>>(j*window_size))&((1<<window_size)-1)])
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+	}
+
+	// process y[:i]
+	i -= 1
 	for ; i >= 0; i-- {
 		yi := y[i]
-		if i == mtop {
-			yi &= mmask
-		}
 		for j := 0; j < _W; j += window_size {
-			if advance {
 
-				// Gotti: Loop unrolled for window size 4. We make the assumption explicit, so changing
-				// window_size will panic here. The check here should be optimized away by any reasonable compiler, since window_size is const.
-				if window_size != 2 {
-					panic("big: optimization for window size 2 invalid")
-				}
-
-				// Account for use of 4 bits in previous iteration.
-				// Unrolled loop for significant performance
-				// gain. Use go test -bench=".*" in crypto/rsa
-				// to check performance before making changes.
-				zz = zz.sqr(z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
-
-				zz = zz.sqr(z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
+			// Gotti: Loop is unrolled for window size 2. We make the assumption explicit, so changing
+			// window_size will panic here. The check here should be optimized away by any reasonable compiler, since window_size is const.
+			if window_size != 2 {
+				panic("big: optimization for window size 2 invalid")
 			}
+
+			// Unrolled loop for significant performance
+			// gain. Use go test -bench=".*" in crypto/rsa
+			// to check performance before making changes.
+			zz = zz.sqr(z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
+
+			zz = zz.sqr(z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
 
 			zz = zz.mul(z, *powers[yi>>(_W-window_size)])
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 
 			yi <<= window_size
-			advance = true
 		}
 	}
 
@@ -1547,7 +1692,7 @@ func (z nat) expNNMontgomerySize4(x, y, m nat) nat {
 	return zz.norm()
 }
 
-// expNNMontgomerySize4 calculates x**y mod m using a fixed, 2-bit window. Asserts that m is odd.
+// expNNMontgomerySize2 calculates x**y mod m using a fixed, 2-bit window. Asserts that m is odd.
 // Uses Montgomery representation.
 func (z nat) expNNMontgomerySize2(x, y, m nat) nat {
 	numWords := len(m)
