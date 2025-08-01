@@ -956,6 +956,51 @@ func computeModExpGasSimplified(baseByteLength uint, modulusByteLength uint, exp
 	}
 }
 
+// createBaseModExp creates a random triple (base, exponent, modulus) of nats with the prescribed lengths in bytes resp. bits.
+// Modulus will have exactly modulus2adicity many trailing zeros among its 8*modulusByteLength many bits.
+//
+// Note that this functions guarantees that the byte-length / bit-length is *exactly* the requested amount by setting the appropriate highest bit to 1. Consequently, the length arguments must not be 0.
+// If modulus2adicity is >= 8*modulusByteLength, we truncate modulus2adicity to its maximum meaningful value of 8*modulusByteLength-1 instead.
+func createBaseModExp(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, modulus2adicity uint) (base nat, exponent nat, modulus nat) {
+	// NOTE: This is not the most efficient way to create those numbers. We do not care.
+	if modulus2adicity >= 8*modulusByteLength {
+		modulus2adicity = 8*modulusByteLength - 1
+	}
+	if baseByteLength == 0 {
+		panic("baseByteLength set to 0")
+	}
+	if modulusByteLength == 0 {
+		panic("modulusByteLength set to 0")
+	}
+	if exponentBitLength == 0 {
+		panic("exponentBitLength set to 0")
+	}
+	// create a random number for modulus with *exactly* modulusByteLength bytes with the highest bit set.
+	// we also ensure that exactly modulus2adicity least significant bits are 0, followed by a 1.
+	modulusPowerOf2 := nat{}.setBit(nat{}, 8*modulusByteLength-1, 1)             // set highest bit to 1
+	modulusTail := nat{}.random(rand, modulusPowerOf2, 8*int(modulusByteLength)) // set other bits randomly
+	modulus = modulusTail.add(modulusTail, modulusPowerOf2)
+
+	// set modulus2adicity many least significant bits to 0 and the next one to 1.
+	for i := uint(0); i < modulus2adicity; i++ {
+		modulus = modulus.setBit(modulus, i, 0)
+	}
+	modulus = modulus.setBit(modulus, modulus2adicity, 1)
+
+	// set base to a random number with exactly baseByteLength many bytes, again with the highest bit forcibly set to 1.
+	basePowerOf2 := nat{}.setBit(nat{}, 8*baseByteLength-1, 1)
+	baseTail := nat{}.random(rand, basePowerOf2, 8*int(baseByteLength))
+	base = baseTail.add(baseTail, basePowerOf2)
+
+	// set exponent to a random number with exactly exponentBitLenght bits (again, msb set to 1)
+	// NOTE: Using a random bit-pattern for the exponent is expected to be the worst case for a fixed-window exponentiation.
+	// If we use a different exponentiation algorithm, this might no longer be true.
+	exponentPowerOf2 := nat{}.setBit(nat{}, exponentBitLength-1, 1)
+	exponentTail := nat{}.random(rand, exponentPowerOf2, int(exponentBitLength))
+	exponent = exponentPowerOf2.add(exponentPowerOf2, exponentTail)
+	return
+}
+
 // benchmarkNatExpNN returns a benchmarking function (intendend for use with *testing.B.Run) that runs
 // a benchmark on nat.expNN with the given parameters.
 //
@@ -969,46 +1014,11 @@ func computeModExpGasSimplified(baseByteLength uint, modulusByteLength uint, exp
 // To select a gas schedule, gasScheduleVersion needs to be one of "EIP2565" or "EIP7833".
 // To simplify reading out the ns/Gas value (and not just printing it), e.g. to take a maximum among multiple benchmarks, that value will also be stored in *nsPerGas, unless nsPerGas == nil.
 func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, gasScheduleVersion string, modulus2adicity uint, nsPerGas *float64, slow bool) func(*testing.B) {
-	if modulus2adicity >= 8*modulusByteLength {
-		modulus2adicity = 8*modulusByteLength - 1
-	}
-	if baseByteLength == 0 {
-		panic("baseByteLength set to 0")
-	}
-	if modulusByteLength == 0 {
-		panic("modulusByteLength set to 0")
-	}
-	if exponentBitLength == 0 {
-		panic("exponentBitLength set to 0")
-	}
+	// Setup base, modulus and exponent of the required lengths.
+	base, exponent, modulus := createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, modulus2adicity)
 
+	// compute gas
 	gasCost := computeModExpGasSimplified(baseByteLength, modulusByteLength, exponentBitLength, gasScheduleVersion)
-
-	// We setup base, modulus and exponent below. This is a very inefficient way to do it, but we don't care.
-
-	// create a random number for modulus with *exactly* modulusByteLength bytes with the highest bit set.
-	// we also ensure that exactly modulus2adicity least significant bits are 0, followed by a 1.
-	modulusPowerOf2 := nat{}.setBit(nat{}, 8*modulusByteLength-1, 1)             // set highest bit to 1
-	modulusTail := nat{}.random(rand, modulusPowerOf2, 8*int(modulusByteLength)) // set other bits randomly
-	modulus := modulusTail.add(modulusTail, modulusPowerOf2)
-
-	// set modulus2adicity many least significant bits to 0 and the next one to 1.
-	for i := uint(0); i < modulus2adicity; i++ {
-		modulus = modulus.setBit(modulus, i, 0)
-	}
-	modulus = modulus.setBit(modulus, modulus2adicity, 0)
-
-	// set base to a random number with exactly baseByteLength many bytes, again with the highest bit forcibly set to 1.
-	basePowerOf2 := nat{}.setBit(nat{}, 8*baseByteLength-1, 1)
-	baseTail := nat{}.random(rand, basePowerOf2, 8*int(baseByteLength))
-	base := baseTail.add(baseTail, basePowerOf2)
-
-	// set exponent to a random number with exactly exponentBitLenght bits (again, msb set to 1)
-	// NOTE: Using a random bit-pattern for the exponent is expected to be the worst case for a fixed-window exponentiation.
-	// If we use a different exponentiation algorithm, this might no longer be true.
-	exponentPowerOf2 := nat{}.setBit(nat{}, exponentBitLength-1, 1)
-	exponentTail := nat{}.random(rand, exponentPowerOf2, int(exponentBitLength))
-	exponent := exponentPowerOf2.add(exponentPowerOf2, exponentTail)
 
 	return func(b *testing.B) {
 		var z nat = nat{}.set(modulus) // reserve space. We copy the modulus to reserve as much space as the modulus. Note that using nat{}.make() would have us make an assumption on the Word-size.
@@ -1021,6 +1031,60 @@ func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength u
 			*nsPerGas = reportedNsPerGas
 		}
 		b.ReportMetric(reportedNsPerGas, "ns/Gas")
+	}
+}
+
+func benchmarkExpNNMontgomery(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, compareWithSlow bool) func(*testing.B) {
+	base, exponent, modulus := createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 0) // 2-adicity must be 0, since expNNMotgomery is restricted to odd moduli
+	/*
+		base = nat{3}
+		modulus = nat{101}
+		exponent = nat{0b10111}
+	*/
+
+	base = nat{}.rem(base, modulus) // to avoid corner-cases because we directly call expNNSlow and this does not catch this otherwise for exponent == 1
+	// Compute the desired results once. This serves both as a warmup and as a test.
+	resultSlowEXP := nat{}.expNN(base, exponent, modulus, true)
+	resultSlowNaive := nat{}.expNNSlow(base, exponent, modulus)
+	result2 := nat{}.expNNMontgomerySize2(base, exponent, modulus)
+	result4 := nat{}.expNNMontgomerySize4(base, exponent, modulus)
+
+	if resultSlowEXP.cmp(resultSlowNaive) != 0 {
+		panic("big: error in expNNSlow") // sanity check
+	}
+
+	if resultSlowEXP.cmp(result4) != 0 {
+		panic("big: error in expNNMontgomery4")
+	}
+	if resultSlowEXP.cmp(result2) != 0 {
+		panic("big: error in expNNMontgomery2")
+	}
+
+	f2 := func(b *testing.B) {
+		var z nat = nat{}.set(modulus)
+		for b.Loop() {
+			z = z.expNNMontgomerySize2(base, exponent, modulus)
+		}
+	}
+	f4 := func(b *testing.B) {
+		var z nat = nat{}.set(modulus)
+		for b.Loop() {
+			z = z.expNNMontgomerySize4(base, exponent, modulus)
+		}
+	}
+	fSlow := func(b *testing.B) {
+		var z nat = nat{}.set(modulus)
+		for b.Loop() {
+			z = z.expNN(base, exponent, modulus, true)
+		}
+	}
+
+	return func(b *testing.B) {
+		b.Run("WindowSize-4", f4)
+		b.Run("WindowSize-2", f2)
+		if compareWithSlow {
+			b.Run("NaiveAlg", fSlow)
+		}
 	}
 }
 
@@ -1041,4 +1105,14 @@ func BenchmarkNatExpNN(b *testing.B) {
 		}
 	}
 	//b.Run("Foo", benchmarkNatExpNN(rand, 256, 256, 1000, "EIP7883", 0, nil))
+}
+
+func BenchmarkNatExpMontgomeryVaryingWindows(b *testing.B) {
+	rand := rand.New(rand.NewSource(101))
+	for modulusByteLength := 32; modulusByteLength < 384; modulusByteLength += 32 {
+		baseByteLength := modulusByteLength
+		for _, exponentBitLength := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 32, 40, 48, 56, 64, 72, 80, 88, 96, 128, 256, 512, 1024, 2048, 3 * 1024} {
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit", baseByteLength, modulusByteLength, exponentBitLength), benchmarkExpNNMontgomery(rand, uint(baseByteLength), uint(modulusByteLength), exponentBitLength, true))
+		}
+	}
 }
