@@ -622,11 +622,16 @@ func (z nat) random(rand *rand.Rand, limit nat, n int) nat {
 // If m != 0 (i.e., len(m) != 0), expNN sets z to x**y mod m;
 // otherwise it sets z to x**y. The result is the value of z.
 // The caller may pass stk == nil to request that expNN obtain and release one itself.
+//
+// The caller of this function must ensure that m does not alias z.
 func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	if alias(z, x) || alias(z, y) {
 		// We cannot allow in-place modification of x or y.
 		z = nil
 	}
+
+	// We first check for trivial cases, then dispatch to the appropriate efficient algorithm.
+	// Note that the latter algorithms may rely on the fact that the simple cases have been handled here.
 
 	// x**y mod 1 == 0
 	if len(m) == 1 && m[0] == 1 {
@@ -663,8 +668,9 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	if len(y) == 1 && y[0] == 1 { // len(m) > 0
 		return z.rem(stk, x, m)
 	}
-
 	// y > 1
+
+	// We now are guaranteed that y > 1, x > 1 and m != 1.
 
 	if len(m) != 0 {
 		// We likely end up being as long as the modulus.
@@ -685,7 +691,18 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 			return z.expNNMontgomeryEven(stk, x, y, m)
 		}
 	}
+	return z.expNNSlow(stk, x, y, m)
+}
 
+// expNNSlow computes x**y mod m by a naive square-and-multiply algorithm,
+// using nat.div for modular reduction.
+// This is the base case used for small exponents or for m == 0.
+//
+// This function assumes (but does not check) that
+// - z does not alias x,y or m.
+// - x > 0
+// - stk is not nil
+func (z nat) expNNSlow(stk *stack, x, y, m nat) nat {
 	z = z.set(x)
 	v := y[len(y)-1] // v > 0 because y is normalized and y > 0
 	shift := nlz(v) + 1
