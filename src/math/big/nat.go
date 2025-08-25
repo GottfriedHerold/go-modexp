@@ -683,10 +683,10 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// instance of each of the first two cases).
 		if len(y) > 1 && !slow {
 			if m[0]&1 == 1 {
-				return z.expNNMontgomery(stk, x, y, m)
+				return z.expNNMontgomerySize4(stk, x, y, m)
 			}
 			if logM, ok := m.isPow2(); ok {
-				return z.expNNWindowed(stk, x, y, logM)
+				return z.expNNWindowedSize4(stk, x, y, logM)
 			}
 			return z.expNNMontgomeryEven(stk, x, y, m)
 		}
@@ -809,9 +809,37 @@ func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
 	return z
 }
 
-// expNNWindowed calculates x**y mod m using a fixed, 4-bit window,
+// buildPrecompuationWindow builds a precomputation window for exponentiation.
+// More precisely, it sets powers[i] to x**i mod m, where m == 2**logM for
+// 0 <= i < 2**window_size
+// powers must be a non-nil slice of size *exactly* 2**window_size.
+// stk must be non-nil.
+func build_precomputation_window(stk *stack, powers []nat, window_size int, logM uint, x nat) {
+	if len(powers) != 1<<window_size {
+		panic("big: misuse of build_precomputation_window")
+	}
+	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
+	for i := range powers {
+		powers[i] = stk.nat(w)
+	}
+	powers[0] = powers[0].set(natOne)
+	powers[1] = powers[1].trunc(x, logM)
+	// While we could compute each powers[i] as powers[i-1] * x,
+	// we instead compute powers[i] and powers[i+1] from powers[i/2].
+	// This replaces half the multiplications needed by squarings, which is more efficient.
+	// It may also has better memory access patterns.
+	for i := 2; i < 1<<window_size; i += 2 {
+		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
+		*p = p.sqr(stk, *p2)
+		*p = p.trunc(*p, logM)
+		*p1 = p1.mul(stk, *p, x)
+		*p1 = p1.trunc(*p1, logM)
+	}
+}
+
+// expNNWindowedSize4 calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
-func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
+func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	if len(y) <= 1 {
 		panic("big: misuse of expNNWindowed")
 	}
@@ -827,24 +855,18 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 	// zz is used to avoid allocating in mul as otherwise
 	// the arguments would alias.
 	defer stk.restore(stk.save())
-	w := int((logM + _W - 1) / _W)
+
+	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
 	zz := stk.nat(w)
 
-	const n = 4
-	// powers[i] contains x^i.
-	var powers [1 << n]nat
-	for i := range powers {
-		powers[i] = stk.nat(w)
-	}
-	powers[0] = powers[0].set(natOne)
-	powers[1] = powers[1].trunc(x, logM)
-	for i := 2; i < 1<<n; i += 2 {
-		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
-		*p = p.sqr(stk, *p2)
-		*p = p.trunc(*p, logM)
-		*p1 = p1.mul(stk, *p, x)
-		*p1 = p1.trunc(*p1, logM)
-	}
+	const window_size = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
+	// where m == 2**logM.
+	// The current implementation has the constraint that window_size must be at least 1 and divide _W.
+	// Note that if you change this, you need to change the unrolled loop below.
+
+	// powers[i] contains x**i.
+	var powers [1 << window_size]nat
+	build_precomputation_window(stk, powers[:], window_size, logM, x)
 
 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
 	// so we can compute x**(y mod 2**(logM-1)) instead of x**y.
@@ -867,8 +889,16 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 		if i == mtop {
 			yi &= mmask
 		}
-		for j := 0; j < _W; j += n {
+		for j := 0; j < _W; j += window_size {
 			if advance {
+
+				// The loop is unrolled here for (hardcoded) window_size == 4,
+				// so changing window_size will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if window_size != 4 {
+					panic("big: unrolled loop was hardcoded for window_size == 4 and was not changed.")
+				}
+
 				// Account for use of 4 bits in previous iteration.
 				// Unrolled loop for significant performance
 				// gain. Use go test -bench=".*" in crypto/rsa
@@ -890,11 +920,11 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 				z = z.trunc(z, logM)
 			}
 
-			zz = zz.mul(stk, z, powers[yi>>(_W-n)])
+			zz = zz.mul(stk, z, powers[yi>>(_W-window_size)])
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 
-			yi <<= n
+			yi <<= window_size
 			advance = true
 		}
 	}
@@ -902,9 +932,27 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-// expNNMontgomery calculates x**y mod m using a fixed, 4-bit window.
+// computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
+//
+// This value is used for Montgomery multiplication. We assert (but do not check) that
+// m0 is odd, as otherwise the inverse does not exists and Montgomery multiplication does not work.
+func computeMontgomeryk0(m0 Word) (k0 Word) {
+	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
+	// Iteration for Multiplicative Inverses Modulo Prime Powers".
+	k0 = 2 - m0
+	t := m0 - 1
+	for i := 1; i < _W; i <<= 1 {
+		t *= t
+		k0 *= (t + 1)
+	}
+	k0 = -k0
+	return
+}
+
+// expNNMontgomerySize4 calculates x**y mod m using a fixed, 4-bit window.
+// Asserts that m is odd.
 // Uses Montgomery representation.
-func (z nat) expNNMontgomery(stk *stack, x, y, m nat) nat {
+func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 	numWords := len(m)
 
 	// We want the lengths of x and m to be equal.
@@ -920,15 +968,7 @@ func (z nat) expNNMontgomery(stk *stack, x, y, m nat) nat {
 	}
 
 	// Ideally the precomputations would be performed outside, and reused
-	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
-	// Iteration for Multiplicative Inverses Modulo Prime Powers".
-	k0 := 2 - m[0]
-	t := m[0] - 1
-	for i := 1; i < _W; i <<= 1 {
-		t *= t
-		k0 *= (t + 1)
-	}
-	k0 = -k0
+	k0 := computeMontgomeryk0(m[0])
 
 	// RR = 2**(2*_W*len(m)) mod m
 	RR := nat(nil).setWord(1)
@@ -943,12 +983,16 @@ func (z nat) expNNMontgomery(stk *stack, x, y, m nat) nat {
 	one := make(nat, numWords)
 	one[0] = 1
 
-	const n = 4
+	const window_size = 4
+	// Note: The current implementation asserts that window_size divides _W
+	// and the loop below is unrolled for hardcoded window_size == 4.
+	// If you change window_size, you need to change the unrolled loop below.
+
 	// powers[i] contains x^i
-	var powers [1 << n]nat
+	var powers [1 << window_size]nat
 	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
 	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<n; i++ {
+	for i := 2; i < 1<<window_size; i++ {
 		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
 	}
 
@@ -961,16 +1005,16 @@ func (z nat) expNNMontgomery(stk *stack, x, y, m nat) nat {
 	// same windowed exponent, but with Montgomery multiplications
 	for i := len(y) - 1; i >= 0; i-- {
 		yi := y[i]
-		for j := 0; j < _W; j += n {
+		for j := 0; j < _W; j += window_size {
 			if i != len(y)-1 || j != 0 {
 				zz = zz.montgomery(z, z, m, k0, numWords)
 				z = z.montgomery(zz, zz, m, k0, numWords)
 				zz = zz.montgomery(z, z, m, k0, numWords)
 				z = z.montgomery(zz, zz, m, k0, numWords)
 			}
-			zz = zz.montgomery(z, powers[yi>>(_W-n)], m, k0, numWords)
+			zz = zz.montgomery(z, powers[yi>>(_W-window_size)], m, k0, numWords)
 			z, zz = zz, z
-			yi <<= n
+			yi <<= window_size
 		}
 	}
 	// convert to regular number
