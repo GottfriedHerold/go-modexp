@@ -624,6 +624,8 @@ func (z nat) random(rand *rand.Rand, limit nat, n int) nat {
 // The caller may pass stk == nil to request that expNN obtain and release one itself.
 //
 // The caller of this function must ensure that m does not alias z.
+// z aliasing x or y is allowed.
+// stk == nil is allowed.
 func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	if alias(z, x) || alias(z, y) {
 		// We cannot allow in-place modification of x or y.
@@ -871,17 +873,25 @@ func build_precomputation_window(stk *stack, powers []nat, window_size int, logM
 
 // expNNWindowedSize4 calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
+//
+// z must not alias x or y. x and y may alias.
 func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
-	if len(y) <= 1 {
-		panic("big: misuse of expNNWindowed")
+
+	// Note: Version in 1.26 was explicitly checking for len(y) > 1, as the
+	// algorithm depended on that for certain optimizations.
+	// We modified it to work without that assumption.
+	// Note that we require x, y > 0.
+
+	if len(y) == 0 { // next check would panic anyway, this is just to give a more accurate error message.
+		panic("big: called expNNWindowedSize4 for zero-lenght y")
 	}
-	if x[0]&1 == 0 {
-		// len(y) > 1, so y  > logM.
-		// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
-		return z.setWord(0)
+	if len(y) == 1 && y[0] == 0 {
+		panic("big: called expNNWindowedSize4 for exponent 0")
 	}
-	if logM == 1 {
-		return z.setWord(1)
+
+	if logM == 1 { // m == 2.
+		// Since y >= 1, the result will just be x mod m.
+		return z.setWord(x[0] & 1)
 	}
 
 	// zz is used to avoid allocating in mul as otherwise
@@ -890,6 +900,39 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 
 	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
 	zz := stk.nat(w)
+
+	// Note: nat.setWord corrently does not work correctly for as of 1.24.4. This does
+	// not actually matter for the calls from expNN, but it causes annoying issues in testing.
+	// We do not fix this here, to avoid complicating this function.
+
+	// Optimizations: If x is even, we can write x = x' * 2**i with x' odd.
+	// Then x**y mod 2**logM == (x'**y) * (2**(i*y)) mod 2**logM.
+	// If i*y >= logM, this is simply 0,
+	// otherwise, it equals 2**(i*y) * (x'**y) mod 2**(logM - i*y)
+	if x[0]&1 == 0 {
+		if len(y) > 1 {
+			// len(y) > 1, so y  > logM.
+			// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
+			return z.setWord(0)
+		}
+		// len(y) == 1
+		// Note that we assert x != 0, so xOdd will be odd.
+		i := x.trailingZeroBits()
+		// compute y * i, taking care of potential overflow.
+		resulting2AdicityHi, resulting2AdicityLo := bits.Mul64(uint64(i), uint64(y[0]))
+		if resulting2AdicityHi != 0 || resulting2AdicityLo >= uint64(logM) {
+			return z.setWord(0)
+		}
+		// We might consider to only perform simplification if we actually save in terms of number of words of the modulus.
+		// i.e. if resulting2AdicityLo > uint64(logM)%_W.
+		// For now, we ALWAYS perform the optimization, because then we may assume that x is odd in the code below,
+		// which greatly simplifies the algorithm.
+		z = z.rsh(x, i) // odd part of x. We temporarily use the storage of z here. Note that z does not alias x or y.
+		logMRemaining := logM - uint(resulting2AdicityLo)
+		zz = zz.expNNWindowedSize4(stk, z, y, logMRemaining)
+		return z.lsh(zz, uint(resulting2AdicityLo))
+
+	}
 
 	const window_size = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
 	// where m == 2**logM.
@@ -901,10 +944,13 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	build_precomputation_window(stk, powers[:], window_size, logM, x)
 
 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
-	// so we can compute x**(y mod 2**(logM-1)) instead of x**y.
-	// That is, we can throw away all but the bottom logM-1 bits of y.
+	// so we can compute x**(y mod 2**(logM-1)) instead of x**y, provided
+	// gcd(x, 2**logM) == 1, i.e. if x is odd.
+	// Since we handled even x above, we are guaranteed that x is odd.
+	// This means that we can throw away all but the bottom logM-1 bits of y.
 	// Instead of allocating a new y, we start reading y at the right word
 	// and truncate it appropriately at the start of the loop.
+
 	i := len(y) - 1
 	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
 	mmask := ^Word(0)
