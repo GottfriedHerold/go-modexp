@@ -988,7 +988,7 @@ func (z nat) expNN(x, y, m nat, slow bool) nat {
 		exponentBitLength := len(y)
 		if exponentBitLength < 100000 {
 			exponentBitLength *= _W
-			exponentBitLength += _W - int(nlz(y[len(y)-1]))
+			exponentBitLength -= int(nlz(y[len(y)-1]))
 		}
 
 		const threshold_for_slow_algorithm = 4 // we use the slow algorithm for bit-lengths <= this
