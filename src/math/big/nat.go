@@ -672,24 +672,56 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 
 	// We now are guaranteed that y > 1, x > 1 and m != 1.
 
+	// The algorithm we use for the m != 0 case depends on the bitlength on y.
+
+	const threshold_for_slow_algorithm = 64 // if bitlength of y is <= this, we use a naive square-and-multiply
+	const threshold_for_window_size4 = 128  // if bitlength of y is >= this, we use a precomputation window size 4 for our algorithms,
+	// otherwise we use size 2.
+
 	if len(m) != 0 {
 		// We likely end up being as long as the modulus.
 		z = z.make(len(m))
 
+		if slow {
+			return z.expNNSlow(stk, x, y, m)
+		}
+
+		// compute bitlength of exponent. Note y > 1, so this is >= 2.
+		//
+		// Note: This is only used to determine the algorithm used.
+		// Consequently, as long as is it >= threshold_for_window_size4, the actual value does not matter.
+		// So if the length (in words, not bits) is already >= threshold_for_window_size4, we avoid the multiplication by _W, which might potentially overflow.
+		exponentBitLength := len(y) // length in words, needs yet to be multiplied by _W and account for leading zeroes in most significant word.
+		if exponentBitLength < threshold_for_window_size4 {
+			exponentBitLength *= _W
+			exponentBitLength -= int(nlz(y[len(y)-1]))
+		}
+
+		if exponentBitLength <= threshold_for_slow_algorithm {
+			return z.expNNSlow(stk, x, y, m)
+		}
+
 		// If the exponent is large, we use the Montgomery method for odd values,
-		// and a 4-bit, windowed exponentiation for powers of two,
+		// and a windowed exponentiation for powers of two,
 		// and a CRT-decomposed Montgomery method for the remaining values
 		// (even values times non-trivial odd values, which decompose into one
 		// instance of each of the first two cases).
-		if len(y) > 1 && !slow {
-			if m[0]&1 == 1 {
+		if m[0]&1 == 1 {
+			if exponentBitLength >= threshold_for_window_size4 {
 				return z.expNNMontgomerySize4(stk, x, y, m)
+			} else {
+				return z.expNNMontgomerySize4(stk, x, y, m) // TODO: Replace by Size2.
 			}
-			if logM, ok := m.isPow2(); ok {
-				return z.expNNWindowedSize4(stk, x, y, logM)
-			}
-			return z.expNNMontgomeryEven(stk, x, y, m)
 		}
+		if logM, ok := m.isPow2(); ok {
+			if exponentBitLength >= threshold_for_window_size4 {
+				return z.expNNWindowedSize4(stk, x, y, logM)
+			} else {
+				return z.expNNWindowedSize4(stk, x, y, logM) // TODO: Replace by Size2.
+			}
+		}
+		// Use CRT-based algorithm. Note that this will call into expNN twice and dispatch into both expNNMontgomery and expNNWindowed.
+		return z.expNNMontgomeryEven(stk, x, y, m)
 	}
 	return z.expNNSlow(stk, x, y, m)
 }
