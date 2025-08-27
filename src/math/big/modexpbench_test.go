@@ -67,46 +67,226 @@ func computeModExpGasSimplified(baseByteLength uint, modulusByteLength uint, exp
 // createBaseModExp creates a random triple (base, exponent, modulus) of nats with the prescribed lengths in bytes resp. bits.
 // Modulus will have exactly modulus2adicity many trailing zeros among its 8*modulusByteLength many bits.
 //
-// Note that this functions guarantees that the byte-length / bit-length is *exactly* the requested amount by setting the appropriate highest bit to 1. Consequently, the length arguments must not be 0.
+// Note that this functions guarantees that the byte-length / bit-length is *exactly* the requested amount by setting the appropriate highest bit to 1, unless the given length is 0.
 // If modulus2adicity is >= 8*modulusByteLength, we truncate modulus2adicity to its maximum meaningful value of 8*modulusByteLength-1 instead.
-func createBaseModExp(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, modulus2adicity uint) (base nat, exponent nat, modulus nat) {
-	// NOTE: This is not the most efficient way to create those numbers. We do not care.
-	if modulus2adicity >= 8*modulusByteLength {
-		modulus2adicity = 8*modulusByteLength - 1
-	}
-	if baseByteLength == 0 {
-		panic("baseByteLength set to 0")
-	}
+// If base2Adicity is -1, it has no effect. Otherwise, we guarantee that base has exactly base2Adicity trailing 0 bits, capped at 8*baseByteLength-1.
+func createBaseModExp(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, modulus2adicity uint, base2Adicity int) (base nat, exponent nat, modulus nat) {
+	// NOTE: This is (by far) not the most efficient way to create those numbers. We do not care.
+
+	// For lengths zero, we return empty (rather than nil) slices. The nat{}.make(1) rather than nat{}.make(0) is because
+	// the library does not handle those edge case well. We just call .norm() at the end.
 	if modulusByteLength == 0 {
-		panic("modulusByteLength set to 0")
+		modulus = nat{}.make(1).setWord(0).norm()
+	} else {
+		if modulus2adicity >= 8*modulusByteLength {
+			modulus2adicity = 8*modulusByteLength - 1
+		}
+		// create a random number for modulus with *exactly* modulusByteLength bytes with the highest bit set.
+		// we also ensure that exactly modulus2adicity least significant bits are 0, followed by a 1.
+		modulusPowerOf2 := nat{}.setBit(nat{}, 8*modulusByteLength-1, 1)             // set highest bit to 1
+		modulusTail := nat{}.random(rand, modulusPowerOf2, 8*int(modulusByteLength)) // set other bits randomly
+		modulus = modulusTail.add(modulusTail, modulusPowerOf2)
+		// set modulus2adicity many least significant bits to 0 and the next one to 1.
+		for i := uint(0); i < modulus2adicity; i++ {
+			modulus = modulus.setBit(modulus, i, 0)
+		}
+		modulus = modulus.setBit(modulus, modulus2adicity, 1)
 	}
+
+	if baseByteLength == 0 {
+		base = nat{}.make(1).setWord(0).norm()
+	} else {
+		// set base to a random number with exactly baseByteLength many bytes, again with the highest bit forcibly set to 1.
+		basePowerOf2 := nat{}.setBit(nat{}, 8*baseByteLength-1, 1)
+		baseTail := nat{}.random(rand, basePowerOf2, 8*int(baseByteLength))
+		base = baseTail.add(baseTail, basePowerOf2)
+
+		if base2Adicity >= 0 {
+			if uint(base2Adicity) > 8*baseByteLength {
+				base2Adicity = int(8*baseByteLength - 1)
+			}
+			for i := uint(0); i < uint(base2Adicity); i++ {
+				base = base.setBit(base, i, 0)
+			}
+			base = base.setBit(base, uint(base2Adicity), 1)
+		}
+	}
+
 	if exponentBitLength == 0 {
-		panic("exponentBitLength set to 0")
+		exponent = nat{}.make(1).setWord(0).norm()
+	} else {
+		// set exponent to a random number with exactly exponentBitLenght bits (again, msb set to 1)
+		// NOTE: Using a random bit-pattern for the exponent is expected to be the worst case for a fixed-window exponentiation.
+		// If we use a different exponentiation algorithm, this might no longer be true.
+		exponentPowerOf2 := nat{}.setBit(nat{}, exponentBitLength-1, 1)
+		exponentTail := nat{}.random(rand, exponentPowerOf2, int(exponentBitLength))
+		exponent = exponentPowerOf2.add(exponentPowerOf2, exponentTail)
 	}
-	// create a random number for modulus with *exactly* modulusByteLength bytes with the highest bit set.
-	// we also ensure that exactly modulus2adicity least significant bits are 0, followed by a 1.
-	modulusPowerOf2 := nat{}.setBit(nat{}, 8*modulusByteLength-1, 1)             // set highest bit to 1
-	modulusTail := nat{}.random(rand, modulusPowerOf2, 8*int(modulusByteLength)) // set other bits randomly
-	modulus = modulusTail.add(modulusTail, modulusPowerOf2)
-
-	// set modulus2adicity many least significant bits to 0 and the next one to 1.
-	for i := uint(0); i < modulus2adicity; i++ {
-		modulus = modulus.setBit(modulus, i, 0)
-	}
-	modulus = modulus.setBit(modulus, modulus2adicity, 1)
-
-	// set base to a random number with exactly baseByteLength many bytes, again with the highest bit forcibly set to 1.
-	basePowerOf2 := nat{}.setBit(nat{}, 8*baseByteLength-1, 1)
-	baseTail := nat{}.random(rand, basePowerOf2, 8*int(baseByteLength))
-	base = baseTail.add(baseTail, basePowerOf2)
-
-	// set exponent to a random number with exactly exponentBitLenght bits (again, msb set to 1)
-	// NOTE: Using a random bit-pattern for the exponent is expected to be the worst case for a fixed-window exponentiation.
-	// If we use a different exponentiation algorithm, this might no longer be true.
-	exponentPowerOf2 := nat{}.setBit(nat{}, exponentBitLength-1, 1)
-	exponentTail := nat{}.random(rand, exponentPowerOf2, int(exponentBitLength))
-	exponent = exponentPowerOf2.add(exponentPowerOf2, exponentTail)
+	base = base.norm()
+	exponent = exponent.norm()
+	modulus = modulus.norm()
 	return
+}
+
+// TestExponentiationAlgorithms runs differential tests on the various exponentiation algorithm versions we have.
+// Note that base, exponent and modulus must not alias.
+func testExponentiationAlgorithms(t *testing.T, base nat, exponent nat, modulus nat) {
+	stk := getStack()
+	defer stk.free()
+	baseCopy := stk.nat(len(base))
+	exponentCopy := stk.nat(len(exponent))
+	modulusCopy := stk.nat(len(modulus))
+	copy(baseCopy, base)
+	copy(exponentCopy, exponent)
+	copy(modulusCopy, modulus)
+
+	var naiveResult nat
+
+	// For base == 0 or exponent == 0, expNNSlow does not work.
+	if len(base) == 0 { // 0 ** exponent is 0, unless exponent is also 0. In this case 0 ** 0 == 1, but we need to take into account that modulus might be 1.
+		if len(modulus) == 1 && modulus[0] == 1 {
+			naiveResult = naiveResult.norm()
+		} else if len(exponent) == 0 {
+			naiveResult = naiveResult.make(1).setWord(1).norm()
+		} else {
+			naiveResult = naiveResult.norm()
+		}
+
+	} else if len(exponent) == 0 { // base ** 0 == 1, unconditionally. We need to take into account that modulus might be 1.
+		// len(base) == 0 - case already handled above, so can assume len(base) > 0
+		if len(modulus) == 1 && modulus[0] == 1 {
+			naiveResult = naiveResult.norm() // result is 0
+		} else {
+			naiveResult = naiveResult.make(1).setWord(1).norm()
+		}
+	} else if len(exponent) == 1 && exponent[0] == 1 && len(modulus) > 0 { // expNNSlow performs no modular reduction in the case of exponent 1.
+		naiveResult = naiveResult.rem(stk, base, modulus)
+	} else {
+		naiveResult = nat{}.expNNSlow(stk, base, exponent, modulus)
+		if base.cmp(baseCopy) != 0 {
+			t.Fatalf("expNNSlow modifies base")
+		}
+		if exponent.cmp(exponentCopy) != 0 {
+			t.Fatalf("expNNSlow modifies exponent")
+		}
+		if modulus.cmp(modulusCopy) != 0 {
+			t.Fatalf("expNNSlow modifies modulus")
+		}
+	}
+
+	// generic test for an exponentiation algorithm expAlg(mem_for_result, stk, base, exponent, modulus) with name funcName.
+	// If allowAlias is true, will check that mem_for_result may alias base, exponent (but *not* modulus!)
+	// If allowNilStack is true, will check that stk == nil works.
+	checkExponentiationAlgorithm := func(expAlg func(_ nat, _ *stack, _ nat, _ nat, _ nat) nat, funcName string, allowAlias bool, allowNilStack bool) {
+		expResult := expAlg(nat{}, stk, base, exponent, modulus)
+		if base.cmp(baseCopy) != 0 {
+			t.Fatalf("%v modifies base", funcName)
+		}
+		if exponent.cmp(exponentCopy) != 0 {
+			t.Fatalf("%v modifies exponent", funcName)
+		}
+		if modulus.cmp(modulusCopy) != 0 {
+			t.Fatalf("%v modifies modulus", funcName)
+		}
+		if expResult.cmp(naiveResult) != 0 {
+			t.Fatalf("%v output does not match expNNSlow output for\nbase=%v, exponent=%v,modulus=%v\nOutput was %v\nexpNNSlow gives %v", funcName, base, exponent, modulus, expResult, naiveResult)
+		}
+		// check that it works with stk == nil
+		if allowNilStack {
+			expResult = expAlg(nat{}, nil, base, exponent, modulus)
+
+			if base.cmp(baseCopy) != 0 {
+				t.Fatalf("%v (with nil stack) modifies base", funcName)
+			}
+			if exponent.cmp(exponentCopy) != 0 {
+				t.Fatalf("%v (with nil stack) modifies exponent", funcName)
+			}
+			if modulus.cmp(modulusCopy) != 0 {
+				t.Fatalf("%v (with nil stack) modifies modulus", funcName)
+			}
+			if expResult.cmp(naiveResult) != 0 {
+				t.Fatalf("%v does not work for stk==nil for\nbase=%v, exponent=%v,modulus=%v\nOutput was %v\nexpNNSlow gives %v", funcName, base, exponent, modulus, expResult, naiveResult)
+			}
+		}
+		if allowAlias {
+			expResult = expAlg(base, stk, base, exponent, modulus)
+			base = stk.nat(len(baseCopy))
+			copy(base, baseCopy)
+			if expResult.cmp(naiveResult) != 0 {
+				t.Fatalf("%v does not work for base aliasing result for\nbase=%v, exponent=%v,modulus=%v\nOutput was %v\nexpNNSlow gives %v", funcName, base, exponent, modulus, expResult, naiveResult)
+			}
+
+			expResult = expAlg(exponent, stk, base, exponent, modulus)
+			exponent = stk.nat(len(exponentCopy))
+			copy(exponent, exponentCopy)
+			if expResult.cmp(naiveResult) != 0 {
+				t.Fatalf("%v does not work for exponent aliasing result for\nbase=%v, exponent=%v,modulus=%v\nOutput was %v\nexpNNSlow gives %v", funcName, base, exponent, modulus, expResult, naiveResult)
+			}
+		}
+	}
+
+	if len(modulus) > 0 && len(base) > 0 && len(exponent) > 0 { // Note that modulus.isPow2() panics for modulus == 0
+		if logM, ok := modulus.isPow2(); ok {
+			checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
+				return z2.expNNWindowedSize4(stk2, base2, exponent2, logM)
+			}, "expNNWindowedSize4", false, false)
+		}
+	}
+
+	if len(modulus) > 0 && modulus[0]&1 == 1 {
+		checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
+			return z2.expNNMontgomerySize4(stk2, base2, exponent2, modulus2)
+		}, "expNNMontgomerySize4", false, false)
+	}
+
+	if len(modulus) > 0 && modulus[0]&1 == 0 {
+		checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
+			return z2.expNNMontgomeryEven(stk2, base2, exponent2, modulus2)
+		}, "expNNMontgomeryEven", true, true)
+	}
+
+	// We intentionally check expNN itself last.
+	checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
+		return z2.expNN(stk2, base2, exponent2, modulus2, false)
+	}, "expNN", true, true)
+}
+
+// runs differential tests for our various exponentiation algorithms.
+func TestExponentiationAlgorithms(t *testing.T) {
+	rand := rand.New(rand.NewSource(10)) // arbitrarily de-randomized to improve reproducibility
+	var modulusByteLengths []uint = make([]uint, 0)
+	for i := 0; i < 384; i += 32 {
+		modulusByteLengths = append(modulusByteLengths, uint(i))
+	}
+	modulusByteLengths = append(modulusByteLengths, 0, 1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 17, 31, 33, 63, 65)
+
+	exponentBitLengths := []uint{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 24, 25, 31, 32, 33, 63, 64, 65, 72, 80, 128, 256, 257, 512, 1024, 2048, 3 * 1024}
+
+	for _, modulusByteLength := range modulusByteLengths {
+		baseByteLength := modulusByteLength
+		for _, exponentBitLength := range exponentBitLengths {
+			base, exponent, modulus := createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 0, -1)
+			testExponentiationAlgorithms(t, base, exponent, modulus)
+			base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 0, 0)
+			testExponentiationAlgorithms(t, base, exponent, modulus)
+			base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 0, 1)
+			testExponentiationAlgorithms(t, base, exponent, modulus)
+			base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 0, 8)
+			testExponentiationAlgorithms(t, base, exponent, modulus)
+
+			base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 1, -1)
+			testExponentiationAlgorithms(t, base, exponent, modulus)
+			base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 8, -1)
+			testExponentiationAlgorithms(t, base, exponent, modulus)
+
+			if exponentBitLength > 0 {
+				base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, exponentBitLength-1, -1)
+			}
+			testExponentiationAlgorithms(t, base, exponent, modulus)
+
+		}
+	}
+
 }
 
 // benchmarkNatExpNN returns a benchmarking function (intendend for use with *testing.B.Run) that runs
@@ -123,7 +303,7 @@ func createBaseModExp(rand *rand.Rand, baseByteLength uint, modulusByteLength ui
 // To simplify reading out the ns/Gas value (and not just printing it), e.g. to take a maximum among multiple benchmarks, that value will also be stored in *nsPerGas, unless nsPerGas == nil.
 func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, gasScheduleVersion string, modulus2adicity uint, nsPerGas *float64, slow bool) func(*testing.B) {
 	// Setup base, modulus and exponent of the required lengths.
-	base, exponent, modulus := createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, modulus2adicity)
+	base, exponent, modulus := createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, modulus2adicity, -1)
 
 	// compute gas
 	gasCost := computeModExpGasSimplified(baseByteLength, modulusByteLength, exponentBitLength, gasScheduleVersion)

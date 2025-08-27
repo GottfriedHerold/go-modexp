@@ -364,6 +364,8 @@ func (x nat) trailingZeroBits() uint {
 }
 
 // isPow2 returns i, true when x == 2**i and 0, false otherwise.
+//
+// Note: This panics if x == 0.
 func (x nat) isPow2() (uint, bool) {
 	var i uint
 	for x[i] == 0 {
@@ -615,7 +617,6 @@ func (z nat) random(rand *rand.Rand, limit nat, n int) nat {
 			break
 		}
 	}
-
 	return z.norm()
 }
 
@@ -625,7 +626,6 @@ func (z nat) random(rand *rand.Rand, limit nat, n int) nat {
 //
 // The caller of this function must ensure that m does not alias z.
 // z aliasing x or y is allowed.
-// stk == nil is allowed.
 func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	if alias(z, x) || alias(z, y) {
 		// We cannot allow in-place modification of x or y.
@@ -735,6 +735,7 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 // This function assumes (but does not check) that
 // - z does not alias x,y or m.
 // - x > 0
+// - y > 1 (for y == 1, this performs no modular reduction)
 // - stk is not nil
 func (z nat) expNNSlow(stk *stack, x, y, m nat) nat {
 	z = z.set(x)
@@ -802,6 +803,8 @@ func (z nat) expNNSlow(stk *stack, x, y, m nat) nat {
 // For more details, see Ç. K. Koç, “Montgomery Reduction with Even Modulus”,
 // IEE Proceedings: Computers and Digital Techniques, 141(5) 314-316, September 1994.
 // http://www.people.vcu.edu/~jwang3/CMSC691/j34monex.pdf
+//
+// This algorithm assumes m even, m > 0. z may alias x or y, but not m.
 func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
 	// Split m = m₁ × m₂ where m₁ = 2ⁿ
 	n := m.trailingZeroBits()
@@ -875,6 +878,7 @@ func build_precomputation_window(stk *stack, powers []nat, window_size int, logM
 // where m = 2**logM.
 //
 // z must not alias x or y. x and y may alias.
+// The caller needs to guarantee that x > 0 and y > 0
 func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 
 	// Note: Version in 1.26 was explicitly checking for len(y) > 1, as the
@@ -1028,7 +1032,7 @@ func computeMontgomeryk0(m0 Word) (k0 Word) {
 }
 
 // expNNMontgomerySize4 calculates x**y mod m using a fixed, 4-bit window.
-// Asserts that m is odd.
+// Asserts that m is odd; z must not alias x,y or m.
 // Uses Montgomery representation.
 func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 	numWords := len(m)
