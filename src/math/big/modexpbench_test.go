@@ -286,7 +286,6 @@ func TestExponentiationAlgorithms(t *testing.T) {
 
 		}
 	}
-
 }
 
 // benchmarkNatExpNN returns a benchmarking function (intendend for use with *testing.B.Run) that runs

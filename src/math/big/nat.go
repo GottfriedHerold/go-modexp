@@ -676,7 +676,7 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 
 	// The algorithm we use for the m != 0 case depends on the bitlength on y.
 
-	const threshold_for_slow_algorithm = 64 // if bitlength of y is <= this, we use a naive square-and-multiply
+	const threshold_for_slow_algorithm = 16 // if bitlength of y is <= this, we use a naive square-and-multiply
 	const threshold_for_window_size4 = 128  // if bitlength of y is >= this, we use a precomputation window size 4 for our algorithms,
 	// otherwise we use size 2.
 
@@ -916,6 +916,11 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	if x[0]&1 == 0 {
 		if len(y) > 1 {
 			// len(y) > 1, so y  > logM.
+			// This assumes that _W is >= the bitsize of uint.
+			// We check this, to be sure (the check is between const's, so it can be optimized away)
+			if _W < bits.UintSize {
+				panic("big: The Word size of nat is smaller than that of uint. This violates assumptions used for optimization")
+			}
 			// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
 			return z.setWord(0)
 		}
@@ -955,59 +960,120 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	// Instead of allocating a new y, we start reading y at the right word
 	// and truncate it appropriately at the start of the loop.
 
-	i := len(y) - 1
+	// mtop is the index of the most significant word of y mod 2**(logM-1), where we allow appropriate leading 0s in the latter.
+	// mmask is a bitmask used to select the potential non-zero bits of that word.
 	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
 	mmask := ^Word(0)
 	if mbits := (logM - 1) & (_W - 1); mbits != 0 {
 		mmask = (1 << mbits) - 1
 	}
+
+	// We perform a windowed exponentiation algorithm, processing y from y[i] down to y[0].
+	// We will special-case the first iteration handling y[i] itself.
+	i := len(y) - 1
 	if i > mtop {
 		i = mtop
 	}
-	advance := false
-	z = z.setWord(1)
-	for ; i >= 0; i-- {
-		yi := y[i]
-		if i == mtop {
-			yi &= mmask
-		}
-		for j := 0; j < _W; j += window_size {
-			if advance {
 
-				// The loop is unrolled here for (hardcoded) window_size == 4,
-				// so changing window_size will make the algorith (silently) fail with a wrong result.
-				// We add a check here to fail explicitly. This will be optimized away.
-				if window_size != 4 {
-					panic("big: unrolled loop was hardcoded for window_size == 4 and was not changed.")
-				}
+	// special-case the first loop iteration for the mtop-word:
+	yi := y[i]
+	if i == mtop { // if i == mtop, we can skip some bits of yi due to reducing modulo phi(m)
+		yi &= mmask
+	}
 
-				// Account for use of 4 bits in previous iteration.
-				// Unrolled loop for significant performance
-				// gain. Use go test -bench=".*" in crypto/rsa
-				// to check performance before making changes.
-				zz = zz.sqr(stk, z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
-
-				zz = zz.sqr(stk, z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
-
-				zz = zz.sqr(stk, z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
-
-				zz = zz.sqr(stk, z)
-				zz, z = z, zz
-				z = z.trunc(z, logM)
+	// ensure that the top (remaining, relevant) word is != 0.
+	for yi == 0 {
+		// i == 0 means that y mod phi(2**logM) == 0. In this case, the result is 1, since x > 0.
+		// We need to special-case this because the algorithm relies on y mod phi(2**log) > 0;
+		//
+		if i == 0 {
+			if z == nil {
+				return nat{1}
+			} else {
+				return z.setWord(1).norm()
 			}
+		}
+		i--
+		yi = y[i]
+	}
+
+	bitLengthOfyi := 64 - bits.LeadingZeros64(uint64(yi))
+	k := (bitLengthOfyi + (window_size - 1)) / window_size // number of window_size parts needed to process yi.
+	// Since yi != 0, we are guaranteed that k > 0.
+
+	// Replace first iteration by directly copying (rather than multiplying 1 with a precomputed value)
+
+	k -= 1
+	z = z.set(powers[yi>>(k*window_size)])
+
+	// move remaining relevant bits to most significant position. This simplifies the bit-selection.
+	yi <<= _W - k*window_size
+
+	// process rest of yi
+	for j := k - 1; j >= 0; j-- {
+		if window_size != 4 {
+			panic("big: unrolled loop was hardcoded for window_size == 4 and was not changed.")
+		}
+		// square 4 times
+		zz = zz.sqr(stk, z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		zz = zz.sqr(stk, z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		zz = zz.sqr(stk, z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		zz = zz.sqr(stk, z)
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+
+		// multiply by appropriate power:
+		zz = zz.mul(stk, z, powers[yi>>(_W-window_size)])
+		zz, z = z, zz
+		z = z.trunc(z, logM)
+		// shift yi, so the next group of window_size many bits is in most significant position.
+		yi <<= window_size
+	}
+
+	// process y[:i]
+	for i -= 1; i >= 0; i-- {
+		yi = y[i]
+		for j := 0; j < _W; j += window_size {
+			// The loop is unrolled here for (hardcoded) window_size == 4,
+			// so changing window_size will make the algorith (silently) fail with a wrong result.
+			// We add a check here to fail explicitly. This will be optimized away.
+			if window_size != 4 {
+				panic("big: unrolled loop was hardcoded for window_size == 4 and was not changed.")
+			}
+
+			// Account for use of 4 bits in previous iteration.
+			// Unrolled loop for significant performance
+			// gain. Use go test -bench=".*" in crypto/rsa
+			// to check performance before making changes.
+			zz = zz.sqr(stk, z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
+
+			zz = zz.sqr(stk, z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
+
+			zz = zz.sqr(stk, z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
+
+			zz = zz.sqr(stk, z)
+			zz, z = z, zz
+			z = z.trunc(z, logM)
 
 			zz = zz.mul(stk, z, powers[yi>>(_W-window_size)])
 			zz, z = z, zz
 			z = z.trunc(z, logM)
-
 			yi <<= window_size
-			advance = true
 		}
 	}
 
