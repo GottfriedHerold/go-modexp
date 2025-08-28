@@ -1000,49 +1000,23 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	bitLengthOfyi := 64 - bits.LeadingZeros64(uint64(yi))
 	k := (bitLengthOfyi + (window_size - 1)) / window_size // number of window_size parts needed to process yi.
 	// Since yi != 0, we are guaranteed that k > 0.
+	k -= 1 // index of relevant window.
 
 	// Replace first iteration by directly copying (rather than multiplying 1 with a precomputed value)
-
-	k -= 1
 	z = z.set(powers[yi>>(k*window_size)])
 
 	// move remaining relevant bits to most significant position. This simplifies the bit-selection.
 	yi <<= _W - k*window_size
+	k -= 1 // because we processed the first window by the direct copy.
 
-	// process rest of yi
-	for j := k - 1; j >= 0; j-- {
-		if window_size != 4 {
-			panic("big: unrolled loop was hardcoded for window_size == 4 and was not changed.")
-		}
-		// square 4 times
-		zz = zz.sqr(stk, z)
-		zz, z = z, zz
-		z = z.trunc(z, logM)
-
-		zz = zz.sqr(stk, z)
-		zz, z = z, zz
-		z = z.trunc(z, logM)
-
-		zz = zz.sqr(stk, z)
-		zz, z = z, zz
-		z = z.trunc(z, logM)
-
-		zz = zz.sqr(stk, z)
-		zz, z = z, zz
-		z = z.trunc(z, logM)
-
-		// multiply by appropriate power:
-		zz = zz.mul(stk, z, powers[yi>>(_W-window_size)])
-		zz, z = z, zz
-		z = z.trunc(z, logM)
-		// shift yi, so the next group of window_size many bits is in most significant position.
-		yi <<= window_size
-	}
-
-	// process y[:i]
-	for i -= 1; i >= 0; i-- {
-		yi = y[i]
-		for j := 0; j < _W; j += window_size {
+	// loop over i, then over k, where i ranges of the words of y with yi == y[i]
+	// and k ranges over the windows of yi.
+	// We perform the modification of i and k explicitly at the end of loop, initialize the variables for the next iteration also at the end of the loop and
+	// check termination of the i-loop "by hand".
+	// This allows us to start the (nested) loops at the given (i,k) - pair without having to special case whether we are in the first/last loop and
+	// without having to use boolean flags.
+	for { // loop over i, starting from the value computed above down to 0. We always perform at least one iteration.
+		for k >= 0 {
 			// The loop is unrolled here for (hardcoded) window_size == 4,
 			// so changing window_size will make the algorith (silently) fail with a wrong result.
 			// We add a check here to fail explicitly. This will be optimized away.
@@ -1074,7 +1048,14 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 			yi <<= window_size
+			k--
 		}
+		if i == 0 {
+			break
+		}
+		i--
+		yi = y[i]
+		k = _W/window_size - 1
 	}
 
 	return z.norm()
