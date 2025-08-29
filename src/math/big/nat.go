@@ -1096,6 +1096,15 @@ func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 		x = rr
 	}
 
+	if len(y) == 0 {
+		if z == nil {
+			z = nat{1}
+		} else {
+			z = z.setWord(1)
+		}
+		return z.norm()
+	}
+
 	// Ideally the precomputations would be performed outside, and reused
 	k0 := computeMontgomeryk0(m[0])
 
@@ -1131,21 +1140,47 @@ func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 
 	zz = zz.make(numWords)
 
-	// same windowed exponent, but with Montgomery multiplications
-	for i := len(y) - 1; i >= 0; i-- {
-		yi := y[i]
-		for j := 0; j < _W; j += window_size {
-			if i != len(y)-1 || j != 0 {
-				zz = zz.montgomery(z, z, m, k0, numWords)
-				z = z.montgomery(zz, zz, m, k0, numWords)
-				zz = zz.montgomery(z, z, m, k0, numWords)
-				z = z.montgomery(zz, zz, m, k0, numWords)
+	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
+	// We also avoid the initial squartings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
+	// We follow the same loop structure as expNNWindowedSize4 for this.
+
+	i := len(y) - 1                 // index of most significant word of y.
+	yi := y[i]                      // note: yi is guaranteed to be > 0.
+	bitLengthyi := nat{yi}.bitLen() // bitLen is explicitly side-channel resistant. We don't want to leak about yi here apart from the bitlength.
+
+	k := (bitLengthyi+(window_size-1))/window_size - 1 // index of the most significant non-zero window of the most significant word.
+	// start by directly copying rather than multiplying 1 by this.
+	copy(z, powers[yi>>(k*window_size)])
+
+	yi <<= _W - k*window_size // move relevant bits of highest word to the left.
+	k -= 1
+
+	for {
+		for k >= 0 {
+			// The loop is unrolled here for (hardcoded) window_size == 4,
+			// so changing window_size will make the algorith (silently) fail with a wrong result.
+			// We add a check here to fail explicitly. This will be optimized away.
+			if window_size != 4 {
+				panic("big: unrolled loop was hardcoded for window_size == 4 and was not changed.")
 			}
+			zz = zz.montgomery(z, z, m, k0, numWords)
+			z = z.montgomery(zz, zz, m, k0, numWords)
+			zz = zz.montgomery(z, z, m, k0, numWords)
+			z = z.montgomery(zz, zz, m, k0, numWords)
+
 			zz = zz.montgomery(z, powers[yi>>(_W-window_size)], m, k0, numWords)
 			z, zz = zz, z
 			yi <<= window_size
+			k--
 		}
+		if i == 0 {
+			break
+		}
+		i--
+		yi = y[i]
+		k = _W/window_size - 1
 	}
+
 	// convert to regular number
 	zz = zz.montgomery(z, one, m, k0, numWords)
 
