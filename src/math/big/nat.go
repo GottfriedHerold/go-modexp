@@ -851,26 +851,32 @@ func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
 // 0 <= i < 2**window_size
 // powers must be a non-nil slice of size *exactly* 2**window_size.
 // stk must be non-nil.
+// tmp is a temporary scratch space.
 func build_precomputation_window(stk *stack, powers []nat, window_size int, logM uint, x nat) {
 	if len(powers) != 1<<window_size {
 		panic("big: misuse of build_precomputation_window")
 	}
 	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
+
 	for i := range powers {
 		powers[i] = stk.nat(w)
 	}
 	powers[0] = powers[0].set(natOne)
 	powers[1] = powers[1].trunc(x, logM)
+
+	defer stk.restore(stk.save())
+	tmp := stk.nat(2 * w)
+
 	// While we could compute each powers[i] as powers[i-1] * x,
 	// we instead compute powers[i] and powers[i+1] from powers[i/2].
 	// This replaces half the multiplications needed by squarings, which is more efficient.
 	// It may also has better memory access patterns.
 	for i := 2; i < 1<<window_size; i += 2 {
 		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
-		*p = p.sqr(stk, *p2)
-		*p = p.trunc(*p, logM)
-		*p1 = p1.mul(stk, *p, x)
-		*p1 = p1.trunc(*p1, logM)
+		tmp = tmp.sqr(stk, *p2)
+		*p = p.trunc(tmp, logM)
+		tmp = tmp.mul(stk, *p, x)
+		*p1 = p1.trunc(tmp, logM)
 	}
 }
 
