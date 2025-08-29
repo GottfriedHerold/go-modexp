@@ -1088,6 +1088,7 @@ func computeMontgomeryk0(m0 Word) (k0 Word) {
 // Asserts that m is odd; z must not alias x,y or m.
 // Uses Montgomery representation.
 func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
+	defer stk.restore(stk.save())
 	numWords := len(m)
 
 	// We want the lengths of x and m to be equal.
@@ -1142,8 +1143,6 @@ func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(numWords)
-	copy(z, powers[0])
-
 	zz = zz.make(numWords)
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
