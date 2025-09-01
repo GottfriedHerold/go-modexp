@@ -677,7 +677,7 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	// The algorithm we use for the m != 0 case depends on the bitlength on y.
 
 	const threshold_for_slow_algorithm = 16 // if bitlength of y is <= this, we use a naive square-and-multiply
-	const threshold_for_window_size4 = 128  // if bitlength of y is >= this, we use a precomputation window size 4 for our algorithms,
+	const threshold_for_windowSize4 = 128   // if bitlength of y is >= this, we use a precomputation window size 4 for our algorithms,
 	// otherwise we use size 2.
 
 	if len(m) != 0 {
@@ -691,10 +691,10 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// compute bitlength of exponent. Note y > 1, so this is >= 2.
 		//
 		// Note: This is only used to determine the algorithm used.
-		// Consequently, as long as is it >= threshold_for_window_size4, the actual value does not matter.
-		// So if the length (in words, not bits) is already >= threshold_for_window_size4, we avoid the multiplication by _W, which might potentially overflow.
+		// Consequently, as long as is it >= threshold_for_windowSize4, the actual value does not matter.
+		// So if the length (in words, not bits) is already >= threshold_for_windowSize4, we avoid the multiplication by _W, which might potentially overflow.
 		exponentBitLength := len(y) // length in words, needs yet to be multiplied by _W and account for leading zeroes in most significant word.
-		if exponentBitLength < threshold_for_window_size4 {
+		if exponentBitLength < threshold_for_windowSize4 {
 			exponentBitLength *= _W
 			exponentBitLength -= int(nlz(y[len(y)-1]))
 		}
@@ -709,14 +709,14 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// (even values times non-trivial odd values, which decompose into one
 		// instance of each of the first two cases).
 		if m[0]&1 == 1 {
-			if exponentBitLength >= threshold_for_window_size4 {
+			if exponentBitLength >= threshold_for_windowSize4 {
 				return z.expNNMontgomerySize4(stk, x, y, m)
 			} else {
 				return z.expNNMontgomerySize4(stk, x, y, m) // TODO: Replace by Size2.
 			}
 		}
 		if logM, ok := m.isPow2(); ok {
-			if exponentBitLength >= threshold_for_window_size4 {
+			if exponentBitLength >= threshold_for_windowSize4 {
 				return z.expNNWindowedSize4(stk, x, y, logM)
 			} else {
 				return z.expNNWindowedSize4(stk, x, y, logM) // TODO: Replace by Size2.
@@ -846,14 +846,15 @@ func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
 	return z
 }
 
-// buildPrecompuationWindow builds a precomputation window for exponentiation.
+// buildPrecompuationWindowModPower2 builds a precomputation window for exponentiation
+// in the case of power-of-two modulus.
 // More precisely, it sets powers[i] to x**i mod m, where m == 2**logM for
-// 0 <= i < 2**window_size
-// powers must be a non-nil slice of size *exactly* 2**window_size.
+// 0 <= i < 2**windowSize
+// powers must be a non-nil slice of size *exactly* 2**windowSize.
 // stk must be non-nil.
 // tmp is a temporary scratch space.
-func build_precomputation_window(stk *stack, powers []nat, window_size int, logM uint, x nat) {
-	if len(powers) != 1<<window_size {
+func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int, logM uint, x nat) {
+	if len(powers) != 1<<windowSize {
 		panic("big: misuse of build_precomputation_window")
 	}
 	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
@@ -871,7 +872,7 @@ func build_precomputation_window(stk *stack, powers []nat, window_size int, logM
 	// we instead compute powers[i] and powers[i+1] from powers[i/2].
 	// This replaces half the multiplications needed by squarings, which is more efficient.
 	// It may also has better memory access patterns.
-	for i := 2; i < 1<<window_size; i += 2 {
+	for i := 2; i < 1<<windowSize; i += 2 {
 		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
 		tmp = tmp.sqr(stk, *p2)
 		*p = p.trunc(tmp, logM)
@@ -909,9 +910,12 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	defer stk.restore(stk.save())
 
 	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
-	zz := stk.nat(w)
 
-	// Note: nat.setWord corrently does not work correctly for as of 1.24.4. This does
+	// We need to reserve twice as many words due to the squarings / multiplications involved.
+	// In principle, this could be optimized by adding variants to both sqr and mul that work modulo a power of 2**_W.
+	zz := stk.nat(2 * w)
+
+	// Note: nat.setWord corrently does not work correctly for nil as of 1.24.4. This does
 	// not actually matter for the calls from expNN, but it causes annoying issues in testing.
 	// We do not fix this here, to avoid complicating this function.
 
@@ -949,14 +953,14 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 
 	}
 
-	const window_size = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
+	const windowSize = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
 	// where m == 2**logM.
-	// The current implementation has the constraint that window_size must be at least 1 and divide _W.
+	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
 	// Note that if you change this, you need to change the unrolled loop below.
 
 	// powers[i] contains x**i.
-	var powers [1 << window_size]nat
-	build_precomputation_window(stk, powers[:], window_size, logM, x)
+	var powers [1 << windowSize]nat
+	buildPrecomputationWindowModPower2(stk, powers[:], windowSize, logM, x)
 
 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
 	// so we can compute x**(y mod 2**(logM-1)) instead of x**y, provided
@@ -1004,33 +1008,42 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	}
 
 	bitLengthOfyi := 64 - bits.LeadingZeros64(uint64(yi))
-	k := (bitLengthOfyi + (window_size - 1)) / window_size // number of window_size parts needed to process yi.
+	k := (bitLengthOfyi + (windowSize - 1)) / windowSize // number of windowSize parts needed to process yi.
 	// Since yi != 0, we are guaranteed that k > 0.
 	k -= 1 // index of relevant window.
 
 	// Replace first iteration by directly copying (rather than multiplying 1 with a precomputed value)
-	z = z.set(powers[yi>>(k*window_size)])
+	z = z.set(powers[yi>>(k*windowSize)])
 
 	// move remaining relevant bits to most significant position. This simplifies the bit-selection.
-	yi <<= _W - k*window_size
+	yi <<= _W - k*windowSize
 	k -= 1 // because we processed the first window by the direct copy.
 
-	// loop over i, then over k, where i ranges of the words of y with yi == y[i]
-	// and k ranges over the windows of yi.
+	// The code below swaps z and zz. for efficient memory utilization.
+	// We need to ensure that we don't end up storing and returning the final result in the temporary memory
+	// we obtained via zz := stk.nat(2 * w), since that memory will be reused by stk.
+	// To avoid this, we keep track of the parity of such swaps, which depends only on k mod 2.
+	var oddNumberOfSwaps bool = (k & 1) == 0
+
+	// loop over i (outer loop) and over k (inner loop),
+	// where i ranges of the words of y with yi == y[i] and k ranges over the windows of yi.
 	// We perform the modification of i and k explicitly at the end of loop, initialize the variables for the next iteration also at the end of the loop and
 	// check termination of the i-loop "by hand".
 	// This allows us to start the (nested) loops at the given (i,k) - pair without having to special case whether we are in the first/last loop and
 	// without having to use boolean flags.
 	for { // loop over i, starting from the value computed above down to 0. We always perform at least one iteration.
 		for k >= 0 {
-			// The loop is unrolled here for (hardcoded) window_size == 4,
-			// so changing window_size will make the algorith (silently) fail with a wrong result.
-			// We add a check here to fail explicitly. This will be optimized away.
-			if window_size != 4 {
-				panic("big: unrolled loop was hardcoded for window_size == 4 and was not changed.")
+			// k refers to the index of the windowSize - sized window in y[i]
+			// We have that yi equals y[i], but shifted such that the bits to be processed are in the most significant position.
+
+			// The loop is unrolled here for (hardcoded) windowSize == 4,
+			// so changing windowSize will make the algorith (silently) fail with a wrong result.
+			// We add a check here to fail explicitly. This check will be optimized away.
+			if windowSize != 4 {
+				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
 			}
 
-			// Account for use of 4 bits in previous iteration.
+			// Account for use of 4 bits per previous iteration.
 			// Unrolled loop for significant performance
 			// gain. Use go test -bench=".*" in crypto/rsa
 			// to check performance before making changes.
@@ -1050,10 +1063,10 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 
-			zz = zz.mul(stk, z, powers[yi>>(_W-window_size)])
+			zz = zz.mul(stk, z, powers[yi>>(_W-windowSize)])
 			zz, z = z, zz
 			z = z.trunc(z, logM)
-			yi <<= window_size
+			yi <<= windowSize
 			k--
 		}
 		if i == 0 {
@@ -1061,7 +1074,14 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 		}
 		i--
 		yi = y[i]
-		k = _W/window_size - 1
+		k = _W/windowSize - 1
+	}
+
+	// If we made an odd number of swaps between z and zz, z might refer to memory we obtained from stk.nat(2*w).
+	// This memory may be reused as temporary memory after stk.restore, so we need to make one more swap.
+	if oddNumberOfSwaps {
+		z, zz = zz, z
+		z = z.set(zz)
 	}
 
 	return z.norm()
@@ -1128,16 +1148,16 @@ func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 	one := make(nat, numWords)
 	one[0] = 1
 
-	const window_size = 4
-	// Note: The current implementation asserts that window_size divides _W
-	// and the loop below is unrolled for hardcoded window_size == 4.
-	// If you change window_size, you need to change the unrolled loop below.
+	const windowSize = 4
+	// Note: The current implementation asserts that windowSize divides _W
+	// and the loop below is unrolled for hardcoded windowSize == 4.
+	// If you change windowSize, you need to change the unrolled loop below.
 
 	// powers[i] contains x^i
-	var powers [1 << window_size]nat
+	var powers [1 << windowSize]nat
 	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
 	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<window_size; i++ {
+	for i := 2; i < 1<<windowSize; i++ {
 		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
 	}
 
@@ -1153,29 +1173,29 @@ func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 	yi := y[i]                      // note: yi is guaranteed to be > 0.
 	bitLengthyi := nat{yi}.bitLen() // bitLen is explicitly side-channel resistant. We don't want to leak about yi here apart from the bitlength.
 
-	k := (bitLengthyi+(window_size-1))/window_size - 1 // index of the most significant non-zero window of the most significant word.
+	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word.
 	// start by directly copying rather than multiplying 1 by this.
-	copy(z, powers[yi>>(k*window_size)])
+	copy(z, powers[yi>>(k*windowSize)])
 
-	yi <<= _W - k*window_size // move relevant bits of highest word to the left.
+	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
 
 	for {
 		for k >= 0 {
-			// The loop is unrolled here for (hardcoded) window_size == 4,
-			// so changing window_size will make the algorith (silently) fail with a wrong result.
+			// The loop is unrolled here for (hardcoded) windowSize == 4,
+			// so changing windowSize will make the algorith (silently) fail with a wrong result.
 			// We add a check here to fail explicitly. This will be optimized away.
-			if window_size != 4 {
-				panic("big: unrolled loop was hardcoded for window_size == 4 and was not changed.")
+			if windowSize != 4 {
+				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
 			}
 			zz = zz.montgomery(z, z, m, k0, numWords)
 			z = z.montgomery(zz, zz, m, k0, numWords)
 			zz = zz.montgomery(z, z, m, k0, numWords)
 			z = z.montgomery(zz, zz, m, k0, numWords)
 
-			zz = zz.montgomery(z, powers[yi>>(_W-window_size)], m, k0, numWords)
+			zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
 			z, zz = zz, z
-			yi <<= window_size
+			yi <<= windowSize
 			k--
 		}
 		if i == 0 {
@@ -1183,7 +1203,7 @@ func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 		}
 		i--
 		yi = y[i]
-		k = _W/window_size - 1
+		k = _W/windowSize - 1
 	}
 
 	// convert to regular number
