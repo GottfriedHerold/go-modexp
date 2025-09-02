@@ -710,20 +710,20 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// instance of each of the first two cases).
 		if m[0]&1 == 1 {
 			if exponentBitLength >= threshold_for_windowSize4 {
-				return z.expNNMontgomerySize4(stk, x, y, m)
+				return z.expNNOddMontgomeryWindowSize4(stk, x, y, m)
 			} else {
-				return z.expNNMontgomerySize4(stk, x, y, m) // TODO: Replace by Size2.
+				return z.expNNOddMontgomeryWindowSize4(stk, x, y, m) // TODO: Replace by Size2.
 			}
 		}
 		if logM, ok := m.isPow2(); ok {
 			if exponentBitLength >= threshold_for_windowSize4 {
-				return z.expNNWindowedSize4(stk, x, y, logM)
+				return z.expNNPowerOfTwoSWindowSize4(stk, x, y, logM)
 			} else {
-				return z.expNNWindowedSize4(stk, x, y, logM) // TODO: Replace by Size2.
+				return z.expNNPowerOfTwoSWindowSize4(stk, x, y, logM) // TODO: Replace by Size2.
 			}
 		}
 		// Use CRT-based algorithm. Note that this will call into expNN twice and dispatch into both expNNMontgomery and expNNWindowed.
-		return z.expNNMontgomeryEven(stk, x, y, m)
+		return z.expNNEven(stk, x, y, m)
 	}
 	return z.expNNSlow(stk, x, y, m)
 }
@@ -795,18 +795,19 @@ func (z nat) expNNSlow(stk *stack, x, y, m nat) nat {
 	return z.norm()
 }
 
-// expNNMontgomeryEven calculates x**y mod m where m = m1 × m2 for m1 = 2ⁿ and m2 odd.
+// expNNEven calculates x**y mod m where m = m1 × m2 for m1 = 2ⁿ and m2 odd with n > 0.
+//
 // It uses two recursive calls to expNN for x**y mod m1 and x**y mod m2
 // and then uses the Chinese Remainder Theorem to combine the results.
-// The recursive call using m1 will use expNNWindowed,
-// while the recursive call using m2 will use expNNMontgomery.
+// The recursive call using m1 will use some expNNPowerOfTwo* - algorithim.
+// while the recursive call using m2 will use one of the expNNOdd* algorithms.
 // For more details, see Ç. K. Koç, “Montgomery Reduction with Even Modulus”,
 // IEE Proceedings: Computers and Digital Techniques, 141(5) 314-316, September 1994.
 // http://www.people.vcu.edu/~jwang3/CMSC691/j34monex.pdf
 //
 // This algorithm assumes m even, m > 0. z may alias x or y, but not m.
-func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
-	// Split m = m₁ × m₂ where m₁ = 2ⁿ
+func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
+	// Split m = m₁ × m₂ where m₁ = 2ⁿ. We assume n > 0.
 	n := m.trailingZeroBits()
 	m1 := nat(nil).lsh(natOne, n)
 	m2 := nat(nil).rsh(m, n)
@@ -881,12 +882,12 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 	}
 }
 
-// expNNWindowedSize4 calculates x**y mod m using a fixed, 4-bit window,
+// expNNPowerOfTwoSWindowSize4 calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
 //
 // z must not alias x or y. x and y may alias.
 // The caller needs to guarantee that x > 0 and y > 0
-func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
+func (z nat) expNNPowerOfTwoSWindowSize4(stk *stack, x, y nat, logM uint) nat {
 
 	// Note: Version in 1.26 was explicitly checking for len(y) > 1, as the
 	// algorithm depended on that for certain optimizations.
@@ -894,10 +895,10 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	// Note that we require x, y > 0.
 
 	if len(y) == 0 { // next check would panic anyway, this is just to give a more accurate error message.
-		panic("big: called expNNWindowedSize4 for zero-lenght y")
+		panic("big: called expNNPowerOfTwoWindowSize4 for zero-lenght y")
 	}
 	if len(y) == 1 && y[0] == 0 {
-		panic("big: called expNNWindowedSize4 for exponent 0")
+		panic("big: called expNNPowerOfTwoWindowSize4 for exponent 0")
 	}
 
 	if logM == 1 { // m == 2.
@@ -915,14 +916,14 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	// In principle, this could be optimized by adding variants to both sqr and mul that work modulo a power of 2**_W.
 	zz := stk.nat(2 * w)
 
-	// Note: nat.setWord corrently does not work correctly for nil as of 1.24.4. This does
+	// Note: nat.setWord currently does not work correctly for nil as of 1.24.4. This does
 	// not actually matter for the calls from expNN, but it causes annoying issues in testing.
 	// We do not fix this here, to avoid complicating this function.
 
 	// Optimizations: If x is even, we can write x = x' * 2**i with x' odd.
-	// Then x**y mod 2**logM == (x'**y) * (2**(i*y)) mod 2**logM.
-	// If i*y >= logM, this is simply 0,
-	// otherwise, it equals 2**(i*y) * (x'**y) mod 2**(logM - i*y)
+	// Then x**y mod 2**logM == x'**y * 2**(i*y) mod 2**logM.
+	// If i*y >= logM, this equals 0.
+	// Otherwise, it equals 2**(i*y) * (x'**y mod 2**(logM - i*y))
 	if x[0]&1 == 0 {
 		if len(y) > 1 {
 			// len(y) > 1, so y  > logM.
@@ -948,9 +949,8 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 		// which greatly simplifies the algorithm.
 		z = z.rsh(x, i) // odd part of x. We temporarily use the storage of z here. Note that z does not alias x or y.
 		logMRemaining := logM - uint(resulting2AdicityLo)
-		zz = zz.expNNWindowedSize4(stk, z, y, logMRemaining)
+		zz = zz.expNNPowerOfTwoSWindowSize4(stk, z, y, logMRemaining)
 		return z.lsh(zz, uint(resulting2AdicityLo))
-
 	}
 
 	const windowSize = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
@@ -1019,10 +1019,10 @@ func (z nat) expNNWindowedSize4(stk *stack, x, y nat, logM uint) nat {
 	yi <<= _W - k*windowSize
 	k -= 1 // because we processed the first window by the direct copy.
 
-	// The code below swaps z and zz. for efficient memory utilization.
-	// We need to ensure that we don't end up storing and returning the final result in the temporary memory
+	// The code below swaps z and zz for efficient memory utilization.
+	// We need to ensure that we do not end up storing and returning the final result in the temporary memory
 	// we obtained via zz := stk.nat(2 * w), since that memory will be reused by stk.
-	// To avoid this, we keep track of the parity of such swaps, which depends only on k mod 2.
+	// To avoid this, we keep track of whether we performed an even or odd number of such swaps, which depends only on k mod 2.
 	var oddNumberOfSwaps bool = (k & 1) == 0
 
 	// loop over i (outer loop) and over k (inner loop),
@@ -1104,10 +1104,10 @@ func computeMontgomeryk0(m0 Word) (k0 Word) {
 	return
 }
 
-// expNNMontgomerySize4 calculates x**y mod m using a fixed, 4-bit window.
+// expNNOddMontgomeryWindowSize4 calculates x**y mod m using a fixed, 4-bit window.
 // Asserts that m is odd; z must not alias x,y or m.
 // Uses Montgomery representation.
-func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
+func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	defer stk.restore(stk.save())
 	numWords := len(m)
 
@@ -1167,7 +1167,7 @@ func (z nat) expNNMontgomerySize4(stk *stack, x, y, m nat) nat {
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squartings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
-	// We follow the same loop structure as expNNWindowedSize4 for this.
+	// We follow the same loop structure as expNNPowerOfTwoWindowSize4 for this.
 
 	i := len(y) - 1                 // index of most significant word of y.
 	yi := y[i]                      // note: yi is guaranteed to be > 0.

@@ -228,20 +228,20 @@ func testExponentiationAlgorithms(t *testing.T, base nat, exponent nat, modulus 
 	if len(modulus) > 0 && len(base) > 0 && len(exponent) > 0 { // Note that modulus.isPow2() panics for modulus == 0
 		if logM, ok := modulus.isPow2(); ok {
 			checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
-				return z2.expNNWindowedSize4(stk2, base2, exponent2, logM)
+				return z2.expNNPowerOfTwoSWindowSize4(stk2, base2, exponent2, logM)
 			}, "expNNWindowedSize4", false, false)
 		}
 	}
 
 	if len(modulus) > 0 && modulus[0]&1 == 1 {
 		checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
-			return z2.expNNMontgomerySize4(stk2, base2, exponent2, modulus2)
+			return z2.expNNOddMontgomeryWindowSize4(stk2, base2, exponent2, modulus2)
 		}, "expNNMontgomerySize4", false, false)
 	}
 
 	if len(modulus) > 0 && modulus[0]&1 == 0 {
 		checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
-			return z2.expNNMontgomeryEven(stk2, base2, exponent2, modulus2)
+			return z2.expNNEven(stk2, base2, exponent2, modulus2)
 		}, "expNNMontgomeryEven", true, true)
 	}
 
