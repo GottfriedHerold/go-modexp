@@ -228,21 +228,35 @@ func testExponentiationAlgorithms(t *testing.T, base nat, exponent nat, modulus 
 	if len(modulus) > 0 && len(base) > 0 && len(exponent) > 0 { // Note that modulus.isPow2() panics for modulus == 0
 		if logM, ok := modulus.isPow2(); ok {
 			checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
-				return z2.expNNPowerOfTwoSWindowSize4(stk2, base2, exponent2, logM)
-			}, "expNNWindowedSize4", false, false)
+				return z2.expNNPowerOfTwoWindowSize4(stk2, base2, exponent2, logM)
+			}, "expNNPow2WindowedSize4", false, false)
+		}
+	}
+
+	if len(modulus) > 0 && len(base) > 0 && len(exponent) > 0 { // Note that modulus.isPow2() panics for modulus == 0
+		if logM, ok := modulus.isPow2(); ok {
+			checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
+				return z2.expNNPowerOfTwoWindowSize2(stk2, base2, exponent2, logM)
+			}, "expNNPow2WindowedSize2", false, false)
 		}
 	}
 
 	if len(modulus) > 0 && modulus[0]&1 == 1 {
 		checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
 			return z2.expNNOddMontgomeryWindowSize4(stk2, base2, exponent2, modulus2)
-		}, "expNNMontgomerySize4", false, false)
+		}, "expNNOddMontgomerySize4", false, false)
+
+	}
+	if len(modulus) > 0 && modulus[0]&1 == 1 {
+		checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
+			return z2.expNNOddMontgomeryWindowSize2(stk2, base2, exponent2, modulus2)
+		}, "expNNOddMontgomerySize2", false, false)
 	}
 
 	if len(modulus) > 0 && modulus[0]&1 == 0 {
 		checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
 			return z2.expNNEven(stk2, base2, exponent2, modulus2)
-		}, "expNNMontgomeryEven", true, true)
+		}, "expNNEven", true, true)
 	}
 
 	// We intentionally check expNN itself last.
@@ -323,19 +337,129 @@ func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength u
 
 // BenchmarkNatExpNN will run a set of benchmarks for nat.expNN for varying input lengths and report each of those. This is a very slow benchmark.
 func BenchmarkNatExpNN(b *testing.B) {
-	rand := rand.New(rand.NewSource(100))
+	rnd := rand.New(rand.NewSource(100))
 	var maxGas float64
 	for modulusByteLength := 32; modulusByteLength < 320; modulusByteLength += 32 {
 		for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 32, 40, 48, 56, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
-			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, false))
-			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, false))
-			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, false))
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, false))
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, false))
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, false))
 			if exponentBitLengh <= 64 {
-				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, true))
-				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, true))
-				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, true))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, true))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, true))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, true))
 			}
 		}
 	}
 	//b.Run("Foo", benchmarkNatExpNN(rand, 256, 256, 1000, "EIP7883", 0, nil))
+}
+
+// Benchmark for selecting threshold for window size for Power-Of-Two algorithm
+func BenchmarkNatExpNNPowerOfTwo(b *testing.B) {
+	rnd := rand.New(rand.NewSource(99))
+	var base, exponent, modulus nat
+
+	const gasScheduleVersion = "EIP7883"
+
+	exponentBitLengths := []uint{1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 17, 23, 24, 25, 31, 32, 33, 63, 64, 65, 127, 128, 129}
+
+	for modulusByteLength := uint(32); modulusByteLength < 320; modulusByteLength += 32 {
+		baseByteLength := modulusByteLength
+		for _, exponentBitLength := range exponentBitLengths {
+			base, exponent, modulus = createBaseModExp(rnd, baseByteLength, modulusByteLength, exponentBitLength, 8*modulusByteLength, 0)
+			gasCost := computeModExpGasSimplified(baseByteLength, modulusByteLength, exponentBitLength, gasScheduleVersion)
+			if logM, ok := modulus.isPow2(); !ok {
+				b.Fatalf("big: Not a power of 2")
+				if logM != 8*modulusByteLength {
+					b.Fatalf("big: wrong power of 2")
+				}
+			}
+
+			z := nat{}
+
+			benchWindow2 := func(b *testing.B) {
+				for b.Loop() {
+					stk := getStack()
+					z = z.expNNPowerOfTwoWindowSize2(stk, base, exponent, 8*modulusByteLength)
+					stk.free()
+				}
+				b.ReportMetric(float64(gasCost), "Gas/op")
+				reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
+				b.ReportMetric(reportedNsPerGas, "ns/Gas")
+			}
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBits-Pow2-Window2", baseByteLength, modulusByteLength, exponentBitLength), benchWindow2)
+
+			benchWindow4 := func(b *testing.B) {
+				for b.Loop() {
+					stk := getStack()
+					z = z.expNNPowerOfTwoWindowSize2(stk, base, exponent, 8*modulusByteLength)
+					stk.free()
+				}
+				b.ReportMetric(float64(gasCost), "Gas/op")
+				reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
+				b.ReportMetric(reportedNsPerGas, "ns/Gas")
+			}
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBits-Pow2-Window4", baseByteLength, modulusByteLength, exponentBitLength), benchWindow4)
+		}
+		// Note: We don't compare against the naive algorith; for powers of 2, the naive algorithm is not competitive.
+		// (We would need an unwindowed algorithm that performs trunc instead of mod as a baseline)
+	}
+}
+
+// Benchmark for selecting threshold for window size for algorithm for odd modulus
+func BenchmarkNatExpNNOdd(b *testing.B) {
+	rnd := rand.New(rand.NewSource(99))
+	var base, exponent, modulus nat
+
+	const gasScheduleVersion = "EIP7883"
+
+	exponentBitLengths := []uint{1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 17, 23, 24, 25, 31, 32, 33, 63, 64, 65, 127, 128, 129, 256}
+
+	for modulusByteLength := uint(32); modulusByteLength < 320; modulusByteLength += 32 {
+		baseByteLength := modulusByteLength
+		for _, exponentBitLength := range exponentBitLengths {
+			base, exponent, modulus = createBaseModExp(rnd, baseByteLength, modulusByteLength, exponentBitLength, 0, -1)
+			gasCost := computeModExpGasSimplified(baseByteLength, modulusByteLength, exponentBitLength, gasScheduleVersion)
+
+			z := nat{}
+
+			benchWindow2 := func(b *testing.B) {
+				for b.Loop() {
+					stk := getStack()
+					z = z.expNNOddMontgomeryWindowSize2(stk, base, exponent, modulus)
+					stk.free()
+				}
+				b.ReportMetric(float64(gasCost), "Gas/op")
+				reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
+				b.ReportMetric(reportedNsPerGas, "ns/Gas")
+			}
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBits-Odd-Window2", baseByteLength, modulusByteLength, exponentBitLength), benchWindow2)
+
+			benchWindow4 := func(b *testing.B) {
+				for b.Loop() {
+					stk := getStack()
+					z = z.expNNOddMontgomeryWindowSize4(stk, base, exponent, modulus)
+					stk.free()
+				}
+				b.ReportMetric(float64(gasCost), "Gas/op")
+				reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
+				b.ReportMetric(reportedNsPerGas, "ns/Gas")
+			}
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBits-Odd-Window4", baseByteLength, modulusByteLength, exponentBitLength), benchWindow4)
+
+			benchSlow := func(b *testing.B) {
+				for b.Loop() {
+					stk := getStack()
+					z = z.expNNSlow(stk, base, exponent, modulus)
+					stk.free()
+				}
+				b.ReportMetric(float64(gasCost), "Gas/op")
+				reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
+				b.ReportMetric(reportedNsPerGas, "ns/Gas")
+			}
+			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBits-Odd-Slow", baseByteLength, modulusByteLength, exponentBitLength), benchSlow)
+
+		}
+
+	}
 }
