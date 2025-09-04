@@ -228,12 +228,20 @@ func testExponentiationAlgorithms(t *testing.T, base nat, exponent nat, modulus 
 	if len(modulus) > 0 && len(base) > 0 && len(exponent) > 0 { // Note that modulus.isPow2() panics for modulus == 0
 		if logM, ok := modulus.isPow2(); ok {
 			checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
+				return z2.expNNPowerOfTwo(stk2, base2, exponent2, logM)
+			}, "expNNPowerOfTwo", false, false)
+		}
+	}
+
+	if len(modulus) > 0 && len(base) > 0 && len(exponent) > 0 && base[0]&1 == 1 { // Note that modulus.isPow2() panics for modulus == 0
+		if logM, ok := modulus.isPow2(); ok {
+			checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
 				return z2.expNNPowerOfTwoWindowSize4(stk2, base2, exponent2, logM)
 			}, "expNNPow2WindowedSize4", false, false)
 		}
 	}
 
-	if len(modulus) > 0 && len(base) > 0 && len(exponent) > 0 { // Note that modulus.isPow2() panics for modulus == 0
+	if len(modulus) > 0 && len(base) > 0 && len(exponent) > 0 && base[0]&1 == 1 { // Note that modulus.isPow2() panics for modulus == 0
 		if logM, ok := modulus.isPow2(); ok {
 			checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
 				return z2.expNNPowerOfTwoWindowSize2(stk2, base2, exponent2, logM)
@@ -293,11 +301,17 @@ func TestExponentiationAlgorithms(t *testing.T) {
 			base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 8, -1)
 			testExponentiationAlgorithms(t, base, exponent, modulus)
 
-			if exponentBitLength > 0 {
-				base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, exponentBitLength-1, -1)
+			// power-of-two moduli
+			if exponentBitLength > 0 && modulusByteLength > 0 {
+				base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 8*modulusByteLength-1, -1)
+				testExponentiationAlgorithms(t, base, exponent, modulus)
 			}
-			testExponentiationAlgorithms(t, base, exponent, modulus)
 
+			// very high-2-adicity moduli
+			if exponentBitLength > 0 && modulusByteLength > 0 {
+				base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 4*modulusByteLength, -1)
+				testExponentiationAlgorithms(t, base, exponent, modulus)
+			}
 		}
 	}
 }
@@ -370,11 +384,12 @@ func BenchmarkCompareNatExpNNPowerOfTwo(b *testing.B) {
 		for _, exponentBitLength := range exponentBitLengths {
 			base, exponent, modulus = createBaseModExp(rnd, baseByteLength, modulusByteLength, exponentBitLength, 8*modulusByteLength, 0)
 			gasCost := computeModExpGasSimplified(baseByteLength, modulusByteLength, exponentBitLength, gasScheduleVersion)
-			if logM, ok := modulus.isPow2(); !ok {
+			logM, ok := modulus.isPow2()
+			if !ok {
 				b.Fatalf("big: Not a power of 2")
-				if logM != 8*modulusByteLength {
-					b.Fatalf("big: wrong power of 2")
-				}
+			}
+			if logM != 8*modulusByteLength {
+				b.Fatalf("big: wrong power of 2")
 			}
 
 			z := nat{}

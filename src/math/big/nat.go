@@ -881,16 +881,12 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 	}
 }
 
-func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
-	return z.expNNPowerOfTwoWindowSize4(stk, x, y, logM)
-}
-
-// expNNPowerOfTwoWindowSize4 calculates x**y mod m using a fixed, 4-bit window,
-// where m = 2**logM.
+// expNNPowerOfTwo calculates x**y mod m, where
+// m = 2**logM
 //
-// z must not alias x or y. x and y may alias.
-// The caller needs to guarantee that x > 0 and y > 0
-func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
+// z must not alias x or y. (x and y may alias).
+// The caller needs to guarantee that x > 0 and y > 0.
+func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 
 	// Note: Version in 1.26 was explicitly checking for len(y) > 1, as the
 	// algorithm depended on that for certain optimizations.
@@ -908,28 +904,6 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 		// Since y >= 1, the result will just be x mod m.
 		return z.setWord(x[0] & 1)
 	}
-
-	// zz is used to avoid allocating in mul as otherwise
-	// the arguments would alias.
-	defer stk.restore(stk.save())
-
-	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
-
-	const windowSize = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
-	// where m == 2**logM.
-	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
-	// Note that if you change this, you need to change the unrolled loop below.
-
-	// (1<<windowSize)*w for precomputation window, 2*w for zz and 2*w inside buildPrecomputationWindowModPower2
-	stk.reserve((1<<windowSize)*w + 4*w)
-
-	// We need to reserve twice as many words due to the squarings / multiplications involved.
-	// In principle, this could be optimized by adding variants to both sqr and mul that work modulo a power of 2**_W.
-	zz := stk.nat(2 * w)
-
-	// Note: nat.setWord currently does not work correctly for nil as of 1.24.4. This does
-	// not actually matter for the calls from expNN, but it causes annoying issues in testing.
-	// We do not fix this here, to avoid complicating this function.
 
 	// Optimizations: If x is even, we can write x = x' * 2**i with x' odd.
 	// Then x**y mod 2**logM == x'**y * 2**(i*y) mod 2**logM.
@@ -958,11 +932,48 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 		// i.e. if resulting2AdicityLo > uint64(logM)%_W.
 		// For now, we ALWAYS perform the optimization, because then we may assume that x is odd in the code below,
 		// which greatly simplifies the algorithm.
-		z = z.rsh(x, i) // odd part of x. We temporarily use the storage of z here. Note that z does not alias x or y.
+		xOdd := nat(nil).rsh(x, i) // odd part of x.
 		logMRemaining := logM - uint(resulting2AdicityLo)
-		zz = zz.expNNPowerOfTwo(stk, z, y, logMRemaining)
-		return z.lsh(zz, uint(resulting2AdicityLo))
+		z = z.expNNPowerOfTwo(stk, xOdd, y, logMRemaining)
+		return z.lsh(z, uint(resulting2AdicityLo))
 	}
+
+	// if the number of bits of the (effective) exponent is at least this threshold, we use a 4-bit windowed exponentiation.
+	// Note that we effectively cap the exponent at logM, because we will only consider the exponent modulo phi(2**logM).
+	const threshold_for_4_bit_window = 48
+
+	if logM >= threshold_for_4_bit_window && y.bitLen() >= threshold_for_4_bit_window {
+		return z.expNNPowerOfTwoWindowSize4(stk, x, y, logM)
+	} else {
+		return z.expNNPowerOfTwoWindowSize2(stk, x, y, logM)
+	}
+
+}
+
+// expNNPowerOfTwoWindowSize4 calculates x**y mod m using a fixed, 4-bit window,
+// where m = 2**logM.
+//
+// z must not alias x or y. x and y may alias.
+// The caller needs to guarantee that x > 0 and y > 0. We also require that x is odd.
+func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
+
+	// zz is used to avoid allocating in mul as otherwise
+	// the arguments would alias.
+	defer stk.restore(stk.save())
+
+	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
+
+	const windowSize = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
+	// where m == 2**logM.
+	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
+	// Note that if you change this, you need to change the unrolled loop below.
+
+	// (1<<windowSize)*w for precomputation window, 2*w for zz and 2*w inside buildPrecomputationWindowModPower2
+	stk.reserve((1<<windowSize)*w + 4*w)
+
+	// We need to reserve twice as many words due to the squarings / multiplications involved.
+	// In principle, this could be optimized by adding variants to both sqr and mul that work modulo a power of 2**_W.
+	zz := stk.nat(2 * w)
 
 	// powers[i] contains x**i.
 	var powers [1 << windowSize]nat
@@ -1093,31 +1104,12 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-// CURRENTLY UNUSED.
-
 // expNNPowerOfTwoWindowSize2 calculates x**y mod m using a fixed, 2-bit window,
 // where m = 2**logM.
 //
 // z must not alias x or y. x and y may alias.
-// The caller needs to guarantee that x > 0 and y > 0
+// The caller needs to guarantee that x > 0 and y > 0. We also require that x is odd.
 func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
-
-	// Note: Version in 1.26 was explicitly checking for len(y) > 1, as the
-	// algorithm depended on that for certain optimizations.
-	// We modified it to work without that assumption.
-	// Note that we require x, y > 0.
-
-	if len(y) == 0 { // next check would panic anyway, this is just to give a more accurate error message.
-		panic("big: called expNNPowerOfTwoWindowSize2 for zero-lenght y")
-	}
-	if len(y) == 1 && y[0] == 0 {
-		panic("big: called expNNPowerOfTwoWindowSize2 for exponent 0")
-	}
-
-	if logM == 1 { // m == 2.
-		// Since y >= 1, the result will just be x mod m.
-		return z.setWord(x[0] & 1)
-	}
 
 	// zz is used to avoid allocating in mul as otherwise
 	// the arguments would alias.
@@ -1136,43 +1128,6 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 	// We need to reserve twice as many words due to the squarings / multiplications involved.
 	// In principle, this could be optimized by adding variants to both sqr and mul that work modulo a power of 2**_W.
 	zz := stk.nat(2 * w)
-
-	// Note: nat.setWord currently does not work correctly for nil as of 1.24.4. This does
-	// not actually matter for the calls from expNN, but it causes annoying issues in testing.
-	// We do not fix this here, to avoid complicating this function.
-
-	// Optimizations: If x is even, we can write x = x' * 2**i with x' odd.
-	// Then x**y mod 2**logM == x'**y * 2**(i*y) mod 2**logM.
-	// If i*y >= logM, this equals 0.
-	// Otherwise, it equals 2**(i*y) * (x'**y mod 2**(logM - i*y))
-	if x[0]&1 == 0 {
-		if len(y) > 1 {
-			// len(y) > 1, so y  > logM.
-			// This assumes that _W is >= the bitsize of uint.
-			// We check this, to be sure (the check is between const's, so it can be optimized away)
-			if _W < bits.UintSize {
-				panic("big: The Word size of nat is smaller than that of uint. This violates assumptions used for optimization")
-			}
-			// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
-			return z.setWord(0)
-		}
-		// len(y) == 1
-		// Note that we assert x != 0, so xOdd will be odd.
-		i := x.trailingZeroBits()
-		// compute y * i, taking care of potential overflow.
-		resulting2AdicityHi, resulting2AdicityLo := bits.Mul64(uint64(i), uint64(y[0]))
-		if resulting2AdicityHi != 0 || resulting2AdicityLo >= uint64(logM) {
-			return z.setWord(0)
-		}
-		// We might consider to only perform simplification if we actually save in terms of number of words of the modulus.
-		// i.e. if resulting2AdicityLo > uint64(logM)%_W.
-		// For now, we ALWAYS perform the optimization, because then we may assume that x is odd in the code below,
-		// which greatly simplifies the algorithm.
-		z = z.rsh(x, i) // odd part of x. We temporarily use the storage of z here. Note that z does not alias x or y.
-		logMRemaining := logM - uint(resulting2AdicityLo)
-		zz = zz.expNNPowerOfTwo(stk, z, y, logMRemaining)
-		return z.lsh(zz, uint(resulting2AdicityLo))
-	}
 
 	// powers[i] contains x**i.
 	var powers [1 << windowSize]nat
@@ -1354,12 +1309,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	}
 
 	if len(y) == 0 {
-		if z == nil {
-			z = nat{1}
-		} else {
-			z = z.setWord(1)
-		}
-		return z.norm()
+		return z.setWord(1)
 	}
 
 	// Ideally the precomputations would be performed outside, and reused
@@ -1490,12 +1440,7 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 	}
 
 	if len(y) == 0 {
-		if z == nil {
-			z = nat{1}
-		} else {
-			z = z.setWord(1)
-		}
-		return z.norm()
+		return z.setWord(1)
 	}
 
 	// Ideally the precomputations would be performed outside, and reused
