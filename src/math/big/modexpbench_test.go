@@ -256,7 +256,7 @@ func testExponentiationAlgorithms(t *testing.T, base nat, exponent nat, modulus 
 	if len(modulus) > 0 && modulus[0]&1 == 0 {
 		checkExponentiationAlgorithm(func(z2 nat, stk2 *stack, base2 nat, exponent2 nat, modulus2 nat) (result2 nat) {
 			return z2.expNNEven(stk2, base2, exponent2, modulus2)
-		}, "expNNEven", true, true)
+		}, "expNNEven", true, false)
 	}
 
 	// We intentionally check expNN itself last.
@@ -460,6 +460,5 @@ func BenchmarkNatExpNNOdd(b *testing.B) {
 			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBits-Odd-Slow", baseByteLength, modulusByteLength, exponentBitLength), benchSlow)
 
 		}
-
 	}
 }
