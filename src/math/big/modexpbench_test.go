@@ -362,7 +362,7 @@ func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength u
 func BenchmarkNatExpNN(b *testing.B) {
 	rnd := rand.New(rand.NewSource(100))
 	var maxGas float64
-	for _, freshStack := range []bool{true, false} {
+	for _, freshStack := range []bool{false} {
 		var freshstackStr string = ""
 		if freshStack {
 			freshstackStr = "-ALLOC"

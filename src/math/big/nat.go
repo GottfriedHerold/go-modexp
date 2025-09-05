@@ -1374,12 +1374,14 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	// It is OK if x >= m as long as len(x) == len(m).
 	// Note that this means that x might not be normalized anymore.
 	if len(x) > numWords {
-		_, x = nat(nil).div(stk, nil, x, m)
+		_, x = stk.nat(len(x)-numWords+1).div(stk, stk.nat(numWords), x, m)
 		// Note: now len(x) <= numWords, not guaranteed ==.
 	}
 	if len(x) < numWords {
-		rr := make(nat, numWords)
+		rr := stk.nat(numWords)
+		rr = rr[:numWords]
 		copy(rr, x)
+		clear(rr[len(x):])
 		x = rr
 	}
 
@@ -1392,8 +1394,8 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 
 	// RR = 2**(2*_W*len(m)) mod m
 	RR := stk.nat(2 * numWords).setWord(1)
-	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
-	_, RR = stk.nat(numWords).div(stk, RR, zz, m)
+	zz := nat(nil).lsh(RR, uint(2*numWords*_W)) // Note: zz might escape from the function, so we don't use stk.
+	_, RR = stk.nat(2*numWords).div(stk, RR, zz, m)
 
 	// ensure RR has exactly length numWords. Note that RR might no longer be normalized.
 	if len(RR) < numWords {
@@ -1505,12 +1507,14 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 	// It is OK if x >= m as long as len(x) == len(m).
 	// Note that this means that x might not be normalized anymore.
 	if len(x) > numWords {
-		_, x = nat(nil).div(stk, nil, x, m)
+		_, x = stk.nat(len(x)-numWords+1).div(stk, stk.nat(numWords), x, m)
 		// Note: now len(x) <= numWords, not guaranteed ==.
 	}
 	if len(x) < numWords {
-		rr := make(nat, numWords)
+		rr := stk.nat(numWords)
+		rr = rr[:numWords]
 		copy(rr, x)
+		clear(rr[len(x):])
 		x = rr
 	}
 
@@ -1523,8 +1527,8 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 
 	// RR = 2**(2*_W*len(m)) mod m
 	RR := stk.nat(2 * numWords).setWord(1)
-	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
-	_, RR = stk.nat(numWords).div(stk, RR, zz, m)
+	zz := nat(nil).lsh(RR, uint(2*numWords*_W)) // Note: zz might escape from the function, so we don't use stk.
+	_, RR = stk.nat(2*numWords).div(stk, RR, zz, m)
 
 	// ensure RR has exactly length numWords. Note that RR might no longer be normalized.
 	if len(RR) < numWords {
