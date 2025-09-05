@@ -3,6 +3,7 @@ package big
 import (
 	"fmt"
 	"math/rand"
+	"sync"
 	"testing"
 )
 
@@ -301,6 +302,11 @@ func TestExponentiationAlgorithms(t *testing.T) {
 			base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 8, -1)
 			testExponentiationAlgorithms(t, base, exponent, modulus)
 
+			if modulusByteLength > 0 {
+				base, exponent, modulus = createBaseModExp(rand, baseByteLength+128, modulusByteLength, exponentBitLength, 8, -1)
+				testExponentiationAlgorithms(t, base, exponent, modulus)
+			}
+
 			// power-of-two moduli
 			if exponentBitLength > 0 && modulusByteLength > 0 {
 				base, exponent, modulus = createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 8*modulusByteLength-1, -1)
@@ -328,7 +334,7 @@ func TestExponentiationAlgorithms(t *testing.T) {
 // The returned benchmarking function records custom entries Gas/op and ns/Gas in addition to the usual ones.
 // To select a gas schedule, gasScheduleVersion needs to be one of "EIP2565" or "EIP7833".
 // To simplify reading out the ns/Gas value (and not just printing it), e.g. to take a maximum among multiple benchmarks, that value will also be stored in *nsPerGas, unless nsPerGas == nil.
-func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, gasScheduleVersion string, modulus2adicity uint, nsPerGas *float64, slow bool) func(*testing.B) {
+func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, gasScheduleVersion string, modulus2adicity uint, freshStack bool, nsPerGas *float64) func(*testing.B) {
 	// Setup base, modulus and exponent of the required lengths.
 	base, exponent, modulus := createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, modulus2adicity, -1)
 
@@ -338,7 +344,10 @@ func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength u
 	return func(b *testing.B) {
 		var z nat = nat{}.set(modulus) // reserve space. We copy the modulus to reserve as much space as the modulus. Note that using nat{}.make() would have us make an assumption on the Word-size.
 		for b.Loop() {
-			z = z.expNN(nil, base, exponent, modulus, slow)
+			if freshStack {
+				stackPool = sync.Pool{}
+			}
+			z = z.expNN(nil, base, exponent, modulus, false)
 		}
 		b.ReportMetric(float64(gasCost), "Gas/op")
 		reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
@@ -353,24 +362,27 @@ func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength u
 func BenchmarkNatExpNN(b *testing.B) {
 	rnd := rand.New(rand.NewSource(100))
 	var maxGas float64
-	for modulusByteLength := 32; modulusByteLength <= 128; modulusByteLength += 32 {
-		for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 40, 48, 56, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
-			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, false))
-			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, false))
-			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, false))
-			/*
-				if exponentBitLengh <= 64 {
-					b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, true))
-					b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, true))
-					b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, true))
-				}
-			*/
+	for _, freshStack := range []bool{true, false} {
+		var freshstackStr string = ""
+		if freshStack {
+			freshstackStr = "-ALLOC"
+		}
+		for modulusByteLength := 32; modulusByteLength <= 128; modulusByteLength += 32 {
+			for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 40, 48, 56, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, freshStack, &maxGas))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, freshStack, &maxGas))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, freshStack, &maxGas))
+			}
 		}
 	}
 	//b.Run("Foo", benchmarkNatExpNN(rand, 256, 256, 1000, "EIP7883", 0, nil))
 }
 
 // Benchmark for selecting threshold for window size for Power-Of-Two algorithm
+/*
 func BenchmarkCompareNatExpNNPowerOfTwo(b *testing.B) {
 	rnd := rand.New(rand.NewSource(99))
 	var base, exponent, modulus nat
@@ -422,8 +434,10 @@ func BenchmarkCompareNatExpNNPowerOfTwo(b *testing.B) {
 		// (We would need an unwindowed algorithm that performs trunc instead of mod as a baseline)
 	}
 }
+*/
 
 // Benchmark for selecting threshold for window size for algorithm for odd modulus
+/*
 func BenchmarkCompareNatExpNNOdd(b *testing.B) {
 	rnd := rand.New(rand.NewSource(99))
 	var base, exponent, modulus nat
@@ -479,6 +493,7 @@ func BenchmarkCompareNatExpNNOdd(b *testing.B) {
 		}
 	}
 }
+*/
 
 func TestInverseModPowerOfTwo(t *testing.T) {
 	rnd := rand.New(rand.NewSource(99))

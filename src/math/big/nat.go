@@ -815,9 +815,9 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	// (We are using the math/big convention for names here,
 	// where the computation is z = x**y mod m, so its parts are z1 and z2.
 	// The paper is computing x = a**e mod n; it refers to these as x2 and z1.)
-	z1 := stk.nat(len(m1))
+	z1 := stk.nat(2 * max(len(m1), len(m2))) // The max is because we reuse z1, z2 below.
 	z1 = z1.expNN(stk, x, y, m1, false)
-	z2 := stk.nat(len(m2))
+	z2 := stk.nat(2 * max(len(m1), len(m2))) // The max is because we reuse z1, z2 below.
 	z2 = z2.expNN(stk, x, y, m2, false)
 
 	// Reconstruct z from z₁, z₂ using CRT, using algorithm from paper,
@@ -851,22 +851,36 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 // More precisely, it sets powers[i] to x**i mod m, where m == 2**logM for
 // 0 <= i < 2**windowSize
 // powers must be a non-nil slice of size *exactly* 2**windowSize.
-// stk must be non-nil.
-// tmp is a temporary scratch space.
+// This function modifies *stk.
 func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int, logM uint, x nat) {
 	if len(powers) != 1<<windowSize {
 		panic("big: misuse of build_precomputation_window")
 	}
-	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
+	w := int((logM + _W - 1) / _W) // number of words that would be needed to numers reduced modulo the modulus.
 
+	// We reserve space for len(powers) many nats of w words.
+	// For our loop below that actually computes powers[i],
+	// we want each powers[i] to have capacity 2*w to (temporarily) store (yet unreduced) squares/products of
+	// numbers, whose factors are < 2**logM
+	// For that reason, we "borrow" w words from powers[i+1] when computing powers[i]; otherwise
+	// we would reallocate.
+	//
+	// Note that we must NOT defer stk.restoer(stk.save), because the memory allocated from stk
+	// escapes.
+	buf := stk.nat((len(powers) + 1) * w)
 	for i := range powers {
-		powers[i] = stk.nat(w)
+		powers[i] = buf[i*w : (i+1)*w : (i+2)*w]
 	}
-	powers[0] = powers[0].set(natOne)
-	powers[1] = powers[1].trunc(x, logM)
 
-	defer stk.restore(stk.save())
-	tmp := stk.nat(2 * w)
+	// Note: We set capacity to w. We don't want the powers[i] to overlap after we computed them.
+	// This is not strictly needed with the current implementation, but
+	// we want to avoid relying on the fact that arithmetic operations
+	// do not use memory in len(x):cap(x) as temporary space when
+	// only *reading* from x.
+	powers[0] = powers[0].set(natOne)
+	powers[0] = powers[0][0:len(powers[0]):w]
+	powers[1] = powers[1].trunc(x, logM)
+	powers[1] = powers[1][0:len(powers[1]):w]
 
 	// While we could compute each powers[i] as powers[i-1] * x,
 	// we instead compute powers[i] and powers[i+1] from powers[i/2].
@@ -874,10 +888,12 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 	// It may also has better memory access patterns.
 	for i := 2; i < 1<<windowSize; i += 2 {
 		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
-		tmp = tmp.sqr(stk, *p2)
-		*p = p.trunc(tmp, logM)
-		tmp = tmp.mul(stk, *p, x)
-		*p1 = p1.trunc(tmp, logM)
+		*p = p.sqr(stk, *p2)
+		*p = p.trunc(*p, logM)
+		*p = (*p)[:len(*p):w]
+		*p1 = p1.mul(stk, *p, powers[1])
+		*p1 = p1.trunc(*p1, logM)
+		*p1 = (*p1)[:len(*p1):w]
 	}
 }
 
@@ -885,7 +901,7 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 // m = 2**logM
 //
 // z must not alias x or y. (x and y may alias).
-// The caller needs to guarantee that x > 0 and y > 0.
+// The caller needs to guarantee that x > 0, y > 0, logM > 0.
 func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 
 	// Note: Version in 1.26 was explicitly checking for len(y) > 1, as the
@@ -932,8 +948,8 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 		// i.e. if resulting2AdicityLo > uint64(logM)%_W.
 		// For now, we ALWAYS perform the optimization, because then we may assume that x is odd in the code below,
 		// which greatly simplifies the algorithm.
-		xOdd := nat(nil).rsh(x, i) // odd part of x.
-		logMRemaining := logM - uint(resulting2AdicityLo)
+		xOdd := nat(nil).rsh(x, i)                        // odd part of x.
+		logMRemaining := logM - uint(resulting2AdicityLo) // guaranteed > 0.
 		z = z.expNNPowerOfTwo(stk, xOdd, y, logMRemaining)
 		return z.lsh(z, uint(resulting2AdicityLo))
 	}
@@ -954,7 +970,7 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 // where m = 2**logM.
 //
 // z must not alias x or y. x and y may alias.
-// The caller needs to guarantee that x > 0 and y > 0. We also require that x is odd.
+// The caller needs to guarantee that x > 0, y > 0, logM > 1. We also require that x is odd.
 func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 
 	// zz is used to avoid allocating in mul as otherwise
@@ -1108,7 +1124,7 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 // where m = 2**logM.
 //
 // z must not alias x or y. x and y may alias.
-// The caller needs to guarantee that x > 0 and y > 0. We also require that x is odd.
+// The caller needs to guarantee that x > 0, y > 0, logM > 1. We also require that x is odd.
 func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 
 	// zz is used to avoid allocating in mul as otherwise
