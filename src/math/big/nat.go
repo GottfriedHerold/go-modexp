@@ -910,7 +910,7 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	// Note that we require x, y > 0.
 
 	if len(y) == 0 { // next check would panic anyway, this is just to give a more accurate error message.
-		panic("big: called expNNPowerOfTwoWindowSize4 for zero-lenght y")
+		panic("big: called expNNPowerOfTwoWindowSize4 for zero-length y")
 	}
 	if len(y) == 1 && y[0] == 0 {
 		panic("big: called expNNPowerOfTwoWindowSize4 for exponent 0")
