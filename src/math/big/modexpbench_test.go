@@ -358,6 +358,8 @@ func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength u
 	}
 }
 
+const defaultGasMetering = "EIP2565"
+
 // BenchmarkNatExpNN will run a set of benchmarks for nat.expNN for varying input lengths and report each of those. This is a very slow benchmark.
 func BenchmarkNatExpNN(b *testing.B) {
 	rnd := rand.New(rand.NewSource(100))
@@ -367,14 +369,14 @@ func BenchmarkNatExpNN(b *testing.B) {
 		if freshStack {
 			freshstackStr = "-ALLOC"
 		}
-		for modulusByteLength := 32; modulusByteLength <= 128; modulusByteLength += 32 {
+		for modulusByteLength := 8; modulusByteLength <= 64; modulusByteLength += 8 {
 			for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 40, 48, 56, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
 				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
-					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, freshStack, &maxGas))
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, defaultGasMetering, 0, freshStack, &maxGas))
 				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
-					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, freshStack, &maxGas))
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, defaultGasMetering, 1, freshStack, &maxGas))
 				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
-					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, freshStack, &maxGas))
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, defaultGasMetering, 8, freshStack, &maxGas))
 			}
 		}
 	}
