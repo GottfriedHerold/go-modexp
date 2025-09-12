@@ -427,6 +427,37 @@ func makeCSVTable(modulusByteLengths []uint, exponentBitLengths []uint) string {
 		}
 		b.WriteString("\n")
 	}
+	var worstCostModulusByteLength uint
+	var worstCostExponentBitLength uint
+	var worstCostType uint
+	var worstCostSpeed float64
+	for i, modulusByteLength := range modulusByteLengths {
+		for j, exponentBitLength := range exponentBitLengths {
+			for t := uint(0); t < 3; t++ {
+				if c := benchResults[i][j][t].Extra["ns/Gas"]; c > worstCostSpeed {
+					worstCostSpeed = c
+					worstCostModulusByteLength = modulusByteLength
+					worstCostExponentBitLength = exponentBitLength
+					worstCostType = t
+				}
+			}
+		}
+	}
+	b.WriteString("\nWorstCase,")
+	fmt.Fprintf(&b, "Mod-Size: %v,", worstCostModulusByteLength)
+	fmt.Fprintf(&b, "Exp-Size: %v,", worstCostExponentBitLength)
+	fmt.Fprintf(&b, "2adicity: ")
+	switch worstCostType {
+	case 0:
+		b.WriteString("0")
+	case 1:
+		b.WriteString("1")
+	case 2:
+		b.WriteString("8")
+	default:
+		b.WriteString("invalid")
+	}
+	fmt.Fprintf(&b, ", ns/gas: %v", worstCostSpeed)
 	return b.String()
 }
 
