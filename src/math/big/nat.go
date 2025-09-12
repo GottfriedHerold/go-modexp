@@ -686,7 +686,7 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	// The algorithm we use for the m != 0 case depends on the bitlength on y.
 
 	const threshold_for_slow_algorithm = 5 // if bitlength of y is <= this, we use a naive square-and-multiply.
-	if threshold_for_slow_algorithm > _W { // The code below assumes that we only select the naive algorithm if len(y)==0
+	if threshold_for_slow_algorithm > _W { // The code below assumes that we only select the naive algorithm in cases where len(y)==0
 		panic("big: invalid setting of threshold_for_slow_algorithm")
 	}
 
