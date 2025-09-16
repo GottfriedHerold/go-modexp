@@ -217,6 +217,21 @@ func (z nat) montgomery(x, y, m nat, k Word, n int) nat {
 	return z[:n]
 }
 
+func montgomeryUint(x, y, m, k uint) (z uint) {
+	z, zlo := bits.Mul(x, y)
+	t := zlo * k
+	u, _ := bits.Mul(t, m) //Note: We know that the second output = -zlo
+	var c uint
+	if t != 0 {
+		c = 1
+	}
+	z, c = bits.Add(z, u, c)
+	if c == 1 {
+		z -= m
+	}
+	return z
+}
+
 // alias reports whether x and y share the same base array.
 //
 // Note: alias assumes that the capacity of underlying arrays
@@ -1441,30 +1456,54 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
 
-	for {
-		for k >= 0 {
-			// The loop is unrolled here for (hardcoded) windowSize == 4,
-			// so changing windowSize will make the algorith (silently) fail with a wrong result.
-			// We add a check here to fail explicitly. This will be optimized away.
-			if windowSize != 4 {
-				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
-			}
-			zz = zz.montgomery(z, z, m, k0, numWords)
-			z = z.montgomery(zz, zz, m, k0, numWords)
-			zz = zz.montgomery(z, z, m, k0, numWords)
-			z = z.montgomery(zz, zz, m, k0, numWords)
+	if numWords > 1 {
+		for {
+			for k >= 0 {
+				// The loop is unrolled here for (hardcoded) windowSize == 4,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if windowSize != 4 {
+					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				}
+				zz = zz.montgomery(z, z, m, k0, numWords)
+				z = z.montgomery(zz, zz, m, k0, numWords)
+				zz = zz.montgomery(z, z, m, k0, numWords)
+				z = z.montgomery(zz, zz, m, k0, numWords)
 
-			zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
-			z, zz = zz, z
-			yi <<= windowSize
-			k--
+				zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
+				z, zz = zz, z
+				yi <<= windowSize
+				k--
+			}
+			if i == 0 {
+				break
+			}
+			i--
+			yi = y[i]
+			k = _W/windowSize - 1
 		}
-		if i == 0 {
-			break
+	} else {
+		zUint := uint(z[0])
+		mUint := uint(m[0])
+		kUint := uint(k0)
+		for {
+			for k >= 0 {
+				zUint = montgomeryUint(zUint, zUint, mUint, kUint)
+				zUint = montgomeryUint(zUint, zUint, mUint, kUint)
+				zUint = montgomeryUint(zUint, zUint, mUint, kUint)
+				zUint = montgomeryUint(zUint, zUint, mUint, kUint)
+				zUint = montgomeryUint(zUint, uint(powers[yi>>(_W-windowSize)][0]), mUint, kUint)
+				yi <<= windowSize
+				k--
+			}
+			if i == 0 {
+				break
+			}
+			i--
+			yi = y[i]
+			k = _W/windowSize - 1
 		}
-		i--
-		yi = y[i]
-		k = _W/windowSize - 1
+		z = z.setWord(Word(zUint))
 	}
 
 	// convert to regular number
