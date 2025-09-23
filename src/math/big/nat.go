@@ -175,6 +175,24 @@ func (x nat) cmp(y nat) (r int) {
 	return
 }
 
+// The code of addWord and mulWord below relies on the fact that [Word]'s underlying type is [uint]
+// (rather than convertible to and from it, which would also hold for e.g. [uint16])
+func checkBasedOnInt[T ~uint](_ T) bool { return true }
+
+var _ = checkBasedOnInt[Word](Word(0)) // guard to make the assertion that Word is based on uint explicit.
+
+// addWord has the same semantics as [bits.Add], but works with [Word] rather than [uint]
+func addWord(x, y, carry Word) (sum Word, carryOut Word) {
+	sumUint, carryUint := bits.Add(uint(x), uint(y), uint(carry))
+	return Word(sumUint), Word(carryUint)
+}
+
+// mulWord has the same semantics as [bits.Mul], but works with [Word] rather than [uint]
+func mulWord(x, y Word) (hi Word, lo Word) {
+	hiUint, loUint := bits.Mul(uint(x), uint(y))
+	return Word(hiUint), Word(loUint)
+}
+
 // montgomery computes z mod m = x*y*2**(-n*_W) mod m,
 // assuming k = -1/m mod 2**_W.
 // z is used for storing the result which is returned;
@@ -1276,6 +1294,98 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 	}
 
 	return z.norm()
+}
+
+// getMontgomeryConstants returns constant value related to Montgomery multiplication:
+//
+// Notably, it returns
+// k0 = -1/m modulo 2**_W
+// RR = 2**(2*_W * len(m)) mod m
+// one = 1
+// when RR and one are considered as nat's. RR and one may be from stk.
+// Note that this means the caller needs to call stk.restore to eventually reclaim stk's memory. After
+// that call, one and RR are no longer valid.
+// RR and one are always retured as []Word with len(RR) == len(one) == len(m).
+// This implies RR and one might not be normalized, which is why we use the []Word rather than nat type.
+// When interpreted as numbers in Montgomery form, one == 1/2**(len(m)*_W) and RR = 2**(_W*len(m)), so those numbers
+// are used to convert between Montomgomery and non-Montgomery forms.
+//
+// If m is even, this function panics.
+func getMontgomeryConstants(stk *stack, m nat) (k0 Word, RR []Word, one []Word) {
+	numWords := len(m)
+	n := uint(numWords) * _W * 2
+	if numWords == 0 || m[0]&1 == 0 {
+		panic("big: called getMontgomeryConstants for even m")
+	}
+	var buf []Word = stk.nat(3 * numWords)[0 : 3*numWords] // will hold RR and one at the end
+	_ = buf
+	defer stk.restore(stk.save())
+	tmp := stk.nat(2 * numWords)
+
+	// special-case for m == 1. Our algorithm would output RR == 1 instead of RR == 0 (i.e. not fully reduced) for m==1.
+	if numWords == 1 && m[0] == 1 {
+		one = buf[0:1:2] // the extra cap is just for consistency with the m!=1 case.
+		RR = buf[2:3:3]
+		one[0] = 1
+		RR[0] = 0
+		k0 = ^Word(0) // -1
+		return
+	}
+
+	// compute u := m^-1 modulo 2**n. Note that u is always odd.
+	tmp = tmp.modularInverseModPowerOfTwo(stk, m, n)
+	k0 = -tmp[0]
+
+	// Observe that we have u * m - RR' * 2**n = 1 for some RR'.
+	// This RR' is an inverse of 2**n mod m, but RR is not between 0 and m-1.
+	// However, RR = m + RR' is, which gives
+	// RR = ( m * (2**n - u) + 1 ) / 2**n
+	// (it is easy to see that 0 <= RR < m from 3 <= u < 2**n)
+
+	// compute 2**n - u = (2**n - 1) - u + 1 = (^u) + 1 in a slice of length 2**numWords.
+	if cap(tmp) < 2*numWords { // cannot happen, actually
+		tmp2 := []Word(stk.nat(2 * numWords))[0 : 2*numWords]
+		clear(tmp2)
+		copy(tmp2, tmp)
+		tmp = tmp2
+	} else {
+		clear(tmp[len(tmp) : 2*numWords])
+		tmp = tmp[0 : 2*numWords]
+	}
+	for i := 0; i < 2*numWords; i++ {
+		tmp[i] = ^tmp[i]
+	}
+	tmp[0] |= 1 // add +1 to ^u. We know that u is odd, so ^u is even.
+
+	// compute m * (2**n - u) and ensure the result is stored in a slice of length 3*numWords
+	buf = nat(buf).mul(stk, tmp, m)
+	if cap(buf) < 3*numWords { // not supposed to happen, but nat.mul's API does not guarantee this
+		tmp = make([]Word, 3*numWords) // must not use stk here, because it escapes
+		copy(tmp, buf)
+		buf = tmp
+	} else {
+		clear(buf[len(buf) : 3*numWords])
+		buf = buf[0 : 3*numWords]
+	}
+
+	// Compute (m * (2**n - u) + 1) / 2**n and store the result in buf[2*numWords:3*numWords].
+	//
+	// Note: We know that RR = (buf + 1) / 2**n, with the division being in the integers.
+	// In particular, the least significant n bits of buf (corresponding to buf[0:2*numWords]) are all ones anyway.
+	// So we actually just need to add 1 to buf[2*numWords:3*numWords].
+	for i := 2 * numWords; ; i++ {
+		buf[i] += 1
+		if buf[i] != 0 {
+			break
+		}
+	}
+
+	// store one in buf[0:numWords]
+	clear(buf[1:numWords])
+	buf[0] = 1
+	one = buf[0 : numWords : 2*numWords]
+	RR = buf[2*numWords : 3*numWords : 3*numWords]
+	return
 }
 
 // computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
