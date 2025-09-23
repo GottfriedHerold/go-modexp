@@ -14,7 +14,6 @@
 package big
 
 import (
-	"fmt"
 	"internal/byteorder"
 	"math/bits"
 	"math/rand"
@@ -1474,35 +1473,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 		return z.setWord(1)
 	}
 
-	// Ideally the precomputations would be performed outside, and reused
-	k0 := computeMontgomeryk0(m[0])
-
-	// RR = 2**(2*_W*len(m)) mod m
-	RR := stk.nat(2 * numWords).setWord(1)
-	zz := nat(nil).lsh(RR, uint(2*numWords*_W)) // Note: zz might escape from the function, so we don't use stk.
-	_, RR = stk.nat(2*numWords).div(stk, RR, zz, m)
-
-	// ensure RR has exactly length numWords. Note that RR might no longer be normalized.
-	if len(RR) < numWords {
-		zz = zz.make(numWords)
-		copy(zz, RR)
-		RR = zz
-	}
-	// one = 1, with equal length to that of m. Note that this is NOT normalized.
-	one := make(nat, numWords)
-	one[0] = 1
-
-	k0Alt, RRAlt, OneAlt := getMontgomeryConstants(stk, m)
-	if k0Alt != k0 {
-		panic("1")
-	}
-	if slices.Compare(RR, RRAlt) != 0 {
-		msg, _ := fmt.Printf("m  ==%v\nRR1==%v\nRR2==%v", m, nat(RR), nat(RRAlt))
-		panic(msg)
-	}
-	if slices.Compare(one, OneAlt) != 0 {
-		panic("3")
-	}
+	k0, RR, one := getMontgomeryConstants(stk, m)
 
 	// powers[i] contains x^i
 	var powers [1 << windowSize]nat
@@ -1520,7 +1491,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(2 * numWords)
 	z = z[:numWords]
-	zz = make(nat, numWords, 2*numWords)
+	zz := make(nat, numWords, 2*numWords)
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squartings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
@@ -1642,23 +1613,7 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 		return z.setWord(1)
 	}
 
-	// Ideally the precomputations would be performed outside, and reused
-	k0 := computeMontgomeryk0(m[0])
-
-	// RR = 2**(2*_W*len(m)) mod m
-	RR := stk.nat(2 * numWords).setWord(1)
-	zz := nat(nil).lsh(RR, uint(2*numWords*_W)) // Note: zz might escape from the function, so we don't use stk.
-	_, RR = stk.nat(2*numWords).div(stk, RR, zz, m)
-
-	// ensure RR has exactly length numWords. Note that RR might no longer be normalized.
-	if len(RR) < numWords {
-		zz = zz.make(numWords)
-		copy(zz, RR)
-		RR = zz
-	}
-	// one = 1, with equal length to that of m. Note that this is NOT normalized.
-	one := make(nat, numWords)
-	one[0] = 1
+	k0, RR, one := getMontgomeryConstants(stk, m)
 
 	// powers[i] contains x^i
 	var powers [1 << windowSize]nat
@@ -1676,8 +1631,7 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(2 * numWords)
 	z = z[:numWords]
-	zz = zz.make(2 * numWords)
-	zz = zz[:numWords]
+	zz := make(nat, numWords, 2*numWords)
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squartings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
