@@ -43,11 +43,9 @@ func TestGenerateMontgomeryParamters(t *testing.T) {
 		}
 		Pow2 := nat(nil).setWord(1)
 		Pow2 = Pow2.lsh(Pow2, _W*2*uint(numWords))
-		zz := nat(nil).mul(stk, natRR, Pow2)
-		_, zz = nat(nil).div(stk, zz, zz, m)
-		_, natOneExpected = nat(nil).div(stk, natOneExpected, natOneExpected, m) // reduce one modulo m. This only matters if m==1.
-		if zz.cmp(natOneExpected) != 0 {
-			t.Fatalf("big: getMontgomeryConstants does not output inverse of 4**(_W * len(m)). Value output was RR==%v for m==%v", RR, m)
+		_, zz := nat(nil).div(stk, nat(nil), Pow2, m)
+		if zz.cmp(natRR) != 0 {
+			t.Fatalf("big: getMontgomeryConstants does not output 4**(_W * len(m)). Value output was RR==%v for m==%v", RR, m)
 		}
 	}
 	testModulus(stk, nat(nil).setWord(1))
@@ -55,7 +53,6 @@ func TestGenerateMontgomeryParamters(t *testing.T) {
 	testModulus(stk, nat(nil).setWord(0xFFFF))
 	testModulus(stk, nat(nil).setWord(0xFFFFFFFFFF))
 	testModulus(stk, nat(nil).setWord(Word(^uint(0))))
-
 	testModulus(stk, nat(nil))
 	for i := uint(0); i < 256; i += 32 {
 		_, _, m := createBaseModExp(rnd, i, i, 1, 0, 0)

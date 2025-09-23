@@ -14,6 +14,7 @@
 package big
 
 import (
+	"fmt"
 	"internal/byteorder"
 	"math/bits"
 	"math/rand"
@@ -1317,74 +1318,33 @@ func getMontgomeryConstants(stk *stack, m nat) (k0 Word, RR []Word, one []Word) 
 	if numWords == 0 || m[0]&1 == 0 {
 		panic("big: called getMontgomeryConstants for even m")
 	}
-	var buf []Word = stk.nat(3 * numWords)[0 : 3*numWords] // will hold RR and one at the end
-	_ = buf
+
+	// buf will hold RR and one at the end. At the time of writing this code,
+	// the implementation of nat.div would try to use 2*numWords + 2 words from buf, so we
+	// reserve this much to avoid reallocations.
+	// Note that buf must be reserved before stk.restore(stk.save()),
+	// so the memory escapes to the caller.
+	var buf []Word = stk.nat(2*numWords + 2)[0 : 2*numWords+2]
 	defer stk.restore(stk.save())
-	tmp := stk.nat(2 * numWords)
+	k0 = computeMontgomeryk0(m[0])
+	tmp := stk.nat(2*numWords + 1).setWord(1)
+	tmp = tmp.lsh(tmp, n)
+	_, RR = tmp.div(stk, buf, tmp, m)
 
-	// special-case for m == 1. Our algorithm would output RR == 1 instead of RR == 0 (i.e. not fully reduced) for m==1.
-	if numWords == 1 && m[0] == 1 {
-		one = buf[0:1:2] // the extra cap is just for consistency with the m!=1 case.
-		RR = buf[2:3:3]
-		one[0] = 1
-		RR[0] = 0
-		k0 = ^Word(0) // -1
-		return
-	}
-
-	// compute u := m^-1 modulo 2**n. Note that u is always odd.
-	tmp = tmp.modularInverseModPowerOfTwo(stk, m, n)
-	k0 = -tmp[0]
-
-	// Observe that we have u * m - RR' * 2**n = 1 for some RR'.
-	// This RR' is an inverse of 2**n mod m, but RR is not between 0 and m-1.
-	// However, RR = m + RR' is, which gives
-	// RR = ( m * (2**n - u) + 1 ) / 2**n
-	// (it is easy to see that 0 <= RR < m from 3 <= u < 2**n)
-
-	// compute 2**n - u = (2**n - 1) - u + 1 = (^u) + 1 in a slice of length 2**numWords.
-	if cap(tmp) < 2*numWords { // cannot happen, actually
-		tmp2 := []Word(stk.nat(2 * numWords))[0 : 2*numWords]
-		clear(tmp2)
-		copy(tmp2, tmp)
-		tmp = tmp2
+	if cap(RR) < numWords {
+		// This case does not happen with the current implementation of nat.div,
+		// so, this code may be unreachable.
+		// However, the API of nat.div does not promise it, so we
+		copy(buf[0:numWords], RR) // Note: Cannot alias
+		clear(buf[len(RR):numWords])
+		RR = buf[0:numWords:numWords]
 	} else {
-		clear(tmp[len(tmp) : 2*numWords])
-		tmp = tmp[0 : 2*numWords]
+		clear(RR[len(RR):numWords])
+		RR = RR[0:numWords:numWords]
 	}
-	for i := 0; i < 2*numWords; i++ {
-		tmp[i] = ^tmp[i]
-	}
-	tmp[0] |= 1 // add +1 to ^u. We know that u is odd, so ^u is even.
-
-	// compute m * (2**n - u) and ensure the result is stored in a slice of length 3*numWords
-	buf = nat(buf).mul(stk, tmp, m)
-	if cap(buf) < 3*numWords { // not supposed to happen, but nat.mul's API does not guarantee this
-		tmp = make([]Word, 3*numWords) // must not use stk here, because it escapes
-		copy(tmp, buf)
-		buf = tmp
-	} else {
-		clear(buf[len(buf) : 3*numWords])
-		buf = buf[0 : 3*numWords]
-	}
-
-	// Compute (m * (2**n - u) + 1) / 2**n and store the result in buf[2*numWords:3*numWords].
-	//
-	// Note: We know that RR = (buf + 1) / 2**n, with the division being in the integers.
-	// In particular, the least significant n bits of buf (corresponding to buf[0:2*numWords]) are all ones anyway.
-	// So we actually just need to add 1 to buf[2*numWords:3*numWords].
-	for i := 2 * numWords; ; i++ {
-		buf[i] += 1
-		if buf[i] != 0 {
-			break
-		}
-	}
-
-	// store one in buf[0:numWords]
-	clear(buf[1:numWords])
-	buf[0] = 1
-	one = buf[0 : numWords : 2*numWords]
-	RR = buf[2*numWords : 3*numWords : 3*numWords]
+	clear(buf[numWords : 2*numWords])
+	buf[numWords] = 1
+	one = buf[numWords : 2*numWords : 2*numWords]
 	return
 }
 
@@ -1532,6 +1492,18 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	one := make(nat, numWords)
 	one[0] = 1
 
+	k0Alt, RRAlt, OneAlt := getMontgomeryConstants(stk, m)
+	if k0Alt != k0 {
+		panic("1")
+	}
+	if slices.Compare(RR, RRAlt) != 0 {
+		msg, _ := fmt.Printf("m  ==%v\nRR1==%v\nRR2==%v", m, nat(RR), nat(RRAlt))
+		panic(msg)
+	}
+	if slices.Compare(one, OneAlt) != 0 {
+		panic("3")
+	}
+
 	// powers[i] contains x^i
 	var powers [1 << windowSize]nat
 	// z.montgomery will try to use z[:numWords] for the result and, if the capacity allows it,
@@ -1548,8 +1520,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(2 * numWords)
 	z = z[:numWords]
-	zz = zz.make(2 * numWords)
-	zz = zz[:numWords]
+	zz = make(nat, numWords, 2*numWords)
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squartings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
