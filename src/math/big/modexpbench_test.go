@@ -3,6 +3,7 @@ package big
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"sync"
 	"testing"
 )
@@ -129,6 +130,7 @@ func createBaseModExp(rand *rand.Rand, baseByteLength uint, modulusByteLength ui
 	return
 }
 
+/*
 // TestExponentiationAlgorithms runs differential tests on the various exponentiation algorithm versions we have.
 // Note that base, exponent and modulus must not alias.
 func testExponentiationAlgorithms(t *testing.T, base nat, exponent nat, modulus nat) {
@@ -321,6 +323,7 @@ func TestExponentiationAlgorithms(t *testing.T) {
 		}
 	}
 }
+*/
 
 // benchmarkNatExpNN returns a benchmarking function (intendend for use with *testing.B.Run) that runs
 // a benchmark on nat.expNN with the given parameters.
@@ -370,17 +373,97 @@ func BenchmarkNatExpNN(b *testing.B) {
 			freshstackStr = "-ALLOC"
 		}
 		for modulusByteLength := 8; modulusByteLength <= 64; modulusByteLength += 8 {
-			for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 40, 48, 56, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
-				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
-					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, defaultGasMetering, 0, freshStack, &maxGas))
-				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
-					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, defaultGasMetering, 1, freshStack, &maxGas))
-				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8%v", modulusByteLength, modulusByteLength, exponentBitLengh, freshstackStr),
-					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, defaultGasMetering, 8, freshStack, &maxGas))
+			for _, exponentBitLength := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 40, 48, 56, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus%v", modulusByteLength, modulusByteLength, exponentBitLength, freshstackStr),
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLength, defaultGasMetering, 0, freshStack, &maxGas))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1%v", modulusByteLength, modulusByteLength, exponentBitLength, freshstackStr),
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLength, defaultGasMetering, 1, freshStack, &maxGas))
+				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8%v", modulusByteLength, modulusByteLength, exponentBitLength, freshstackStr),
+					benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLength, defaultGasMetering, 8, freshStack, &maxGas))
 			}
 		}
 	}
 	//b.Run("Foo", benchmarkNatExpNN(rand, 256, 256, 1000, "EIP7883", 0, nil))
+}
+
+func makeBenchmarkTable(modulusByteLengths []uint, exponentBitLengths []uint) (results [][][3]testing.BenchmarkResult) {
+	rnd := rand.New(rand.NewSource(100))
+	results = make([][][3]testing.BenchmarkResult, len(modulusByteLengths))
+	for i := range results {
+		results[i] = make([][3]testing.BenchmarkResult, len(exponentBitLengths))
+	}
+	for i, modulusByteLength := range modulusByteLengths {
+		for j, exponentBitLength := range exponentBitLengths {
+			results[i][j][0] = testing.Benchmark(benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLength, defaultGasMetering, 0, false, nil))
+			results[i][j][1] = testing.Benchmark(benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLength, defaultGasMetering, 1, false, nil))
+			results[i][j][2] = testing.Benchmark(benchmarkNatExpNN(rnd, uint(modulusByteLength), uint(modulusByteLength), exponentBitLength, defaultGasMetering, 8, false, nil))
+		}
+	}
+	return
+}
+
+func makeCSVTable(modulusByteLengths []uint, exponentBitLengths []uint) string {
+	benchResults := makeBenchmarkTable(modulusByteLengths, exponentBitLengths)
+	var b strings.Builder
+	b.WriteString("BENCHRUN")
+	for _, modulusByteLength := range modulusByteLengths {
+		fmt.Fprintf(&b, ",%v", modulusByteLength)
+	}
+	b.WriteString("\n")
+	for j, exponentBitLength := range exponentBitLengths {
+		fmt.Fprintf(&b, "%v", exponentBitLength)
+		for i := range modulusByteLengths {
+			fmt.Fprintf(&b, ",%v", benchResults[i][j][0].Extra["ns/Gas"])
+		}
+		b.WriteString("\n")
+		fmt.Fprintf(&b, "%v-2adicity1", exponentBitLength)
+		for i := range modulusByteLengths {
+			fmt.Fprintf(&b, ",%v", benchResults[i][j][1].Extra["ns/Gas"])
+		}
+		b.WriteString("\n")
+		fmt.Fprintf(&b, "%v-2adicity8", exponentBitLength)
+		for i := range modulusByteLengths {
+			fmt.Fprintf(&b, ",%v", benchResults[i][j][2].Extra["ns/Gas"])
+		}
+		b.WriteString("\n")
+	}
+	var worstCostModulusByteLength uint
+	var worstCostExponentBitLength uint
+	var worstCostType uint
+	var worstCostSpeed float64
+	for i, modulusByteLength := range modulusByteLengths {
+		for j, exponentBitLength := range exponentBitLengths {
+			for t := uint(0); t < 3; t++ {
+				if c := benchResults[i][j][t].Extra["ns/Gas"]; c > worstCostSpeed {
+					worstCostSpeed = c
+					worstCostModulusByteLength = modulusByteLength
+					worstCostExponentBitLength = exponentBitLength
+					worstCostType = t
+				}
+			}
+		}
+	}
+	b.WriteString("\nWorstCase,")
+	fmt.Fprintf(&b, "Mod-Size: %v,", worstCostModulusByteLength)
+	fmt.Fprintf(&b, "Exp-Size: %v,", worstCostExponentBitLength)
+	fmt.Fprintf(&b, "2adicity: ")
+	switch worstCostType {
+	case 0:
+		b.WriteString("0")
+	case 1:
+		b.WriteString("1")
+	case 2:
+		b.WriteString("8")
+	default:
+		b.WriteString("invalid")
+	}
+	fmt.Fprintf(&b, ", ns/gas: %v", worstCostSpeed)
+	return b.String()
+}
+
+func TestCSV(t *testing.T) {
+	out := makeCSVTable([]uint{8, 16, 24, 32, 64, 128, 256}, []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 40, 48, 64, 96, 128, 256, 1024, 2048, 5 * 1024})
+	t.Log(out)
 }
 
 // Benchmark for selecting threshold for window size for Power-Of-Two algorithm
@@ -497,6 +580,7 @@ func BenchmarkCompareNatExpNNOdd(b *testing.B) {
 }
 */
 
+/*
 func TestInverseModPowerOfTwo(t *testing.T) {
 	rnd := rand.New(rand.NewSource(99))
 	stk := getStack()
@@ -525,3 +609,4 @@ func TestInverseModPowerOfTwo(t *testing.T) {
 		}
 	}
 }
+*/

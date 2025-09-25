@@ -1347,6 +1347,21 @@ func getMontgomeryConstants(stk *stack, m nat) (k0 Word, RR []Word, one []Word) 
 	return
 }
 
+func makePrecomputationPowersMontgomery(stk *stack, windowSize uint, x nat, m nat, one []Word, RR []Word, k0 Word) (powerbuf []Word, powers []nat) {
+	numWords := len(m)
+	tableSize := 1 << windowSize
+	// TODO: doc extra capacity
+	powersbufNat := stk.nat((tableSize + 1) * numWords)[0 : numWords*tableSize]
+	powers = make([]nat, tableSize)
+	powers[0] = powersbufNat[0:numWords:2*numWords].montgomery(one, RR, m, k0, numWords)
+	powers[1] = powersbufNat[numWords:numWords*2:numWords*3].montgomery(x, RR, m, k0, numWords)
+	for i := 2; i < tableSize; i++ {
+		powers[i] = powersbufNat[i*numWords:(i+1)*numWords:(i+2)*numWords].montgomery(powers[i-1], powers[1], m, k0, numWords)
+	}
+	powerbuf = powersbufNat
+	return
+}
+
 // computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
 //
 // This value is used for Montgomery multiplication. We assert (but do not check) that
@@ -1475,18 +1490,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 
 	k0, RR, one := getMontgomeryConstants(stk, m)
 
-	// powers[i] contains x^i
-	var powers [1 << windowSize]nat
-	// z.montgomery will try to use z[:numWords] for the result and, if the capacity allows it,
-	// use z[numWords:2*numWords] as internal buffer. We use a single buf for storing all our powers,
-	// using powers[i+1] as temporary storage when computing powers[i].
-	buf := stk.nat(((1 << windowSize) + 1) * numWords)
-
-	powers[0] = buf[0:numWords:2*numWords].montgomery(one, RR, m, k0, numWords)
-	powers[1] = buf[numWords:2*numWords:3*numWords].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<windowSize; i++ {
-		powers[i] = buf[i*numWords:(i+1)*numWords:(i+2)*numWords].montgomery(powers[i-1], powers[1], m, k0, numWords)
-	}
+	_, powers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(2 * numWords)
@@ -1615,18 +1619,7 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 
 	k0, RR, one := getMontgomeryConstants(stk, m)
 
-	// powers[i] contains x^i
-	var powers [1 << windowSize]nat
-	// z.montgomery will try to use z[:numWords] for the result and, if the capacity allows it,
-	// use z[numWords:2*numWords] as internal buffer. We use a single buf for storing all our powers,
-	// using powers[i+1] as temporary storage when computing powers[i].
-	buf := stk.nat(((1 << windowSize) + 1) * numWords)
-
-	powers[0] = buf[0:numWords:2*numWords].montgomery(one, RR, m, k0, numWords)
-	powers[1] = buf[numWords:2*numWords:3*numWords].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<windowSize; i++ {
-		powers[i] = buf[i*numWords:(i+1)*numWords:(i+2)*numWords].montgomery(powers[i-1], powers[1], m, k0, numWords)
-	}
+	_, powers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(2 * numWords)
