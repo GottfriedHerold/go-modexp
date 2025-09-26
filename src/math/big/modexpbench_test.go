@@ -130,7 +130,6 @@ func createBaseModExp(rand *rand.Rand, baseByteLength uint, modulusByteLength ui
 	return
 }
 
-/*
 // TestExponentiationAlgorithms runs differential tests on the various exponentiation algorithm versions we have.
 // Note that base, exponent and modulus must not alias.
 func testExponentiationAlgorithms(t *testing.T, base nat, exponent nat, modulus nat) {
@@ -323,7 +322,6 @@ func TestExponentiationAlgorithms(t *testing.T) {
 		}
 	}
 }
-*/
 
 // benchmarkNatExpNN returns a benchmarking function (intendend for use with *testing.B.Run) that runs
 // a benchmark on nat.expNN with the given parameters.

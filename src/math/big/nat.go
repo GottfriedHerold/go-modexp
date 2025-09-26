@@ -1347,16 +1347,17 @@ func getMontgomeryConstants(stk *stack, m nat) (k0 Word, RR []Word, one []Word) 
 	return
 }
 
-func makePrecomputationPowersMontgomery(stk *stack, windowSize uint, x nat, m nat, one []Word, RR []Word, k0 Word) (powerbuf []Word, powers []nat) {
+func makePrecomputationPowersMontgomery(stk *stack, windowSize uint, x nat, m nat, one []Word, RR []Word, k0 Word) (powerbuf []Word) {
 	numWords := len(m)
 	tableSize := 1 << windowSize
 	// TODO: doc extra capacity
 	powersbufNat := stk.nat((tableSize + 1) * numWords)[0 : numWords*tableSize]
-	powers = make([]nat, tableSize)
-	powers[0] = powersbufNat[0:numWords:2*numWords].montgomery(one, RR, m, k0, numWords)
-	powers[1] = powersbufNat[numWords:numWords*2:numWords*3].montgomery(x, RR, m, k0, numWords)
+	// powers = make([]nat, tableSize)
+	// powers[0]
+	powersbufNat[0:numWords:2*numWords].montgomery(one, RR, m, k0, numWords)
+	montgomeryX := powersbufNat[numWords:numWords*2:numWords*3].montgomery(x, RR, m, k0, numWords)
 	for i := 2; i < tableSize; i++ {
-		powers[i] = powersbufNat[i*numWords:(i+1)*numWords:(i+2)*numWords].montgomery(powers[i-1], powers[1], m, k0, numWords)
+		powersbufNat[i*numWords:(i+1)*numWords:(i+2)*numWords].montgomery(powersbufNat[(i-1)*numWords:i*numWords], montgomeryX, m, k0, numWords)
 	}
 	powerbuf = powersbufNat
 	return
@@ -1490,7 +1491,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 
 	k0, RR, one := getMontgomeryConstants(stk, m)
 
-	_, powers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
+	pows := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(2 * numWords)
@@ -1507,7 +1508,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 
 	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word.
 	// start by directly copying rather than multiplying 1 by this.
-	copy(z, powers[yi>>(k*windowSize)])
+	copy(z, pows[numWords*int(yi>>(k*windowSize)):numWords*int((yi>>(k*windowSize))+1)])
 
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
@@ -1526,7 +1527,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 				zz = zz.montgomery(z, z, m, k0, numWords)
 				z = z.montgomery(zz, zz, m, k0, numWords)
 
-				zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
+				zz = zz.montgomery(z, pows[numWords*int(yi>>(_W-windowSize)):numWords*int(1+(yi>>(_W-windowSize)))], m, k0, numWords)
 				z, zz = zz, z
 				yi <<= windowSize
 				k--
@@ -1548,7 +1549,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 				zUint = montgomeryUint(zUint, zUint, mUint, kUint)
 				zUint = montgomeryUint(zUint, zUint, mUint, kUint)
 				zUint = montgomeryUint(zUint, zUint, mUint, kUint)
-				zUint = montgomeryUint(zUint, uint(powers[yi>>(_W-windowSize)][0]), mUint, kUint)
+				zUint = montgomeryUint(zUint, uint(pows[numWords*int(yi>>(_W-windowSize))]), mUint, kUint)
 				yi <<= windowSize
 				k--
 			}
@@ -1619,7 +1620,7 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 
 	k0, RR, one := getMontgomeryConstants(stk, m)
 
-	_, powers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
+	pows := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(2 * numWords)
@@ -1636,7 +1637,7 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 
 	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word.
 	// start by directly copying rather than multiplying 1 by this.
-	copy(z, powers[yi>>(k*windowSize)])
+	copy(z, pows[numWords*int(yi>>(k*windowSize)):numWords*int(1+(yi>>(k*windowSize)))])
 
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
@@ -1652,7 +1653,7 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 			zz = zz.montgomery(z, z, m, k0, numWords)
 			z = z.montgomery(zz, zz, m, k0, numWords)
 
-			zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
+			zz = zz.montgomery(z, pows[numWords*int(yi>>(_W-windowSize)):numWords*int(1+(yi>>(_W-windowSize)))], m, k0, numWords)
 			z, zz = zz, z
 			yi <<= windowSize
 			k--
