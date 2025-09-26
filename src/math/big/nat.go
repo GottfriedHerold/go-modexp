@@ -1356,8 +1356,8 @@ func makePrecomputationPowersMontgomery(stk *stack, windowSize uint, x nat, m na
 	// powers[0]
 	powersbufNat[0:numWords:2*numWords].montgomery(one, RR, m, k0, numWords)
 	montgomeryX := powersbufNat[numWords:numWords*2:numWords*3].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < tableSize; i++ {
-		powersbufNat[i*numWords:(i+1)*numWords:(i+2)*numWords].montgomery(powersbufNat[(i-1)*numWords:i*numWords], montgomeryX, m, k0, numWords)
+	for i := 2 * numWords; i < tableSize*numWords; i += numWords {
+		powersbufNat[i:i+numWords].montgomery(powersbufNat[i-numWords:i], montgomeryX, m, k0, numWords)
 	}
 	powerbuf = powersbufNat
 	return
@@ -1527,7 +1527,9 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 				zz = zz.montgomery(z, z, m, k0, numWords)
 				z = z.montgomery(zz, zz, m, k0, numWords)
 
-				zz = zz.montgomery(z, pows[numWords*int(yi>>(_W-windowSize)):numWords*int(1+(yi>>(_W-windowSize)))], m, k0, numWords)
+				bitsToBeProcessed := int(yi >> (_W - windowSize))
+
+				zz = zz.montgomery(z, pows[numWords*bitsToBeProcessed:numWords*(bitsToBeProcessed+1)], m, k0, numWords)
 				z, zz = zz, z
 				yi <<= windowSize
 				k--
@@ -1653,7 +1655,8 @@ func (z nat) expNNOddMontgomeryWindowSize2(stk *stack, x, y, m nat) nat {
 			zz = zz.montgomery(z, z, m, k0, numWords)
 			z = z.montgomery(zz, zz, m, k0, numWords)
 
-			zz = zz.montgomery(z, pows[numWords*int(yi>>(_W-windowSize)):numWords*int(1+(yi>>(_W-windowSize)))], m, k0, numWords)
+			bitsToBeProcessed := int(yi >> (_W - windowSize))
+			zz = zz.montgomery(z, pows[numWords*bitsToBeProcessed:numWords*(bitsToBeProcessed+1)], m, k0, numWords)
 			z, zz = zz, z
 			yi <<= windowSize
 			k--
