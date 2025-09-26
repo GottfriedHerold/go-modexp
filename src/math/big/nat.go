@@ -250,6 +250,50 @@ func montgomeryUint(x, y, m, k uint) (z uint) {
 	return z
 }
 
+func montgomery2Uint(x0 *uint, x1 *uint, y0, y1, m0, m1 uint, k uint) {
+	z1, z0 := bits.Mul(*x0, y0)
+	z2, tmp := bits.Mul(*x1, y0)
+	z1, c := bits.Add(z1, tmp, 0)
+	z2 += c
+	t := z0 * k
+	if z0 == 0 {
+		c = 0
+	} else {
+		c = 1
+	}
+	tmp, _ = bits.Mul(t, m0)
+	z1, c = bits.Add(z1, tmp, c)
+	tmp, z0 = bits.Mul(t, m1)
+	z1, c = bits.Add(z1, z0, c)
+	z2, z3 := bits.Add(z2, tmp, c)
+
+	tmp, z0 = bits.Mul(*x0, y1)
+	z1, c = bits.Add(z1, z0, 0)
+	z2, c = bits.Add(z2, tmp, c)
+
+	tmp, z0 = bits.Mul(*x1, y1)
+	z2, c = bits.Add(z2, z0, c)
+	z3, _ = bits.Add(z3, tmp, c) // z3 was in {0,1}, tmp is at most MAXUINT - 2 (for x1, y1 = MAXUINT)
+
+	if z1 == 0 {
+		c = 0
+	} else {
+		c = 1
+	}
+	t = z1 * k
+	tmp, _ = bits.Mul(t, m0)
+	z2, c = bits.Add(z2, tmp, c)
+	tmp, z0 = bits.Mul(t, m1)
+	*x0, c = bits.Add(z2, z0, c)
+	*x1, c = bits.Add(z3, tmp, c)
+
+	for c == 1 {
+		*x0, c = bits.Sub(*x0, m0, 0)
+		*x1, _ = bits.Sub(*x1, 1, c)
+	}
+
+}
+
 // alias reports whether x and y share the same base array.
 //
 // Note: alias assumes that the capacity of underlying arrays
@@ -1513,7 +1557,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
 
-	if numWords > 1 {
+	if numWords > 2 {
 		for {
 			for k >= 0 {
 				// The loop is unrolled here for (hardcoded) windowSize == 4,
@@ -1541,6 +1585,32 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 			yi = y[i]
 			k = _W/windowSize - 1
 		}
+	} else if numWords == 2 {
+		z0 := uint(z[0])
+		z1 := uint(z[1])
+		m0 := uint(m[0])
+		m1 := uint(m[1])
+		kUint := uint(k0)
+		for {
+			for k >= 0 {
+				montgomery2Uint(&z0, &z1, z0, z1, m0, m1, kUint)
+				montgomery2Uint(&z0, &z1, z0, z1, m0, m1, kUint)
+				montgomery2Uint(&z0, &z1, z0, z1, m0, m1, kUint)
+				montgomery2Uint(&z0, &z1, z0, z1, m0, m1, kUint)
+				relevantBits := numWords * int(yi>>(_W-windowSize))
+				montgomery2Uint(&z0, &z1, uint(pows[relevantBits]), uint(pows[relevantBits+1]), m0, m1, kUint)
+				yi <<= windowSize
+				k--
+			}
+			if i == 0 {
+				break
+			}
+			i--
+			yi = y[i]
+			k = _W/windowSize - 1
+		}
+		z[0] = Word(z0)
+		z[1] = Word(z1)
 	} else {
 		zUint := uint(z[0])
 		mUint := uint(m[0])
