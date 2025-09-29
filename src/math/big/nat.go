@@ -1557,7 +1557,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
 
-	if numWords > 2 {
+	if numWords > 1 {
 		for {
 			for k >= 0 {
 				// The loop is unrolled here for (hardcoded) windowSize == 4,
@@ -1585,7 +1585,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 			yi = y[i]
 			k = _W/windowSize - 1
 		}
-	} else if numWords == 2 {
+	} else if false %numWords == 2 {
 		z0 := uint(z[0])
 		z1 := uint(z[1])
 		m0 := uint(m[0])
