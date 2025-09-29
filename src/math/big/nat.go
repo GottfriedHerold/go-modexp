@@ -1585,7 +1585,7 @@ func (z nat) expNNOddMontgomeryWindowSize4(stk *stack, x, y, m nat) nat {
 			yi = y[i]
 			k = _W/windowSize - 1
 		}
-	} else if false %numWords == 2 {
+	} else if false // numWords == 2 {
 		z0 := uint(z[0])
 		z1 := uint(z[1])
 		m0 := uint(m[0])
