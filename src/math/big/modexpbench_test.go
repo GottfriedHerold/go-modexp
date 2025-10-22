@@ -142,7 +142,7 @@ func (t1 *ModExpBenchTestCase) Eq(t2 *ModExpBenchTestCase) bool {
 // and allocate a new stack in each loop iteration.
 //
 // The resulting benchmarking function will only run a benchmark, but *not* add any
-// extra comparison data such as requested by params.CostMetric, params.TimeImprovements, params.MemImprovements or params.AllocImprovements.
+// extra comparison data such as requested by params.Metrics, params.TimeImprovements, params.MemImprovements or params.AllocImprovements.
 // The reason for this is that [testing] does not provide any API to measure memory costs from within the benchmarking function itself.
 // (as opposed to [testing.B.Elapsed] for time). So we will need to post-process the resulting BenchmarkResult.
 // Note that this essentially means that we need to use (the more complicated) [testing.Benchmark] rather than [*testing.B.Run],
@@ -190,6 +190,8 @@ func (testCase *ModExpBenchTestCase) makeBenchmark(rnd *rand.Rand, params *ModEx
 				z.expNN(stk, base, exponent, modulus, false)
 			}
 		}
+
+		// report relevant input parameters in the benchmark output itself.
 		b.ReportMetric(float64(testCase.ModulusBitLength), "bitlen(modulus)")
 		b.ReportMetric(float64(testCase.ExponentBitLength), "bitlen(exponent)")
 		if testCase.BaseBitLength != nil {
@@ -203,7 +205,7 @@ func (testCase *ModExpBenchTestCase) makeBenchmark(rnd *rand.Rand, params *ModEx
 
 // ModExpBenchInput is used to collect the data that we need to collect the input to a benchmarking request.
 type ModExpBenchInput struct {
-	ResetMemory bool // wipe the stack after each invocation.
+	ResetMemory bool // use a fresh stack for each invocation.
 
 	// we allow two different ways of defining a set of test cases:
 	// If ExponentLengths, ModulusLengths and ModulusTrailingZeros all have len > 0,
@@ -253,17 +255,22 @@ type ModExpBenchInput struct {
 	JSONOutOverwrite bool   // if set, we overwrite existing files. Otherwise, we append -N to create a new filename.
 }
 
+// Result hold the result of runing a benchmark on a single ModExpBenchTestCase
 type Result struct {
 	ModExpBenchTestCase
 	testing.BenchmarkResult
 }
 
+// ModExpBenchOutput is the struct that holds the result of running a benchmark with inputs specified by some
+// ModExpBenchInput. We retain a copy of the input parameters in ModExpBenchOutput. The latter is struct-embedded
+// to simplify serializing a ModExpBenchOutput and later deserializing as a ModExpBenchInput.
 type ModExpBenchOutput struct {
-	ModExpBenchInput
-	StartTime time.Time
-	EndTime   time.Time
+	ModExpBenchInput           // For technical reasons (differential benchmarks), the actual results are stored in ModExpBenchInput.
+	StartTime        time.Time // Start time of benchmark
+	EndTime          time.Time // Finish time of benchmark
 }
 
+// TODO: Remove
 var exampleInput ModExpBenchInput = ModExpBenchInput{
 	ResetMemory:          false,
 	ExponentLengths:      []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 64, 128, 256, 512, 1024},
@@ -306,10 +313,10 @@ var (
 	costMetricMutex       sync.Mutex
 )
 
-// RegisterCostMetric registers the given cost metric for JSON-deserialization, so the deserializer registers the json-string.
+// RegisterCostMetric registers the given cost metric for JSON deserialization, so the deserializer registers the JSON string.
 // This needs to be called (at least) once for every *CostMetric. It returns the receiver.
 //
-// We require that the metric.JSONString values for every registerd metric are non-empty and distinct, otherwise this function panics.
+// We require that the metric.JSONString values for every registered metric are non-empty and distinct, otherwise this function panics.
 // Registering the same CostMetric twice works (and is a no-op), but has to use a pointer to the same object (rather than to a copy).
 //
 // This is intenteded to be called on (global) *CostMetrics on definition via
@@ -320,7 +327,7 @@ func (metric *CostMetric) RegisterCostMetric() *CostMetric {
 
 	jsonName := metric.JSONString
 
-	// Note: This function panics rather than reporting an error.
+	//This function panics rather than reporting an error.
 	// Since this is intended to be run on a set of global variables during variable initialization,
 	// this is acceptable.
 	if len(jsonName) == 0 {
