@@ -306,7 +306,7 @@ type CostMetric struct {
 	MetricName *string                            // unit to display for time / Cost(testcase). If nil, do not display.
 }
 
-// We hold a global map JSONString -> *CostMetric used to (de)serialization.
+// We hold a global map JSONString -> *CostMetric used for (de)serialization.
 // This map is populated when we define *CostMetrics via var _ = (&CostMetric{...}).RegisterCostMetric()
 var (
 	registeredCostMetrics map[string]*CostMetric = make(map[string]*CostMetric)
@@ -494,6 +494,7 @@ func (z *ModExpBenchInput) processAllCases(rnd *rand.Rand) {
 	z.oldResults = z.Results // save old results
 	tableSize := len(z.ExponentLengths) * len(z.ModulusLengths) * len(z.ModulusTrailingZeros)
 	z.Results = make([]Result, 0, tableSize+len(z.FurtherTestCases))
+	// Note: The CSV output methods may rely on the ordering of the loops here.
 	for _, modulusLength := range z.ModulusLengths {
 		for _, exponentLength := range z.ExponentLengths {
 			for _, trailingZeros := range z.ModulusTrailingZeros {
@@ -524,6 +525,23 @@ func (z *ModExpBenchInput) RunBenchmarks(rnd *rand.Rand) ModExpBenchOutput {
 	result.processAllCases(rnd)
 	result.EndTime = time.Now()
 	return result
+}
+
+func (z *ModExpBenchOutput) getTable(metric string) (outputTable [][][]any) {
+	var i = 0
+	outputTable = make([][][]any, len(z.ModulusLengths))
+	for modulusLengthIndex := range z.ModulusLengths {
+		outputTable[modulusLengthIndex] = make([][]any, len(z.ExponentLengths))
+		for exponentLengthIndex := range z.ExponentLengths {
+			outputTable[modulusLengthIndex][exponentLengthIndex] = make([]any, len(z.ModulusTrailingZeros))
+			for trailingZerosIndex := range z.ModulusTrailingZeros {
+				relevantOutput := z.Results[i].BenchmarkResult
+				// TODO: Special handling of "ns/op" etc.
+				outputTable[modulusLengthIndex][exponentLengthIndex][trailingZerosIndex] = relevantOutput.Extra[metric]
+			}
+		}
+	}
+	return
 }
 
 func TestBenchmarkModExp(t *testing.T) {
