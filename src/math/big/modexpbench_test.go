@@ -27,7 +27,9 @@ import (
 var benchModExpFlag = flag.String("modexp", "", "run ModExp benchmarks specified by file")
 
 var (
-	jsonOutFlag   = flag.String("jsonout", "", "output ModExp benchmarks into this json file")
+	jsonOutFlag = flag.String("jsonout", "", "output ModExp benchmarks into this json file")
+	// name is an arbitrary user-provided opaque string whose whole purpose is to allow users to record any data
+	// about the benchmark.
 	benchnameFlag = flag.String("name", "", "name of benchmark")
 	csvOutFlag    = flag.String("csvout", "", "output ModExp benchmarks into this csv file")
 	csvMetric     = flag.String("csvmetric", "", "output ModExp benchmark as csv only for this metric")
@@ -106,8 +108,8 @@ func (display *DisplayImprovement) UnmarshalJSON(data []byte) (err error) {
 // The reason for that is that the algorithms that are currently implemented only
 // care (to the granularity we care about) about bitlengths and number of trailing zeros.
 //
-// Currently, we perform no randomization of base/exponent/modulus within a given test case
-// (i.e. our b.Loop() reuses the same triple; this could be changes in some further update.
+// Currently, we perform no randomization of base/exponent/modulus within a given test case,
+// i.e. our b.Loop() reuses the same triple; this could be changed in some further update.
 type ModExpBenchTestCase struct {
 	ModulusBitLength     uint
 	ModulusTrailingZeros *uint // nil for no restriction
@@ -160,8 +162,8 @@ func (t1 *ModExpBenchTestCase) Eq(t2 *ModExpBenchTestCase) bool {
 // The resulting benchmarking function will only run a benchmark, but *not* add any
 // extra comparison data such as requested by params.Metrics, params.TimeImprovements, params.MemImprovements or params.AllocImprovements.
 // The reason for this is that [testing] does not provide any API to measure memory costs from within the benchmarking function itself.
-// (as opposed to [testing.B.Elapsed] for time). So we will need to post-process the resulting BenchmarkResult.
-// Note that this essentially means that we need to use (the more complicated) [testing.Benchmark] rather than [*testing.B.Run],
+// (as opposed to [*testing.B.Elapsed] for time). So we will need to post-process the resulting BenchmarkResult.
+// This essentially means that we need to use (the more complicated) [testing.Benchmark] rather than [*testing.B.Run],
 // as the latter directly prints the benchmark result and gives us no way to add data.
 func (testCase *ModExpBenchTestCase) toBenchmark(rnd *rand.Rand, params *ModExpBenchInput) func(b *testing.B) {
 	// create instance: we do this outside of the returned function in order to not contribute to the measured memory consumption.
@@ -220,26 +222,33 @@ func (testCase *ModExpBenchTestCase) toBenchmark(rnd *rand.Rand, params *ModExpB
 }
 
 // ModExpBenchInput is used to collect the data that we need to collect the input to a benchmarking request.
+// To run our benchmark, the user needs to provided a concrete ModExpBenchInput via a JSON-file.
+//
+// Note that a few select fields of the ModExpBenchInput that are provided via JSON-file can be overridden by
+// command-line arguments.
 type ModExpBenchInput struct {
 	ResetMemory bool // use a fresh stack for each invocation.
 
 	// we allow two different ways of defining a set of test cases:
-	// If ExponentLengths, ModulusLengths and ModulusTrailingZeros all have len > 0,
-	// we run a test on each of the len(ExponentLengths) * len(MoudlusLengths) * len(ModulusTrailingZeros)
-	// combinations.
-	// Additionally, we can specify FurtherTestCases as a simple list of test cases. If you use
-	// both ways, we run both in succession.
+	//
+	// 		- If ExponentLengths, ModulusLengths and ModulusTrailingZeros all have len > 0,
+	// 		  we run a test on each of the len(ExponentLengths) * len(MoudlusLengths) * len(ModulusTrailingZeros)
+	// 		  combinations.
+	// 		- Additionally, we can specify FurtherTestCases as a simple list of test cases. If you use
+	// 		  both ways, we run both in succession.
 	//
 	// Note that the first way with ExponentLengths,ModulusLengths,ModulusTrailingZeros
-	// allows a different way to convert the result into a CSV - table.
+	// allows a different way to convert the result into a CSV - table for tabulating how a given metric depends on the input parameters.
+	// The CSVTableForMetrics field enables that feature, which disregards FurtherTestCases.
 	ExponentLengths      []uint
 	ModulusLengths       []uint
 	ModulusTrailingZeros []*uint
 	FurtherTestCases     []ModExpBenchTestCase
 
-	// Metrics defines a list of additional CostMetrix to collect.
+	// Metrics defines a list of additional CostMetrics to collect.
 	// For each *CostMetric, we additionally collect some cost function Cost(testcase)
 	// and we may add cost and time/cost to the extra output of the benchmark.
+	// See [CostMetric] for details.
 	Metrics []*CostMetric
 
 	// TimeImprovements, MemImprovement, AllocImprovements constrol whether
@@ -253,8 +262,8 @@ type ModExpBenchInput struct {
 	// (a) the default equality notion for ModExpBenchTestCase is wrong
 	// (b) we might have duplicate test cases.
 
-	Results []Result // When struct-embedded in ModExpBenchOutput, this holds the result of our benchmarks.
-	// We define it in ModExpBenchInput (rather than output), because we want deserialize into it; in this case, it is used to
+	Results []Result // When struct-embedded in [ModExpBenchOutput], Results holds the result of our benchmarks.
+	// We define it in ModExpBenchInput (rather than [ModExpBenchOutput]), because we want deserialize into it; in this case, it is used to
 	// initialize oldResults, which is used for relative benchmarking.
 
 	// When non-empty, Name defines a custom name that is printed and included in the output. Can be overwritten by command-line arg "name"
@@ -262,9 +271,9 @@ type ModExpBenchInput struct {
 	// Also, consider including something that identifies (the spec of) the machine the benchmark was run on.
 	Name string
 
-	RndSeed *int64 // optional RND seed. If nil, we derive from the current time.
+	RndSeed *int64 // optional RND seed. If nil, we derive one from the current time.
 
-	oldResults []Result `json:"-"`
+	oldResults []Result `json:"-"` // if we deserialize and initialize with Results already filled, we copy those into oldResults.
 
 	DisplayResults   bool   // whether we output results to stdout
 	JSONOut          string // if set to a non-empty string, we write JSON to this filename. Can be overwritten by command-line arg
@@ -283,12 +292,16 @@ type ModExpBenchInput struct {
 
 // Result hold the result of runing a benchmark on a single ModExpBenchTestCase
 type Result struct {
+	// We include the parameters used to create the benchmark here as part of the Result.
+	//
+	// The (more natural) alternative of using a map[ModExpBenchTestCase] testing.BenchmarkResult does not work, because we might have duplicate ModExpBenchTestCases;
+	// So we use []Result, with Result including the ModExpBenchTestCase to store our results.
 	ModExpBenchTestCase
 	testing.BenchmarkResult
 }
 
 // ModExpBenchOutput is the struct that holds the result of running a benchmark with inputs specified by some
-// ModExpBenchInput. We retain a copy of the input parameters in ModExpBenchOutput. The latter is struct-embedded
+// [ModExpBenchInput]. We retain a copy of the input parameters in ModExpBenchOutput. The [ModExpBenchInput] is struct-embedded
 // to simplify serializing a ModExpBenchOutput and later deserializing as a ModExpBenchInput.
 type ModExpBenchOutput struct {
 	ModExpBenchInput           // For technical reasons (differential benchmarks), the actual results are stored in ModExpBenchInput.
@@ -296,7 +309,10 @@ type ModExpBenchOutput struct {
 	EndTime          time.Time // Finish time of benchmark
 }
 
-// TODO: Remove
+// TODO: Remove this?
+
+// exampleInput is just used to create an example JSON-file, which can then be modified.
+// (via the commended-out Test below)
 var exampleInput ModExpBenchInput = ModExpBenchInput{
 	ResetMemory:          false,
 	ExponentLengths:      []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 64, 128, 256, 512, 1024},
@@ -308,6 +324,7 @@ var exampleInput ModExpBenchInput = ModExpBenchInput{
 	Metrics:              []*CostMetric{},
 }
 
+/*
 func TestWriteExample(t *testing.T) {
 	outfile, err := os.OpenFile("example-config.json", os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
@@ -323,6 +340,7 @@ func TestWriteExample(t *testing.T) {
 		panic(err)
 	}
 }
+*/
 
 // CostMetric is a struct that specifies a cost metric to compare the computational time of modular exponentiation against.
 // By including a CostMetric in [ModExpBenchInput], we trigger additional outputs for benchmarks.
@@ -334,10 +352,10 @@ func TestWriteExample(t *testing.T) {
 // and MetricName is the name associated with time_taken / Cost(testcase).
 // Either of those can be nil; in this case, we skip the corresponding output.
 // If non-nil, CostName resp. MetricName must be non-empty and contain no whitespace,
-// matching the restrictions of [(*testing.B).ReportMetric]
+// matching the restrictions of [*testing.B.ReportMetric]
 //
 // JSONString is the string output when JSON-serializing a CostMetric. To
-// deserialze from the string, you must call [RegisterCostMetric]
+// deserialize from the string, you must call [RegisterCostMetric]
 //
 // We expect costMetrics to be defined as immutable global variables as
 // var _ *CostMetric = (&CostMetric{...}).RegisterCostMetric()
@@ -352,7 +370,7 @@ type CostMetric struct {
 // This map is populated when we define *CostMetrics via var _ = (&CostMetric{...}).RegisterCostMetric()
 var (
 	registeredCostMetrics map[string]*CostMetric = make(map[string]*CostMetric)
-	costMetricMutex       sync.Mutex
+	costMetricMutex       sync.Mutex             // probably not needed, actually.
 )
 
 // RegisterCostMetric registers the given cost metric for JSON deserialization, so the deserializer registers the JSON string.
@@ -361,7 +379,7 @@ var (
 // We require that the metric.JSONString values for every registered metric are non-empty and distinct, otherwise this function panics.
 // Registering the same CostMetric twice works (and is a no-op), but has to use a pointer to the same object (rather than to a copy).
 //
-// This is intenteded to be called on (global) *CostMetrics on definition via
+// This is intenteded to be called on (global) *CostMetrics at the time of definition via
 // var _ *CostMetric = (&CostMetric{...}).RegisterCostMetric()
 //
 // If metric is invalid, this function panics.
@@ -369,8 +387,8 @@ func (metric *CostMetric) RegisterCostMetric() *CostMetric {
 
 	jsonName := metric.JSONString
 
-	//This function panics rather than reporting an error.
-	// Since this is intended to be run on a set of global variables during variable initialization,
+	// This function panics rather than reporting an error.
+	// Since this is intended to be run solely during global variable initialization,
 	// this is acceptable.
 	if len(jsonName) == 0 {
 		panic("big: called RegisterCostMetric with a CostMetric without a jsonString")
@@ -615,6 +633,10 @@ func (z *ModExpBenchOutput) getTable(metric string) (outputTable [][][]any) {
 	return
 }
 
+// WriteCSVTable writes a table (with rows corresponding to moduli and columns corresponding to exponents) of results for metric to out.
+// The table includes labels in the first row / column denoting the bitlengths of moduli resp. exponents.
+//
+// If the modulus has a prescribed number of trailing zeros, the output format is "TotalNumberOfBits(NumberOfTrailingZeros)" for the row labels.
 func (z *ModExpBenchOutput) WriteCSVTable(out io.Writer, metric string) error {
 	TableRows := len(z.ModulusLengths) * len(z.ModulusTrailingZeros) // exclusing header line
 	TableCols := len(z.ExponentLengths)                              // excluding header column
@@ -646,7 +668,7 @@ func (z *ModExpBenchOutput) WriteCSVTable(out io.Writer, metric string) error {
 	rawTable := z.getTable(metric)
 	for i, _ := range z.ExponentLengths {
 		for j1, _ := range z.ModulusLengths {
-			for j2 := range z.ModulusTrailingZeros {
+			for j2, _ := range z.ModulusTrailingZeros {
 				val := rawTable[j1][i][j2]
 				if val == nil {
 					table[j1*TableGroupSize+j2+1][i+1] = "N/A"
@@ -661,6 +683,9 @@ func (z *ModExpBenchOutput) WriteCSVTable(out io.Writer, metric string) error {
 	return csvWriter.WriteAll(table)
 }
 
+// WriteMetaAsCSV writes metadata about the test run to out in CSV format.
+// The rows written might not all have the same number of entries. This is mostly intended for
+// importing into other software (such as Excel or LibreOffice Calc), where this does not matter much.
 func (z *ModExpBenchOutput) WriteMetaAsCSV(out io.Writer) (err error) {
 	csvWriter := csvencoding.NewWriter(out)
 	f := func(values ...string) error {
@@ -752,12 +777,14 @@ func (z *ModExpBenchOutput) OutputAsCSV(out io.Writer) (err error) {
 //
 //	go test -run=BenchmarkModExp -modexp=INPUTFILE -name=NAME -jsonout=OUTFILE -csvout=OUTFILE2 -csvmetric=METRIC
 //
-// The modexp parameter is mandatory and need to specify a JSON file. This file controls the parameters of the benchmark.
+// The modexp parameter is mandatory and needs to specify a JSON file. This file controls the parameters of the benchmark.
+// -modexp doubles as a flag whether to even run this (expensive) benchmark at all, so we silently skip the benchmark if it is missing.
 // The other parameters are optional and may be used to override specifications from the file:
 //
-//	-name=NAME will use NAME as a custom string that is written in the benchmark output. We recommend including the commit-hash and/or something to identify the machine the benchmark was run on.
+//	-name=NAME will use NAME as a custom string that is written in the benchmark output.
+//	We recommend including the commit-hash and/or something to identify the machine the benchmark was run on.
 //	-jsonout=OUTFILE will cause output in JSON-format to be written to the specified file.
-//	Note that we do *not* overwrite the file if it already exists, unless the JSON file's config instructs us; otherwise, we append a suffix to the given OUTFILE.
+//	Note that if -jsonout=OUTFILE is provided, we will overwrite the file if it already exists, ignoring the overwrite flag in INPUTFILE.
 //	-csvout=OUTFILE2 will cause output in csv-format to be written to the specified file. The same considerations for overwriting files apply as for JSON output.
 //	Note that what actually gets written into the csv file depends on the JSON config.
 //	-csvmetric=METRIC will cause the csv-output to include a table for METRIC. This is only meaningful if csv output is requested.
@@ -765,12 +792,16 @@ func (z *ModExpBenchOutput) OutputAsCSV(out io.Writer) (err error) {
 // We note that all of the latter parameters override existing settings in the JSON output.
 // In particular, INPUTFILE can specify where to write output to, but this is not recommended.
 //
-// Note that the JSON output file OUTFILE contains the input settings (excluding those that were provided by command-line flags) and can be used as INPUTFILE for another benchmark.
+// Note that the JSON output file OUTFILE contains the input settings (excluding jsonout, csvout that were provided via command-line flags) and can be used as INPUTFILE for another benchmark.
 // In this case, the new benchmark will use the same settings and include the difference to the previous one.
 func TestBenchmarkModExp(t *testing.T) {
+
+	// Only run this (expensive) benchmark if explicitly requested.
 	if *benchModExpFlag == "" {
 		return
 	}
+
+	// parse INPUTFILE
 	inputFileContents, err := os.ReadFile(*benchModExpFlag)
 	if err != nil {
 		t.Fatalf("failed to open file %v.\nError was %v", *benchModExpFlag, err)
@@ -780,6 +811,12 @@ func TestBenchmarkModExp(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to deserialize JSON from file %v.\nError was %v", *benchModExpFlag, err)
 	}
+
+	if benchnameFlag != nil && *benchnameFlag != "" {
+		inputParams.Name = *benchnameFlag
+	}
+
+	// determine actual randomness to be used.
 	var rnd *rand.Rand
 	if inputParams.RndSeed != nil {
 		rnd = rand.New(rand.NewSource(*inputParams.RndSeed))
@@ -787,14 +824,23 @@ func TestBenchmarkModExp(t *testing.T) {
 		rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
 	}
 
+	// actually run the benchmarks now. We do this before parsing (and possibly validating) desired output parameters.
+	// This is so we might actually output something (useful) even in case of some unexpected failure.
 	out := inputParams.RunBenchmarks(rnd)
 
+	// If requested, print some results to stdout via t.Log()
 	if inputParams.DisplayResults {
 		for _, res := range out.Results {
 			t.Log(res.BenchmarkResult)
 		}
 	}
 
+	// handle the csvMetric flag. We want this to appear in the JSON output (even though it does nothing).
+	if csvMetric != nil && *csvMetric != "" {
+		out.CSVTableForMetrics = []string{*csvMetric}
+	}
+
+	// determine whether and where to write JSON output.
 	var (
 		writeJSON       bool
 		JSONoutfileName string
@@ -810,11 +856,14 @@ func TestBenchmarkModExp(t *testing.T) {
 		overwriteJSON = inputParams.JSONOutOverwrite
 	}
 
+	// actually write JSON output, if requested.
 	if writeJSON {
+		// write to []byte
 		jsonOutputStream, err := json.MarshalIndent(out, "", "\t")
 		if err != nil {
 			t.Fatalf("error when JSON-serializing the benchmark output: %v", err)
 		}
+
 		var JSONoutfile *os.File
 		if overwriteJSON {
 			JSONoutfile, err = os.Create(JSONoutfileName)
@@ -829,6 +878,7 @@ func TestBenchmarkModExp(t *testing.T) {
 					if err != nil {
 						t.Fatalf("error when creating JSON output file:%v", err)
 					}
+					t.Logf("JSON output file %v already exists.\nWriting to %v instead", JSONoutfileName, JSONoutfile.Name())
 				} else { // error other than already existing file
 					t.Fatalf("error when creating JSON output file:%v", err)
 				}
@@ -838,6 +888,88 @@ func TestBenchmarkModExp(t *testing.T) {
 		_, err = JSONoutfile.Write(jsonOutputStream)
 		if err != nil {
 			t.Fatalf("error when writing JSON output to file:%v", err)
+		}
+	}
+
+	// determine whether and where to write CSV output.
+	var (
+		writeCSV       bool
+		CSVoutfileName string
+		overwriteCSV   bool
+	)
+	if csvOutFlag != nil && *csvOutFlag != "" {
+		writeCSV = true
+		CSVoutfileName = *csvOutFlag
+	} else if inputParams.CSVOut != "" {
+		writeCSV = true
+		CSVoutfileName = inputParams.CSVOut
+		overwriteCSV = inputParams.CSVOutOverwrite
+	}
+
+	// abort and alert user if there is nothing to output.
+	if writeCSV && !out.CSVAll && !out.CSVMeta && len(out.CSVTableForMetrics) == 0 {
+		t.Logf("Requested to output CSV to file %v, but none of the output options (table for metrics, all results, metadata) was set. Skipping output", CSVoutfileName)
+		writeCSV = false
+	}
+
+	if writeCSV {
+		var CSVoutfile *os.File
+		var err error
+		var writeLineSeparator bool // to write \n as separator in case we request several types of output
+		if overwriteCSV {
+			CSVoutfile, err = os.Create(CSVoutfileName)
+			if err != nil {
+				t.Fatalf("error when creating file with name %v for CSV output:\n%v", CSVoutfileName, err)
+			}
+		} else {
+			CSVoutfile, err = os.OpenFile(CSVoutfileName, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+			if err != nil {
+				if errors.Is(err, fs.ErrExist) {
+					CSVoutfile, err = os.CreateTemp(".", CSVoutfileName+"-*")
+					if err != nil {
+						t.Fatalf("error when creating CSV output file:%v", err)
+					}
+					t.Logf("CSV output file %v already exsists.\nWriting to %v instead", CSVoutfileName, CSVoutfile.Name())
+				} else { // error other than already existing file
+					t.Fatalf("error when creating CSV output file:%v", err)
+				}
+			}
+		}
+		defer CSVoutfile.Close()
+		if out.CSVMeta {
+			err = out.WriteMetaAsCSV(CSVoutfile)
+			if err != nil {
+				t.Fatalf("error when write metadata to CSV:%v", err)
+			}
+			writeLineSeparator = true
+		}
+
+		for _, metric := range out.CSVTableForMetrics {
+			if writeLineSeparator {
+				_, err = CSVoutfile.WriteString("\n")
+			}
+			if err != nil {
+				t.Fatalf("error when writing to CSV file:\n%v", err)
+			}
+			err = out.WriteCSVTable(CSVoutfile, metric)
+			if err != nil {
+				t.Fatalf("error when writing metric %v to CSV file:\n%v", metric, err)
+			}
+			writeLineSeparator = true
+		}
+
+		if out.CSVAll {
+			if writeLineSeparator {
+				_, err = CSVoutfile.WriteString("\n")
+			}
+			if err != nil {
+				t.Fatalf("error when writing to CSV file:\n%v", err)
+			}
+			err = out.OutputAsCSV(CSVoutfile)
+			if err != nil {
+				t.Fatalf("error when writing outputs to CSV file:\n%v", err)
+			}
+			writeLineSeparator = true // does nothing.
 		}
 	}
 }
