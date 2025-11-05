@@ -775,7 +775,7 @@ func (z *ModExpBenchOutput) OutputAsCSV(out io.Writer) (err error) {
 //
 // This is supposed to be run as
 //
-//	go test -run=BenchmarkModExp -modexp=INPUTFILE -name=NAME -jsonout=OUTFILE -csvout=OUTFILE2 -csvmetric=METRIC
+//	go test -v -run=BenchmarkModExp -modexp=INPUTFILE -name=NAME -jsonout=OUTFILE -csvout=OUTFILE2 -csvmetric=METRIC
 //
 // The modexp parameter is mandatory and needs to specify a JSON file. This file controls the parameters of the benchmark.
 // -modexp doubles as a flag whether to even run this (expensive) benchmark at all, so we silently skip the benchmark if it is missing.
@@ -900,6 +900,7 @@ func TestBenchmarkModExp(t *testing.T) {
 	if csvOutFlag != nil && *csvOutFlag != "" {
 		writeCSV = true
 		CSVoutfileName = *csvOutFlag
+		overwriteCSV = true
 	} else if inputParams.CSVOut != "" {
 		writeCSV = true
 		CSVoutfileName = inputParams.CSVOut
