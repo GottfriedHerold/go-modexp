@@ -1,0 +1,51 @@
+{
+	"ResetMemory": false,
+	"ExponentLengths": [
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8,
+		16,
+		24,
+		32,
+		64,
+		128,
+		256,
+		512,
+		1024
+	],
+	"ModulusLengths": [
+		8,
+		16,
+		32,
+		64,
+		128,
+		196,
+		256,
+		512,
+		1024,
+		2048
+	],
+	"ModulusTrailingZeros": [
+		null, 4
+	],
+	"FurtherTestCases": null,
+	"Metrics": [],
+	"TimeImprovements": "Relative",
+	"MemImprovements": "Relative",
+	"AllocImprovements": "Absolute",
+	"Name": "",
+	"RndSeed": null,
+	"DisplayResults": false,
+	"JSONOut": "",
+	"JSONOutOverwrite": false,
+	"CSVOut": "",
+	"CSVOutOverwrite": false,
+	"CSVMeta": true,
+	"CSVAll": true,
+	"CSVTableForMetrics": null
+}
