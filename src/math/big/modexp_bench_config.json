@@ -34,7 +34,7 @@
 		null, 4
 	],
 	"FurtherTestCases": null,
-	"Metrics": [],
+	"Metrics": ["EIP7883"],
 	"TimeImprovements": "Relative",
 	"MemImprovements": "Relative",
 	"AllocImprovements": "Absolute",

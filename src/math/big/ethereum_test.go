@@ -35,7 +35,7 @@ func computeCostEIP2565(testCase *ModExpBenchTestCase) float64 {
 	} else {
 		iteration_count = uint64(testCase.ExponentBitLength) - 1
 	}
-	result := min((iteration_count*uint64(multiplicationComplexity))/2, 200)
+	result := max((iteration_count*uint64(multiplicationComplexity))/2, 200)
 	return float64(result)
 }
 
@@ -60,7 +60,7 @@ func computeCostEIP7883(testCase *ModExpBenchTestCase) float64 {
 	} else { // ExponentBitLength >= 257
 		iteration_count = uint64(testCase.ExponentBitLength-1) + 8*((uint64(testCase.ExponentBitLength)+7)/8-32)
 	}
-	result := min(multiplicationComplexity*iteration_count, 500)
+	result := max(multiplicationComplexity*iteration_count, 500)
 	return float64(result)
 }
 
