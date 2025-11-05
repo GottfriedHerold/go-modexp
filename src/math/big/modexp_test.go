@@ -31,7 +31,7 @@ func createRandomInstance(rand *rand.Rand, bitLength int, trailingZeros ...uint)
 	z := powerOf2.add(powerOf2, tail)
 
 	if len(trailingZeros) != 0 {
-		actualTrailingZeros := trailingZeros[1]
+		actualTrailingZeros := trailingZeros[0]
 		if actualTrailingZeros >= uint(bitLength) {
 			actualTrailingZeros = uint(bitLength - 1)
 		}
