@@ -651,6 +651,7 @@ func (z *ModExpBenchOutput) getTable(metric string) (outputTable [][][]any) {
 			outputTable[modulusLengthIndex][exponentLengthIndex] = make([]any, len(z.ModulusTrailingZeros))
 			for trailingZerosIndex := range z.ModulusTrailingZeros {
 				outputTable[modulusLengthIndex][exponentLengthIndex][trailingZerosIndex] = z.Results[i].getMetric(metric)
+				i++
 			}
 		}
 	}
