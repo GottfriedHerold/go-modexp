@@ -307,6 +307,7 @@ type ModExpBenchOutput struct {
 	ModExpBenchInput           // For technical reasons (differential benchmarks), the actual results are stored in ModExpBenchInput.
 	StartTime        time.Time // Start time of benchmark
 	EndTime          time.Time // Finish time of benchmark
+	BaseName         *string   // optional string with the Name of the input (in case it was overriden via command-line arg)
 }
 
 // TODO: Remove this?
@@ -691,7 +692,11 @@ func (z *ModExpBenchOutput) WriteMetaAsCSV(out io.Writer) (err error) {
 	f := func(values ...string) error {
 		return csvWriter.Write(values)
 	}
-	err = f("Name", z.Name)
+	if z.BaseName != nil {
+		err = f("Base Name", *z.BaseName, "Name", z.Name)
+	} else {
+		err = f("Name", z.Name)
+	}
 	if err != nil {
 		return
 	}
@@ -812,7 +817,10 @@ func TestBenchmarkModExp(t *testing.T) {
 		t.Fatalf("failed to deserialize JSON from file %v.\nError was %v", *benchModExpFlag, err)
 	}
 
+	var originalName *string
 	if benchnameFlag != nil && *benchnameFlag != "" {
+		originalName = new(string)
+		*originalName = inputParams.Name
 		inputParams.Name = *benchnameFlag
 	}
 
@@ -827,6 +835,7 @@ func TestBenchmarkModExp(t *testing.T) {
 	// actually run the benchmarks now. We do this before parsing (and possibly validating) desired output parameters.
 	// This is so we might actually output something (useful) even in case of some unexpected failure.
 	out := inputParams.RunBenchmarks(rnd)
+	out.BaseName = originalName
 
 	// If requested, print some results to stdout via t.Log()
 	if inputParams.DisplayResults {
