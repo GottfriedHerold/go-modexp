@@ -13,6 +13,7 @@ import (
 	"io/fs"
 	"math/rand"
 	"os"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -872,11 +873,6 @@ func TestBenchmarkModExp(t *testing.T) {
 		}
 	}
 
-	// handle the csvMetric flag. We want this to appear in the JSON output (even though it does nothing).
-	if csvMetric != nil && *csvMetric != "" {
-		out.CSVTableForMetrics = []string{*csvMetric}
-	}
-
 	// determine whether and where to write JSON output.
 	var (
 		writeJSON       bool
@@ -925,6 +921,13 @@ func TestBenchmarkModExp(t *testing.T) {
 		_, err = JSONoutfile.Write(jsonOutputStream)
 		if err != nil {
 			t.Fatalf("error when writing JSON output to file:%v", err)
+		}
+	}
+
+	// handle the csvMetric flag. We do want the requested metrics to in the JSON output configuration.
+	if csvMetric != nil && *csvMetric != "" {
+		if !slices.Contains(out.CSVTableForMetrics, *csvMetric) {
+			out.CSVTableForMetrics = append(out.CSVTableForMetrics, *csvMetric)
 		}
 	}
 
