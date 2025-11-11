@@ -47,5 +47,5 @@
 	"CSVOutOverwrite": false,
 	"CSVMeta": true,
 	"CSVAll": true,
-	"CSVTableForMetrics": null
+	"CSVTableForMetrics": ["gas/op"]
 }
