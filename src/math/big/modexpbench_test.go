@@ -118,6 +118,27 @@ type ModExpBenchTestCase struct {
 	BaseTrailingZeros    *uint // nil for no restriction
 }
 
+// String is provider for the Stringer interface, to display ModExpBenchTestCase for Logging.
+func (testcase ModExpBenchTestCase) String() (ret string) {
+	var realBaseLength uint
+	if testcase.BaseBitLength != nil {
+		realBaseLength = *testcase.BaseBitLength
+	} else {
+		realBaseLength = testcase.ModulusBitLength
+	}
+	if testcase.ModulusTrailingZeros != nil {
+		ret = fmt.Sprintf("ModulusLength %v(%v), ExponentLength %v, BaseLength %v",
+			testcase.ModulusBitLength, *testcase.ModulusTrailingZeros, testcase.ExponentBitLength, realBaseLength)
+	} else {
+		ret = fmt.Sprintf("ModulusLength %v, ExponentLength %v, BaseLength %v",
+			testcase.ModulusBitLength, testcase.ExponentBitLength, realBaseLength)
+	}
+	if testcase.BaseTrailingZeros != nil {
+		ret += fmt.Sprintf("(%v)", *testcase.BaseTrailingZeros)
+	}
+	return
+}
+
 // Eq checks two ModExpBenchTestCase for equality.
 //
 // We we consider a nil BaseBitLength and a BaseBitLength explicitly set to ModulusBitLength as equal.
@@ -551,7 +572,7 @@ func (z *ModExpBenchInput) PostprocessBenchmarkResult(testcase *ModExpBenchTestC
 
 }
 
-func (z *ModExpBenchInput) processAllCases(rnd *rand.Rand) {
+func (z *ModExpBenchInput) processAllCases(rnd *rand.Rand, logger func(*ModExpBenchTestCase)) {
 	z.oldResults = z.Results // save old results
 	tableSize := len(z.ExponentLengths) * len(z.ModulusLengths) * len(z.ModulusTrailingZeros)
 	z.Results = make([]Result, 0, tableSize+len(z.FurtherTestCases))
@@ -566,6 +587,7 @@ func (z *ModExpBenchInput) processAllCases(rnd *rand.Rand) {
 					BaseBitLength:        &modulusLength,
 					BaseTrailingZeros:    nil,
 				}
+				logger(&testCase)
 				result := testing.Benchmark(testCase.toBenchmark(rnd, z))
 				z.PostprocessBenchmarkResult(&testCase, &result)
 
@@ -580,10 +602,10 @@ func (z *ModExpBenchInput) processAllCases(rnd *rand.Rand) {
 	}
 }
 
-func (z *ModExpBenchInput) RunBenchmarks(rnd *rand.Rand) ModExpBenchOutput {
+func (z *ModExpBenchInput) RunBenchmarks(rnd *rand.Rand, logger func(*ModExpBenchTestCase)) ModExpBenchOutput {
 	result := ModExpBenchOutput{ModExpBenchInput: *z}
 	result.StartTime = time.Now()
-	result.processAllCases(rnd)
+	result.processAllCases(rnd, logger)
 	result.EndTime = time.Now()
 	return result
 }
@@ -832,9 +854,13 @@ func TestBenchmarkModExp(t *testing.T) {
 		rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
 	}
 
+	logger := func(testcase *ModExpBenchTestCase) {
+		t.Logf("Running benchmark for %v", *testcase)
+	}
+
 	// actually run the benchmarks now. We do this before parsing (and possibly validating) desired output parameters.
 	// This is so we might actually output something (useful) even in case of some unexpected failure.
-	out := inputParams.RunBenchmarks(rnd)
+	out := inputParams.RunBenchmarks(rnd, logger)
 	out.BaseName = originalName
 
 	// If requested, print some results to stdout via t.Log()
