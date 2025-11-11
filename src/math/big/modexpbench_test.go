@@ -841,8 +841,10 @@ func TestBenchmarkModExp(t *testing.T) {
 
 	var originalName *string
 	if benchnameFlag != nil && *benchnameFlag != "" {
-		originalName = new(string)
-		*originalName = inputParams.Name
+		if inputParams.Name != "" {
+			originalName = new(string)
+			*originalName = inputParams.Name
+		}
 		inputParams.Name = *benchnameFlag
 	}
 
