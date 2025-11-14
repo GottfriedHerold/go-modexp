@@ -1,0 +1,886 @@
+goos: linux
+goarch: amd64
+pkg: math/big
+cpu: AMD Ryzen 5 1600X Six-Core Processor           
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp1Bit/WindowSize-4-12         	   93612	     13239 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp1Bit/WindowSize-2-12         	  117230	     10412 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp1Bit/WindowSize-1-12         	  100071	     11764 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp1Bit/NaiveAlg-12             	28805635	        41.21 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp2Bit/WindowSize-4-12         	   78643	     13027 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp2Bit/WindowSize-2-12         	  101318	     11226 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp2Bit/WindowSize-1-12         	   98552	     13100 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp2Bit/NaiveAlg-12             	 1208950	       989.9 ns/op	     240 B/op	       2 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp3Bit/WindowSize-4-12         	   82914	     12283 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp3Bit/WindowSize-2-12         	   98762	     11099 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp3Bit/WindowSize-1-12         	   95893	     12238 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp3Bit/NaiveAlg-12             	  974810	      1251 ns/op	     304 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp4Bit/WindowSize-4-12         	   79056	     12924 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp4Bit/WindowSize-2-12         	   97053	     10923 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp4Bit/WindowSize-1-12         	  110082	     12101 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp4Bit/NaiveAlg-12             	  419048	      2496 ns/op	     480 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp5Bit/WindowSize-4-12         	   92677	     12742 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp5Bit/WindowSize-2-12         	  117529	     11186 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp5Bit/WindowSize-1-12         	   79170	     12846 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp5Bit/NaiveAlg-12             	  483061	      3293 ns/op	     448 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp6Bit/WindowSize-4-12         	   82146	     13316 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp6Bit/WindowSize-2-12         	   96010	     11217 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp6Bit/WindowSize-1-12         	   79594	     13277 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp6Bit/NaiveAlg-12             	  442060	      2692 ns/op	     304 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp7Bit/WindowSize-4-12         	  102110	     13698 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp7Bit/WindowSize-2-12         	   95266	     11543 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp7Bit/WindowSize-1-12         	   91536	     11516 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp7Bit/NaiveAlg-12             	  424221	      4127 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp8Bit/WindowSize-4-12         	   82864	     13923 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp8Bit/WindowSize-2-12         	  110920	     11473 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp8Bit/WindowSize-1-12         	   76429	     13973 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp8Bit/NaiveAlg-12             	  265390	      4668 ns/op	     592 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp16Bit/WindowSize-4-12        	   80620	     13918 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp16Bit/WindowSize-2-12        	  110541	     11411 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp16Bit/WindowSize-1-12        	   93753	     12574 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp16Bit/NaiveAlg-12            	  171892	      7229 ns/op	     448 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp32Bit/WindowSize-4-12        	   82458	     13882 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp32Bit/WindowSize-2-12        	  103035	     11560 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp32Bit/WindowSize-1-12        	   88600	     12746 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp32Bit/NaiveAlg-12            	   78333	     15292 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp40Bit/WindowSize-4-12        	   91220	     14117 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp40Bit/WindowSize-2-12        	   93236	     11329 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp40Bit/WindowSize-1-12        	   87375	     12460 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp40Bit/NaiveAlg-12            	   67525	     17142 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp48Bit/WindowSize-4-12        	   99578	     13819 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp48Bit/WindowSize-2-12        	  109813	     10988 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp48Bit/WindowSize-1-12        	   98356	     12339 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp48Bit/NaiveAlg-12            	   57434	     21773 ns/op	     592 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp56Bit/WindowSize-4-12        	   80530	     14306 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp56Bit/WindowSize-2-12        	   92220	     12227 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp56Bit/WindowSize-1-12        	  102970	     12508 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp56Bit/NaiveAlg-12            	   50774	     25153 ns/op	     592 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp64Bit/WindowSize-4-12        	   84621	     13731 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp64Bit/WindowSize-2-12        	   88147	     12054 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp64Bit/WindowSize-1-12        	   85346	     14339 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp64Bit/NaiveAlg-12            	   38840	     28546 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp72Bit/WindowSize-4-12        	   53194	     21866 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp72Bit/WindowSize-2-12        	   57244	     19189 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp72Bit/WindowSize-1-12        	   45907	     23970 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp72Bit/NaiveAlg-12            	   37744	     31934 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp80Bit/WindowSize-4-12        	   58497	     21953 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp80Bit/WindowSize-2-12        	   58002	     18916 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp80Bit/WindowSize-1-12        	   45981	     24082 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp80Bit/NaiveAlg-12            	   33198	     35261 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp88Bit/WindowSize-4-12        	   57256	     20918 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp88Bit/WindowSize-2-12        	   54420	     19921 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp88Bit/WindowSize-1-12        	   46714	     25055 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp88Bit/NaiveAlg-12            	   31034	     38562 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp96Bit/WindowSize-4-12        	   65005	     20587 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp96Bit/WindowSize-2-12        	   56172	     20343 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp96Bit/WindowSize-1-12        	   50925	     23354 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp96Bit/NaiveAlg-12            	   27596	     42543 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp128Bit/WindowSize-4-12       	   52284	     22907 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp128Bit/WindowSize-2-12       	   60519	     19237 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp128Bit/WindowSize-1-12       	   45122	     24250 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp128Bit/NaiveAlg-12           	   20637	     58728 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp256Bit/WindowSize-4-12       	   31520	     39008 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp256Bit/WindowSize-2-12       	   30242	     38563 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp256Bit/WindowSize-1-12       	   25530	     47355 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp256Bit/NaiveAlg-12           	   10000	    109412 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp512Bit/WindowSize-4-12       	   17553	     66924 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp512Bit/WindowSize-2-12       	   15987	     73369 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp512Bit/WindowSize-1-12       	   12578	     95188 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp512Bit/NaiveAlg-12           	    5884	    203457 ns/op	     592 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp1024Bit/WindowSize-4-12      	    9090	    113764 ns/op	    1873 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp1024Bit/WindowSize-2-12      	    9254	    126351 ns/op	     720 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp1024Bit/WindowSize-1-12      	    7364	    164033 ns/op	     528 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base32Bytes-Mod32Bytes-Exp1024Bit/NaiveAlg-12          	    2772	    431313 ns/op	     624 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp1Bit/WindowSize-4-12         	   43950	     28291 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp1Bit/WindowSize-2-12         	   44884	     24181 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp1Bit/WindowSize-1-12         	   40747	     28048 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp1Bit/NaiveAlg-12             	26253961	        41.04 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp2Bit/WindowSize-4-12         	   40717	     29092 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp2Bit/WindowSize-2-12         	   46845	     22982 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp2Bit/WindowSize-1-12         	   44769	     26857 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp2Bit/NaiveAlg-12             	 1000000	      1045 ns/op	     336 B/op	       2 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp3Bit/WindowSize-4-12         	   48394	     25402 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp3Bit/WindowSize-2-12         	   55827	     22665 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp3Bit/WindowSize-1-12         	   44173	     26284 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp3Bit/NaiveAlg-12             	  882450	      2145 ns/op	     496 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp4Bit/WindowSize-4-12         	   40173	     25934 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp4Bit/WindowSize-2-12         	   51792	     22649 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp4Bit/WindowSize-1-12         	   42068	     26985 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp4Bit/NaiveAlg-12             	  370014	      4682 ns/op	     560 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp5Bit/WindowSize-4-12         	   53302	     28110 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp5Bit/WindowSize-2-12         	   44720	     25081 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp5Bit/WindowSize-1-12         	   42728	     26618 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp5Bit/NaiveAlg-12             	  212979	      4906 ns/op	     560 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp6Bit/WindowSize-4-12         	   39393	     29256 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp6Bit/WindowSize-2-12         	   47430	     23187 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp6Bit/WindowSize-1-12         	   45579	     26318 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp6Bit/NaiveAlg-12             	  182613	      6302 ns/op	     800 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp7Bit/WindowSize-4-12         	   45166	     27273 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp7Bit/WindowSize-2-12         	   49806	     23692 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp7Bit/WindowSize-1-12         	   38751	     27108 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp7Bit/NaiveAlg-12             	  177498	      6666 ns/op	     560 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp8Bit/WindowSize-4-12         	   43626	     28044 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp8Bit/WindowSize-2-12         	   48117	     23765 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp8Bit/WindowSize-1-12         	   45184	     27394 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp8Bit/NaiveAlg-12             	  207450	      7189 ns/op	     736 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp16Bit/WindowSize-4-12        	   38192	     31169 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp16Bit/WindowSize-2-12        	   46153	     23638 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp16Bit/WindowSize-1-12        	   43801	     27531 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp16Bit/NaiveAlg-12            	   70419	     15967 ns/op	    1184 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp32Bit/WindowSize-4-12        	   42744	     29458 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp32Bit/WindowSize-2-12        	   49005	     23679 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp32Bit/WindowSize-1-12        	   42032	     28340 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp32Bit/NaiveAlg-12            	   39769	     28479 ns/op	    1200 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp40Bit/WindowSize-4-12        	   43624	     29132 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp40Bit/WindowSize-2-12        	   51846	     23599 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp40Bit/WindowSize-1-12        	   39471	     29239 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp40Bit/NaiveAlg-12            	   34024	     31822 ns/op	    1024 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp48Bit/WindowSize-4-12        	   41234	     27126 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp48Bit/WindowSize-2-12        	   49326	     25029 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp48Bit/WindowSize-1-12        	   36463	     31149 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp48Bit/NaiveAlg-12            	   30060	     38605 ns/op	    1200 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp56Bit/WindowSize-4-12        	   42144	     27966 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp56Bit/WindowSize-2-12        	   48188	     22825 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp56Bit/WindowSize-1-12        	   40256	     28865 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp56Bit/NaiveAlg-12            	   27933	     43746 ns/op	    1040 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp64Bit/WindowSize-4-12        	   42864	     30543 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp64Bit/WindowSize-2-12        	   46728	     24296 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp64Bit/WindowSize-1-12        	   45062	     27492 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp64Bit/NaiveAlg-12            	   21822	     57109 ns/op	    1040 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp72Bit/WindowSize-4-12        	   29139	     46331 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp72Bit/WindowSize-2-12        	   25626	     43174 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp72Bit/WindowSize-1-12        	   21374	     53108 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp72Bit/NaiveAlg-12            	   20684	     58413 ns/op	    1200 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp80Bit/WindowSize-4-12        	   26769	     43835 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp80Bit/WindowSize-2-12        	   28858	     40526 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp80Bit/WindowSize-1-12        	   24529	     50907 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp80Bit/NaiveAlg-12            	   18069	     64271 ns/op	    1184 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp88Bit/WindowSize-4-12        	   26196	     42188 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp88Bit/WindowSize-2-12        	   28815	     40564 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp88Bit/WindowSize-1-12        	   23950	     48792 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp88Bit/NaiveAlg-12            	   17959	     67181 ns/op	    1024 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp96Bit/WindowSize-4-12        	   25628	     44832 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp96Bit/WindowSize-2-12        	   27345	     42092 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp96Bit/WindowSize-1-12        	   22212	     55013 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp96Bit/NaiveAlg-12            	   17626	     69361 ns/op	    1200 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp128Bit/WindowSize-4-12       	   27714	     44164 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp128Bit/WindowSize-2-12       	   27246	     40575 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp128Bit/WindowSize-1-12       	   22605	     51440 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp128Bit/NaiveAlg-12           	   11612	     98450 ns/op	    1184 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp256Bit/WindowSize-4-12       	   15187	     78675 ns/op	    3089 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp256Bit/WindowSize-2-12       	   14584	     82167 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp256Bit/WindowSize-1-12       	   10000	    102639 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp256Bit/NaiveAlg-12           	    5870	    201582 ns/op	    1040 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp512Bit/WindowSize-4-12       	    8348	    144038 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp512Bit/WindowSize-2-12       	    7737	    157641 ns/op	    1168 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp512Bit/WindowSize-1-12       	    5690	    207418 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp512Bit/NaiveAlg-12           	    3111	    374486 ns/op	    1024 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp1024Bit/WindowSize-4-12      	    4838	    251844 ns/op	    3090 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp1024Bit/WindowSize-2-12      	    4008	    299212 ns/op	    1169 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp1024Bit/WindowSize-1-12      	    3074	    380116 ns/op	     848 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base64Bytes-Mod64Bytes-Exp1024Bit/NaiveAlg-12          	    1585	    754811 ns/op	    1041 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp1Bit/WindowSize-4-12         	   24814	     50722 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp1Bit/WindowSize-2-12         	   28383	     41705 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp1Bit/WindowSize-1-12         	   23005	     49982 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp1Bit/NaiveAlg-12             	28364613	        41.14 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp2Bit/WindowSize-4-12         	   24819	     50480 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp2Bit/WindowSize-2-12         	   28666	     40713 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp2Bit/WindowSize-1-12         	   23448	     50389 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp2Bit/NaiveAlg-12             	  453909	      3061 ns/op	     576 B/op	       2 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp3Bit/WindowSize-4-12         	   21625	     53316 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp3Bit/WindowSize-2-12         	   28300	     40527 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp3Bit/WindowSize-1-12         	   21943	     53591 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp3Bit/NaiveAlg-12             	  349122	      3049 ns/op	     688 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp4Bit/WindowSize-4-12         	   21210	     53053 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp4Bit/WindowSize-2-12         	   26923	     41345 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp4Bit/WindowSize-1-12         	   23230	     50270 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp4Bit/NaiveAlg-12             	  202706	      7547 ns/op	    1152 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp5Bit/WindowSize-4-12         	   22503	     50750 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp5Bit/WindowSize-2-12         	   29636	     40765 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp5Bit/WindowSize-1-12         	   23266	     51819 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp5Bit/NaiveAlg-12             	  120946	     10052 ns/op	     800 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp6Bit/WindowSize-4-12         	   23110	     49048 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp6Bit/WindowSize-2-12         	   27130	     41346 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp6Bit/WindowSize-1-12         	   23470	     51096 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp6Bit/NaiveAlg-12             	  122666	     10632 ns/op	    1120 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp7Bit/WindowSize-4-12         	   23083	     50982 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp7Bit/WindowSize-2-12         	   25920	     45523 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp7Bit/WindowSize-1-12         	   22802	     49939 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp7Bit/NaiveAlg-12             	  117481	     12188 ns/op	     800 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp8Bit/WindowSize-4-12         	   22010	     52889 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp8Bit/WindowSize-2-12         	   29181	     38974 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp8Bit/WindowSize-1-12         	   23948	     48926 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp8Bit/NaiveAlg-12             	   76210	     14726 ns/op	    1473 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp16Bit/WindowSize-4-12        	   22118	     53028 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp16Bit/WindowSize-2-12        	   26749	     44134 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp16Bit/WindowSize-1-12        	   23139	     50506 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp16Bit/NaiveAlg-12            	   48864	     24932 ns/op	    1505 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp32Bit/WindowSize-4-12        	   23703	     51155 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp32Bit/WindowSize-2-12        	   26562	     42903 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp32Bit/WindowSize-1-12        	   22300	     51229 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp32Bit/NaiveAlg-12            	   27295	     42991 ns/op	    1505 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp40Bit/WindowSize-4-12        	   22893	     48007 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp40Bit/WindowSize-2-12        	   25179	     44853 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp40Bit/WindowSize-1-12        	   23308	     51163 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp40Bit/NaiveAlg-12            	   22418	     54106 ns/op	    1713 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp48Bit/WindowSize-4-12        	   24514	     51055 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp48Bit/WindowSize-2-12        	   30220	     39931 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp48Bit/WindowSize-1-12        	   23547	     51240 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp48Bit/NaiveAlg-12            	   19408	     63241 ns/op	    1473 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp56Bit/WindowSize-4-12        	   24850	     52997 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp56Bit/WindowSize-2-12        	   28239	     44471 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp56Bit/WindowSize-1-12        	   23025	     51808 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp56Bit/NaiveAlg-12            	   17121	     71833 ns/op	    1505 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp64Bit/WindowSize-4-12        	   23156	     50921 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp64Bit/WindowSize-2-12        	   24762	     44245 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp64Bit/WindowSize-1-12        	   23144	     52237 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp64Bit/NaiveAlg-12            	   13372	     89088 ns/op	    1473 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp72Bit/WindowSize-4-12        	   16100	     74413 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp72Bit/WindowSize-2-12        	   15603	     76032 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp72Bit/WindowSize-1-12        	   12262	     96973 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp72Bit/NaiveAlg-12            	   12986	     93469 ns/op	    1473 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp80Bit/WindowSize-4-12        	   16842	     73266 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp80Bit/WindowSize-2-12        	   15451	     73704 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp80Bit/WindowSize-1-12        	   12877	     93847 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp80Bit/NaiveAlg-12            	   11571	    102722 ns/op	    1713 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp88Bit/WindowSize-4-12        	   15189	     77268 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp88Bit/WindowSize-2-12        	   14850	     80745 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp88Bit/WindowSize-1-12        	   11816	    100206 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp88Bit/NaiveAlg-12            	   10112	    117693 ns/op	    1441 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp96Bit/WindowSize-4-12        	   15459	     79454 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp96Bit/WindowSize-2-12        	   15000	     78985 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp96Bit/WindowSize-1-12        	   12162	     97791 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp96Bit/NaiveAlg-12            	    9867	    126661 ns/op	    1713 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp128Bit/WindowSize-4-12       	   15484	     79611 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp128Bit/WindowSize-2-12       	   14806	     79327 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp128Bit/WindowSize-1-12       	   11953	     99077 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp128Bit/NaiveAlg-12           	    7429	    163414 ns/op	    1505 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp256Bit/WindowSize-4-12       	    9702	    135441 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp256Bit/WindowSize-2-12       	    7750	    152092 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp256Bit/WindowSize-1-12       	    6468	    186510 ns/op	    1168 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp256Bit/NaiveAlg-12           	    3577	    330062 ns/op	    1473 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp512Bit/WindowSize-4-12       	    4407	    267483 ns/op	    4306 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp512Bit/WindowSize-2-12       	    3902	    296830 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp512Bit/WindowSize-1-12       	    3091	    384168 ns/op	    1169 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp512Bit/NaiveAlg-12           	    1959	    605742 ns/op	    1505 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp1024Bit/WindowSize-4-12      	    2121	    509753 ns/op	    4307 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp1024Bit/WindowSize-2-12      	    1966	    575769 ns/op	    1617 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp1024Bit/WindowSize-1-12      	    1557	    754578 ns/op	    1169 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base96Bytes-Mod96Bytes-Exp1024Bit/NaiveAlg-12          	     979	   1212778 ns/op	    1714 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp1Bit/WindowSize-4-12       	   19395	     60824 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp1Bit/WindowSize-2-12       	   18936	     61345 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp1Bit/WindowSize-1-12       	   15902	     75289 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp1Bit/NaiveAlg-12           	28517911	        42.44 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp2Bit/WindowSize-4-12       	   15308	     71141 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp2Bit/WindowSize-2-12       	   21120	     55959 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp2Bit/WindowSize-1-12       	   16519	     73284 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp2Bit/NaiveAlg-12           	  422644	      4104 ns/op	     736 B/op	       2 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp3Bit/WindowSize-4-12       	   17505	     72074 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp3Bit/WindowSize-2-12       	   19352	     61139 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp3Bit/WindowSize-1-12       	   15913	     73232 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp3Bit/NaiveAlg-12           	  255103	      4362 ns/op	     896 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp4Bit/WindowSize-4-12       	   16495	     74634 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp4Bit/WindowSize-2-12       	   20037	     62507 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp4Bit/WindowSize-1-12       	   15794	     75033 ns/op	    1520 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp4Bit/NaiveAlg-12           	  143694	     10489 ns/op	    1761 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp5Bit/WindowSize-4-12       	   17190	     71241 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp5Bit/WindowSize-2-12       	   18550	     60520 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp5Bit/WindowSize-1-12       	   15759	     74997 ns/op	    1520 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp5Bit/NaiveAlg-12           	   90438	     14371 ns/op	    1761 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp6Bit/WindowSize-4-12       	   18009	     68560 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp6Bit/WindowSize-2-12       	   19441	     60275 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp6Bit/WindowSize-1-12       	   16411	     73801 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp6Bit/NaiveAlg-12           	   79052	     14521 ns/op	    1889 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp7Bit/WindowSize-4-12       	   16066	     72850 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp7Bit/WindowSize-2-12       	   19977	     58881 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp7Bit/WindowSize-1-12       	   15415	     76789 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp7Bit/NaiveAlg-12           	   58080	     17483 ns/op	    2209 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp8Bit/WindowSize-4-12       	   17644	     67663 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp8Bit/WindowSize-2-12       	   19240	     63300 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp8Bit/WindowSize-1-12       	   15680	     76166 ns/op	    1520 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp8Bit/NaiveAlg-12           	   74966	     17634 ns/op	    2209 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp16Bit/WindowSize-4-12      	   16414	     74550 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp16Bit/WindowSize-2-12      	   19286	     59305 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp16Bit/WindowSize-1-12      	   16272	     73114 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp16Bit/NaiveAlg-12          	   30915	     33883 ns/op	    2177 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp32Bit/WindowSize-4-12      	   15637	     73668 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp32Bit/WindowSize-2-12      	   19096	     57950 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp32Bit/WindowSize-1-12      	   14989	     77216 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp32Bit/NaiveAlg-12          	   20935	     57994 ns/op	    1889 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp40Bit/WindowSize-4-12      	   18165	     72408 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp40Bit/WindowSize-2-12      	   19059	     61838 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp40Bit/WindowSize-1-12      	   15912	     74963 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp40Bit/NaiveAlg-12          	   14850	     80707 ns/op	    2177 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp48Bit/WindowSize-4-12      	   16771	     69140 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp48Bit/WindowSize-2-12      	   18363	     64634 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp48Bit/WindowSize-1-12      	   14876	     79678 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp48Bit/NaiveAlg-12          	   13670	     85746 ns/op	    2209 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp56Bit/WindowSize-4-12      	   17840	     69581 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp56Bit/WindowSize-2-12      	   18663	     66411 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp56Bit/WindowSize-1-12      	   15777	     76946 ns/op	    1520 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp56Bit/NaiveAlg-12          	   10554	    107827 ns/op	    2209 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp64Bit/WindowSize-4-12      	   16724	     72445 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp64Bit/WindowSize-2-12      	   19338	     61693 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp64Bit/WindowSize-1-12      	   15514	     75527 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp64Bit/NaiveAlg-12          	    9064	    117803 ns/op	    1889 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp72Bit/WindowSize-4-12      	   10964	    107893 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp72Bit/WindowSize-2-12      	   10704	    109890 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp72Bit/WindowSize-1-12      	    8930	    137501 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp72Bit/NaiveAlg-12          	    9393	    128836 ns/op	    2209 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp80Bit/WindowSize-4-12      	   10248	    118008 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp80Bit/WindowSize-2-12      	    9852	    119380 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp80Bit/WindowSize-1-12      	    8035	    148185 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp80Bit/NaiveAlg-12          	    7512	    158504 ns/op	    2209 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp88Bit/WindowSize-4-12      	   10000	    114233 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp88Bit/WindowSize-2-12      	   10000	    118028 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp88Bit/WindowSize-1-12      	    8347	    143559 ns/op	    1520 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp88Bit/NaiveAlg-12          	    7542	    158323 ns/op	    1889 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp96Bit/WindowSize-4-12      	   10474	    112234 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp96Bit/WindowSize-2-12      	   10723	    113490 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp96Bit/WindowSize-1-12      	    8265	    144337 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp96Bit/NaiveAlg-12          	    7592	    164770 ns/op	    1921 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp128Bit/WindowSize-4-12     	    9913	    120908 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp128Bit/WindowSize-2-12     	   10372	    119960 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp128Bit/WindowSize-1-12     	    7604	    157555 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp128Bit/NaiveAlg-12         	    5102	    236669 ns/op	    2210 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp256Bit/WindowSize-4-12     	    5493	    208305 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp256Bit/WindowSize-2-12     	    5496	    218091 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp256Bit/WindowSize-1-12     	    4218	    281563 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp256Bit/NaiveAlg-12         	    2695	    439911 ns/op	    1921 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp512Bit/WindowSize-4-12     	    3406	    363612 ns/op	    5555 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp512Bit/WindowSize-2-12     	    2736	    430452 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp512Bit/WindowSize-1-12     	    2156	    552154 ns/op	    1521 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp512Bit/NaiveAlg-12         	    1339	    899098 ns/op	    1921 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp1024Bit/WindowSize-4-12    	    1646	    726236 ns/op	    5556 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp1024Bit/WindowSize-2-12    	    1262	    844166 ns/op	    2097 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp1024Bit/WindowSize-1-12    	    1053	   1134185 ns/op	    1522 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base128Bytes-Mod128Bytes-Exp1024Bit/NaiveAlg-12        	     670	   1796746 ns/op	    2212 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp1Bit/WindowSize-4-12       	   11575	    102593 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp1Bit/WindowSize-2-12       	   13604	     88037 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp1Bit/WindowSize-1-12       	   10482	    114655 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp1Bit/NaiveAlg-12           	25232666	        47.27 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp2Bit/WindowSize-4-12       	   12396	     98180 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp2Bit/WindowSize-2-12       	   12948	     89746 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp2Bit/WindowSize-1-12       	   10171	    115278 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp2Bit/NaiveAlg-12           	  177404	      5940 ns/op	     928 B/op	       2 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp3Bit/WindowSize-4-12       	   11612	    100295 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp3Bit/WindowSize-2-12       	   13455	     88255 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp3Bit/WindowSize-1-12       	   10000	    109758 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp3Bit/NaiveAlg-12           	  131470	     10451 ns/op	    1280 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp4Bit/WindowSize-4-12       	   10819	    107939 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp4Bit/WindowSize-2-12       	   13789	     89531 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp4Bit/WindowSize-1-12       	    9559	    109614 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp4Bit/NaiveAlg-12           	   94353	     13036 ns/op	    1280 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp5Bit/WindowSize-4-12       	   12499	     95330 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp5Bit/WindowSize-2-12       	   13593	     88054 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp5Bit/WindowSize-1-12       	   10545	    111398 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp5Bit/NaiveAlg-12           	   77824	     18300 ns/op	    1280 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp6Bit/WindowSize-4-12       	   11438	    104692 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp6Bit/WindowSize-2-12       	   13471	     89508 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp6Bit/WindowSize-1-12       	   10468	    112552 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp6Bit/NaiveAlg-12           	   54217	     21626 ns/op	    1857 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp7Bit/WindowSize-4-12       	   11116	    103057 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp7Bit/WindowSize-2-12       	   14041	     85618 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp7Bit/WindowSize-1-12       	   10356	    113046 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp7Bit/NaiveAlg-12           	   48093	     24223 ns/op	    1857 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp8Bit/WindowSize-4-12       	   12302	     99455 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp8Bit/WindowSize-2-12       	   13668	     87992 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp8Bit/WindowSize-1-12       	   10590	    112401 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp8Bit/NaiveAlg-12           	   39008	     27290 ns/op	    1857 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp16Bit/WindowSize-4-12      	   11450	    103122 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp16Bit/WindowSize-2-12      	   12524	     92627 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp16Bit/WindowSize-1-12      	   10690	    113599 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp16Bit/NaiveAlg-12          	   26938	     43489 ns/op	    2369 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp32Bit/WindowSize-4-12      	   10000	    108477 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp32Bit/WindowSize-2-12      	   13050	     92027 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp32Bit/WindowSize-1-12      	   10000	    113791 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp32Bit/NaiveAlg-12          	   13270	     92303 ns/op	    2369 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp40Bit/WindowSize-4-12      	   10000	    106008 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp40Bit/WindowSize-2-12      	   12922	     90648 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp40Bit/WindowSize-1-12      	   10081	    117415 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp40Bit/NaiveAlg-12          	   11408	    108501 ns/op	    2434 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp48Bit/WindowSize-4-12      	   10406	    114242 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp48Bit/WindowSize-2-12      	   12729	     95483 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp48Bit/WindowSize-1-12      	    9217	    111426 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp48Bit/NaiveAlg-12          	    9596	    123066 ns/op	    2690 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp56Bit/WindowSize-4-12      	   10000	    100600 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp56Bit/WindowSize-2-12      	   12300	     93251 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp56Bit/WindowSize-1-12      	   10000	    115812 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp56Bit/NaiveAlg-12          	    7911	    147386 ns/op	    2754 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp64Bit/WindowSize-4-12      	   11902	     99919 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp64Bit/WindowSize-2-12      	   12604	     93516 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp64Bit/WindowSize-1-12      	   10651	    113506 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp64Bit/NaiveAlg-12          	    7174	    164425 ns/op	    2754 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp72Bit/WindowSize-4-12      	    6928	    172784 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp72Bit/WindowSize-2-12      	    7063	    169333 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp72Bit/WindowSize-1-12      	    5420	    222663 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp72Bit/NaiveAlg-12          	    6774	    181345 ns/op	    2754 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp80Bit/WindowSize-4-12      	    8089	    157975 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp80Bit/WindowSize-2-12      	    6906	    170100 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp80Bit/WindowSize-1-12      	    5487	    217026 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp80Bit/NaiveAlg-12          	    6046	    195103 ns/op	    2434 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp88Bit/WindowSize-4-12      	    8049	    157215 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp88Bit/WindowSize-2-12      	    7224	    163049 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp88Bit/WindowSize-1-12      	    5625	    214126 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp88Bit/NaiveAlg-12          	    4546	    242641 ns/op	    2370 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp96Bit/WindowSize-4-12      	    7719	    162311 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp96Bit/WindowSize-2-12      	    6621	    177013 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp96Bit/WindowSize-1-12      	    5463	    220387 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp96Bit/NaiveAlg-12          	    4843	    248789 ns/op	    2370 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp128Bit/WindowSize-4-12     	    6441	    168875 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp128Bit/WindowSize-2-12     	    7092	    170921 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp128Bit/WindowSize-1-12     	    5337	    225225 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp128Bit/NaiveAlg-12         	    3804	    319431 ns/op	    2306 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp256Bit/WindowSize-4-12     	    3990	    290299 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp256Bit/WindowSize-2-12     	    3699	    326252 ns/op	    2545 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp256Bit/WindowSize-1-12     	    2809	    423380 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp256Bit/NaiveAlg-12         	    1987	    594613 ns/op	    2371 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp512Bit/WindowSize-4-12     	    1987	    575920 ns/op	    6772 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp512Bit/WindowSize-2-12     	    1798	    658795 ns/op	    2546 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp512Bit/WindowSize-1-12     	    1388	    859107 ns/op	    1841 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp512Bit/NaiveAlg-12         	    1000	   1213300 ns/op	    2755 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp1024Bit/WindowSize-4-12    	     885	   1167279 ns/op	    6773 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp1024Bit/WindowSize-2-12    	     794	   1327449 ns/op	    2546 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp1024Bit/WindowSize-1-12    	     613	   1739748 ns/op	    1844 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base160Bytes-Mod160Bytes-Exp1024Bit/NaiveAlg-12        	     450	   2421427 ns/op	    2760 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp1Bit/WindowSize-4-12       	    8948	    133737 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp1Bit/WindowSize-2-12       	   10156	    120240 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp1Bit/WindowSize-1-12       	    8050	    147897 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp1Bit/NaiveAlg-12           	25026776	        47.41 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp2Bit/WindowSize-4-12       	    9002	    135219 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp2Bit/WindowSize-2-12       	   10386	    117019 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp2Bit/WindowSize-1-12       	    7902	    151052 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp2Bit/NaiveAlg-12           	  326188	      3648 ns/op	     864 B/op	       2 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp3Bit/WindowSize-4-12       	    8464	    141965 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp3Bit/WindowSize-2-12       	   10148	    114128 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp3Bit/WindowSize-1-12       	    8376	    145585 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp3Bit/NaiveAlg-12           	  120568	     11255 ns/op	    2561 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp4Bit/WindowSize-4-12       	    8847	    134237 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp4Bit/WindowSize-2-12       	   10000	    117389 ns/op	    2993 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp4Bit/WindowSize-1-12       	    8064	    148146 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp4Bit/NaiveAlg-12           	   89160	     14483 ns/op	    2561 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp5Bit/WindowSize-4-12       	   10000	    135466 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp5Bit/WindowSize-2-12       	    9696	    123664 ns/op	    2993 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp5Bit/WindowSize-1-12       	    7974	    151101 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp5Bit/NaiveAlg-12           	   54687	     22657 ns/op	    2113 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp6Bit/WindowSize-4-12       	    9163	    128930 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp6Bit/WindowSize-2-12       	   10152	    116967 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp6Bit/WindowSize-1-12       	    7758	    149429 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp6Bit/NaiveAlg-12           	   42840	     26697 ns/op	    3202 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp7Bit/WindowSize-4-12       	    8692	    132633 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp7Bit/WindowSize-2-12       	    9519	    125091 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp7Bit/WindowSize-1-12       	    8396	    148265 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp7Bit/NaiveAlg-12           	   40897	     30085 ns/op	    2561 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp8Bit/WindowSize-4-12       	    8604	    138352 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp8Bit/WindowSize-2-12       	    9439	    121463 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp8Bit/WindowSize-1-12       	    8156	    147699 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp8Bit/NaiveAlg-12           	   39866	     32527 ns/op	    2754 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp16Bit/WindowSize-4-12      	    9028	    132762 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp16Bit/WindowSize-2-12      	    9842	    119128 ns/op	    2993 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp16Bit/WindowSize-1-12      	    7653	    155577 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp16Bit/NaiveAlg-12          	   20164	     57257 ns/op	    2754 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp32Bit/WindowSize-4-12      	    7898	    151620 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp32Bit/WindowSize-2-12      	    9409	    128847 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp32Bit/WindowSize-1-12      	    7809	    156214 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp32Bit/NaiveAlg-12          	   10000	    104604 ns/op	    2754 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp40Bit/WindowSize-4-12      	    8348	    145469 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp40Bit/WindowSize-2-12      	   10111	    115352 ns/op	    2993 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp40Bit/WindowSize-1-12      	    7423	    161052 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp40Bit/NaiveAlg-12          	    9270	    130700 ns/op	    3202 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp48Bit/WindowSize-4-12      	    9130	    137336 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp48Bit/WindowSize-2-12      	    9138	    125764 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp48Bit/WindowSize-1-12      	    7693	    152978 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp48Bit/NaiveAlg-12          	    7614	    153091 ns/op	    3203 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp56Bit/WindowSize-4-12      	    8697	    136205 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp56Bit/WindowSize-2-12      	    9744	    122560 ns/op	    2993 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp56Bit/WindowSize-1-12      	    7826	    152243 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp56Bit/NaiveAlg-12          	    6702	    190655 ns/op	    2754 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp64Bit/WindowSize-4-12      	    8520	    142854 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp64Bit/WindowSize-2-12      	    9529	    127696 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp64Bit/WindowSize-1-12      	    7584	    152115 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp64Bit/NaiveAlg-12          	    5872	    198611 ns/op	    2754 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp72Bit/WindowSize-4-12      	    5095	    229822 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp72Bit/WindowSize-2-12      	    5365	    224321 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp72Bit/WindowSize-1-12      	    4060	    294061 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp72Bit/NaiveAlg-12          	    5528	    228189 ns/op	    3203 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp80Bit/WindowSize-4-12      	    5248	    226448 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp80Bit/WindowSize-2-12      	    5364	    232736 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp80Bit/WindowSize-1-12      	    3816	    313286 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp80Bit/NaiveAlg-12          	    3826	    310067 ns/op	    2755 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp88Bit/WindowSize-4-12      	    4899	    254194 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp88Bit/WindowSize-2-12      	    4252	    272426 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp88Bit/WindowSize-1-12      	    3553	    397176 ns/op	    2162 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp88Bit/NaiveAlg-12          	    3328	    352689 ns/op	    2754 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp96Bit/WindowSize-4-12      	    4310	    232875 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp96Bit/WindowSize-2-12      	    5265	    233636 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp96Bit/WindowSize-1-12      	    3913	    302578 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp96Bit/NaiveAlg-12          	    3770	    345750 ns/op	    3203 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp128Bit/WindowSize-4-12     	    5794	    220408 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp128Bit/WindowSize-2-12     	    5190	    232868 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp128Bit/WindowSize-1-12     	    3865	    297221 ns/op	    2161 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp128Bit/NaiveAlg-12         	    2779	    418749 ns/op	    2755 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp256Bit/WindowSize-4-12     	    3200	    398551 ns/op	    7989 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp256Bit/WindowSize-2-12     	    2812	    444031 ns/op	    2994 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp256Bit/WindowSize-1-12     	    1948	    575957 ns/op	    2162 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp256Bit/NaiveAlg-12         	    1562	    760854 ns/op	    3204 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp512Bit/WindowSize-4-12     	    1557	    749588 ns/op	    7990 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp512Bit/WindowSize-2-12     	    1368	    890733 ns/op	    2995 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp512Bit/WindowSize-1-12     	     854	   1184850 ns/op	    2163 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp512Bit/NaiveAlg-12         	     738	   1615568 ns/op	    2756 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp1024Bit/WindowSize-4-12    	     844	   1441646 ns/op	    7992 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp1024Bit/WindowSize-2-12    	     636	   1756487 ns/op	    2995 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp1024Bit/WindowSize-1-12    	     529	   2270014 ns/op	    2165 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base192Bytes-Mod192Bytes-Exp1024Bit/NaiveAlg-12        	     362	   3298467 ns/op	    2762 B/op	       5 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp1Bit/WindowSize-4-12       	    7406	    170814 ns/op	    9221 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp1Bit/WindowSize-2-12       	    7890	    150082 ns/op	    3458 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp1Bit/WindowSize-1-12       	    6043	    194233 ns/op	    2497 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp1Bit/NaiveAlg-12           	24015736	        47.59 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp2Bit/WindowSize-4-12       	    7802	    156666 ns/op	    9221 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp2Bit/WindowSize-2-12       	    7243	    164847 ns/op	    3458 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp2Bit/WindowSize-1-12       	    6174	    194267 ns/op	    2497 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp2Bit/NaiveAlg-12           	  243850	      4587 ns/op	     992 B/op	       2 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp3Bit/WindowSize-4-12       	    6505	    180390 ns/op	    9222 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp3Bit/WindowSize-2-12       	    8430	    153723 ns/op	    3458 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp3Bit/WindowSize-1-12       	    6015	    199059 ns/op	    2497 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp3Bit/NaiveAlg-12           	  155887	      7986 ns/op	    1473 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp4Bit/WindowSize-4-12       	    6553	    166444 ns/op	    9222 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp4Bit/WindowSize-2-12       	    7566	    158504 ns/op	    3458 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp4Bit/WindowSize-1-12       	    5577	    211099 ns/op	    2498 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp4Bit/NaiveAlg-12           	   51026	     23191 ns/op	    1729 B/op	       3 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp5Bit/WindowSize-4-12       	    8760	    168126 ns/op	    9222 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp5Bit/WindowSize-2-12       	    7291	    160439 ns/op	    3458 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp5Bit/WindowSize-1-12       	    5726	    204410 ns/op	    2497 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp5Bit/NaiveAlg-12           	   44281	     25384 ns/op	    2498 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp6Bit/WindowSize-4-12       	    6908	    175034 ns/op	    9222 B/op	      20 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp6Bit/WindowSize-2-12       	    8325	    158841 ns/op	    3458 B/op	       8 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp6Bit/WindowSize-1-12       	    6452	    192863 ns/op	    2497 B/op	       6 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp6Bit/NaiveAlg-12           	   38335	     33021 ns/op	    2434 B/op	       4 allocs/op
+BenchmarkNatExpMontgomeryVaryingWindows/Base224Bytes-Mod224Bytes-Exp7Bit/WindowSize-4-12       	    7047	    173096 ns/op	    9222 B/op	      20 allocs/op
+SIGQUIT: quit
+PC=0x47cc01 m=0 sigcode=0
+
+goroutine 0 gp=0x91b080 m=0 mp=0x91c360 [idle]:
+runtime.futex(0x91c4a0, 0x80, 0x0, 0x0, 0x0, 0x0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/sys_linux_amd64.s:557 +0x21 fp=0x7ffd0310ff68 sp=0x7ffd0310ff60 pc=0x47cc01
+runtime.futexsleep(0x7ffd0310ffe0?, 0x413831?, 0x1d5ac1eb0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/os_linux.go:75 +0x30 fp=0x7ffd0310ffb8 sp=0x7ffd0310ff68 pc=0x438db0
+runtime.notesleep(0x91c4a0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/lock_futex.go:47 +0x87 fp=0x7ffd0310fff0 sp=0x7ffd0310ffb8 pc=0x412f47
+runtime.mPark(...)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:1887
+runtime.stopm()
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:2910 +0x8c fp=0x7ffd03110020 sp=0x7ffd0310fff0 pc=0x44432c
+runtime.findRunnable()
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:3647 +0xd9c fp=0x7ffd03110198 sp=0x7ffd03110020 pc=0x445dfc
+runtime.schedule()
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:4020 +0xb1 fp=0x7ffd031101d0 sp=0x7ffd03110198 pc=0x446ef1
+runtime.park_m(0xc00047e000)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:4144 +0x285 fp=0x7ffd03110230 sp=0x7ffd031101d0 pc=0x4473a5
+runtime.mcall()
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:459 +0x4e fp=0x7ffd03110248 sp=0x7ffd03110230 pc=0x478f0e
+
+goroutine 1 gp=0xc000002380 m=nil [chan receive, 10 minutes]:
+runtime.gopark(0x0?, 0x200000000000000?, 0x90?, 0x49?, 0x7014b78ebf30?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000141840 sp=0xc000141820 pc=0x47366e
+runtime.chanrecv(0xc0000181c0, 0x0, 0x1)
+	/home/gottfried/ModExp/go-modexp/src/runtime/chan.go:664 +0x445 fp=0xc0001418b8 sp=0xc000141840 pc=0x40dda5
+runtime.chanrecv1(0x41487e?, 0x701470bdd538?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/chan.go:506 +0x12 fp=0xc0001418e0 sp=0xc0001418b8 pc=0x40d932
+testing.(*B).run1(0xc000212008)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:247 +0xa6 fp=0xc0001419d0 sp=0xc0001418e0 pc=0x4fcfc6
+testing.(*B).Run(0xc0002122c8, {0x6f069f?, 0x49dc93?}, 0x701ee0)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:847 +0x491 fp=0xc000141ad0 sp=0xc0001419d0 pc=0x4ffdd1
+testing.runBenchmarks.func1(0xc0002122c8)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:708 +0x37 fp=0xc000141b10 sp=0xc000141ad0 pc=0x4feed7
+testing.(*B).runN(0xc0002122c8, 0x1)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:219 +0x190 fp=0xc000141ba0 sp=0xc000141b10 pc=0x4fcdb0
+testing.runBenchmarks({0x6dfa1a, 0x8}, 0xe?, {0x90e820, 0x45, 0x7?})
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:717 +0x5f6 fp=0xc000141ca0 sp=0xc000141ba0 pc=0x4fee16
+testing.(*M).Run(0xc00007fe00)
+	/home/gottfried/ModExp/go-modexp/src/testing/testing.go:2158 +0x9b6 fp=0xc000141ed0 sp=0xc000141ca0 pc=0x50e596
+main.main()
+	_testmain.go:599 +0x9b fp=0xc000141f50 sp=0xc000141ed0 pc=0x65c73b
+runtime.main()
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:283 +0x28b fp=0xc000141fe0 sp=0xc000141f50 pc=0x43f52b
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000141fe8 sp=0xc000141fe0 pc=0x47adc1
+
+goroutine 2 gp=0xc0000028c0 m=nil [force gc (idle), 10 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000058fa8 sp=0xc000058f88 pc=0x47366e
+runtime.goparkunlock(...)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:441
+runtime.forcegchelper()
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:348 +0xb3 fp=0xc000058fe0 sp=0xc000058fa8 pc=0x43f873
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000058fe8 sp=0xc000058fe0 pc=0x47adc1
+created by runtime.init.7 in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:336 +0x1a
+
+goroutine 3 gp=0xc000002e00 m=nil [GC sweep wait]:
+runtime.gopark(0x91a701?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000059780 sp=0xc000059760 pc=0x47366e
+runtime.goparkunlock(...)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:441
+runtime.bgsweep(0xc000078000)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgcsweep.go:316 +0xdf fp=0xc0000597c8 sp=0xc000059780 pc=0x42829f
+runtime.gcenable.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:204 +0x25 fp=0xc0000597e0 sp=0xc0000597c8 pc=0x41c785
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000597e8 sp=0xc0000597e0 pc=0x47adc1
+created by runtime.gcenable in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:204 +0x66
+
+goroutine 4 gp=0xc000002fc0 m=nil [GC scavenge wait]:
+runtime.gopark(0x10000?, 0x6d2992?, 0x0?, 0x0?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000059f78 sp=0xc000059f58 pc=0x47366e
+runtime.goparkunlock(...)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:441
+runtime.(*scavengerState).park(0x91ada0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgcscavenge.go:425 +0x49 fp=0xc000059fa8 sp=0xc000059f78 pc=0x425d09
+runtime.bgscavenge(0xc000078000)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgcscavenge.go:658 +0x59 fp=0xc000059fc8 sp=0xc000059fa8 pc=0x426299
+runtime.gcenable.gowrap2()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:205 +0x25 fp=0xc000059fe0 sp=0xc000059fc8 pc=0x41c725
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000059fe8 sp=0xc000059fe0 pc=0x47adc1
+created by runtime.gcenable in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:205 +0xa5
+
+goroutine 5 gp=0xc000003500 m=nil [finalizer wait, 10 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x50?, 0x70?, 0x15?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000058630 sp=0xc000058610 pc=0x47366e
+runtime.runfinq()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mfinal.go:196 +0x107 fp=0xc0000587e0 sp=0xc000058630 pc=0x41b747
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000587e8 sp=0xc0000587e0 pc=0x47adc1
+created by runtime.createfing in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mfinal.go:166 +0x3d
+
+goroutine 6 gp=0xc0000036c0 m=nil [GC worker (idle), 10 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc00005a738 sp=0xc00005a718 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc00005a7c8 sp=0xc00005a738 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc00005a7e0 sp=0xc00005a7c8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc00005a7e8 sp=0xc00005a7e0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 17 gp=0xc000082380 m=nil [GC worker (idle), 10 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000054738 sp=0xc000054718 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000547c8 sp=0xc000054738 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc0000547e0 sp=0xc0000547c8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000547e8 sp=0xc0000547e0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 18 gp=0xc000082540 m=nil [GC worker (idle), 10 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000054f38 sp=0xc000054f18 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc000054fc8 sp=0xc000054f38 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc000054fe0 sp=0xc000054fc8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000054fe8 sp=0xc000054fe0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 33 gp=0xc000498000 m=nil [GC worker (idle)]:
+runtime.gopark(0x1b9dd5ac630c?, 0x1?, 0xc6?, 0xc1?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc0001a1f38 sp=0xc0001a1f18 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc0001a1fc8 sp=0xc0001a1f38 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc0001a1fe0 sp=0xc0001a1fc8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a1fe8 sp=0xc0001a1fe0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 7 gp=0xc000003880 m=nil [GC worker (idle)]:
+runtime.gopark(0x1b9dd5abffd4?, 0x3?, 0x76?, 0x2?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc00005b738 sp=0xc00005b718 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc00005b7c8 sp=0xc00005b738 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc00005b7e0 sp=0xc00005b7c8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc00005b7e8 sp=0xc00005b7e0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 8 gp=0xc000003a40 m=nil [GC worker (idle)]:
+runtime.gopark(0x1b9dd5ac2bbc?, 0x3?, 0xc0?, 0x3?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc00005af38 sp=0xc00005af18 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc00005afc8 sp=0xc00005af38 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc00005afe0 sp=0xc00005afc8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc00005afe8 sp=0xc00005afe0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 9 gp=0xc000003c00 m=nil [GC worker (idle)]:
+runtime.gopark(0x1b9dd5ac1140?, 0x1?, 0x5f?, 0xd?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc0001a3f38 sp=0xc0001a3f18 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc0001a3fc8 sp=0xc0001a3f38 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc0001a3fe0 sp=0xc0001a3fc8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a3fe8 sp=0xc0001a3fe0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 10 gp=0xc000003dc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x1b9d6780b751?, 0x1?, 0x34?, 0x3?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc0001a4738 sp=0xc0001a4718 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc0001a47c8 sp=0xc0001a4738 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc0001a47e0 sp=0xc0001a47c8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a47e8 sp=0xc0001a47e0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 11 gp=0xc00047e000 m=nil [GC worker (idle)]:
+runtime.gopark(0x1b9dd5ac1b36?, 0x3?, 0x2e?, 0x95?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc0001a5f38 sp=0xc0001a5f18 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc0001a5fc8 sp=0xc0001a5f38 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc0001a5fe0 sp=0xc0001a5fc8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a5fe8 sp=0xc0001a5fe0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 12 gp=0xc00047e1c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x1b9d6780b71f?, 0x1?, 0x89?, 0x84?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000055738 sp=0xc000055718 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc0000557c8 sp=0xc000055738 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc0000557e0 sp=0xc0000557c8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000557e8 sp=0xc0000557e0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 13 gp=0xc00047e380 m=nil [GC worker (idle)]:
+runtime.gopark(0x1b9dd5ac1870?, 0x1?, 0xc7?, 0x18?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc0001a7f38 sp=0xc0001a7f18 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc0001a7fc8 sp=0xc0001a7f38 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc0001a7fe0 sp=0xc0001a7fc8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a7fe8 sp=0xc0001a7fe0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 14 gp=0xc00047e540 m=nil [GC worker (idle), 8 minutes]:
+runtime.gopark(0x1b2103d5b831?, 0x3?, 0x71?, 0x37?, 0x0?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc00049cf38 sp=0xc00049cf18 pc=0x47366e
+runtime.gcBgMarkWorker(0xc0000181c0)
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1423 +0xe9 fp=0xc00049cfc8 sp=0xc00049cf38 pc=0x41ebe9
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x25 fp=0xc00049cfe0 sp=0xc00049cfc8 pc=0x41eac5
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc00049cfe8 sp=0xc00049cfe0 pc=0x47adc1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/runtime/mgc.go:1339 +0x105
+
+goroutine 49 gp=0xc0004988c0 m=nil [chan receive]:
+runtime.gopark(0x0?, 0x201010000000000?, 0xf8?, 0xd8?, 0x7014b78eb108?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000285b08 sp=0xc000285ae8 pc=0x47366e
+runtime.chanrecv(0xc000018380, 0x0, 0x1)
+	/home/gottfried/ModExp/go-modexp/src/runtime/chan.go:664 +0x445 fp=0xc000285b80 sp=0xc000285b08 pc=0x40dda5
+runtime.chanrecv1(0x41487e?, 0x701470bdd538?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/chan.go:506 +0x12 fp=0xc000285ba8 sp=0xc000285b80 pc=0x40d932
+testing.(*B).run1(0xc000212588)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:247 +0xa6 fp=0xc000285c98 sp=0xc000285ba8 pc=0x4fcfc6
+testing.(*B).Run(0xc000212008, {0xc000494020?, 0xc000285ec8?}, 0xc00058e000)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:847 +0x491 fp=0xc000285d98 sp=0xc000285c98 pc=0x4ffdd1
+math/big.BenchmarkNatExpMontgomeryVaryingWindows(0xc000212008)
+	/home/gottfried/ModExp/go-modexp/src/math/big/nat_test.go:1123 +0x2e8 fp=0xc000285f10 sp=0xc000285d98 pc=0x641ba8
+testing.(*B).runN(0xc000212008, 0x1)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:219 +0x190 fp=0xc000285fa0 sp=0xc000285f10 pc=0x4fcdb0
+testing.(*B).run1.func1()
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:245 +0x48 fp=0xc000285fe0 sp=0xc000285fa0 pc=0x4fd428
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000285fe8 sp=0xc000285fe0 pc=0x47adc1
+created by testing.(*B).run1 in goroutine 1
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:238 +0x90
+
+goroutine 1311 gp=0xc000602c40 m=nil [chan receive]:
+runtime.gopark(0x0?, 0x200000000000000?, 0xf8?, 0xd8?, 0x7014b78eb108?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/proc.go:435 +0xce fp=0xc000280c30 sp=0xc000280c10 pc=0x47366e
+runtime.chanrecv(0xc0000183f0, 0x0, 0x1)
+	/home/gottfried/ModExp/go-modexp/src/runtime/chan.go:664 +0x445 fp=0xc000280ca8 sp=0xc000280c30 pc=0x40dda5
+runtime.chanrecv1(0x41487e?, 0x701470bdd538?)
+	/home/gottfried/ModExp/go-modexp/src/runtime/chan.go:506 +0x12 fp=0xc000280cd0 sp=0xc000280ca8 pc=0x40d932
+testing.(*B).run1(0xc000212b08)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:247 +0xa6 fp=0xc000280dc0 sp=0xc000280cd0 pc=0x4fcfc6
+testing.(*B).Run(0xc000212588, {0x6e1de4?, 0x47708c?}, 0xc0001443c0)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:847 +0x491 fp=0xc000280ec0 sp=0xc000280dc0 pc=0x4ffdd1
+math/big.benchmarkExpNNMontgomery.func5(0xc000212588)
+	/home/gottfried/ModExp/go-modexp/src/math/big/nat_test.go:1091 +0x6a fp=0xc000280f10 sp=0xc000280ec0 pc=0x6402ca
+testing.(*B).runN(0xc000212588, 0x1)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:219 +0x190 fp=0xc000280fa0 sp=0xc000280f10 pc=0x4fcdb0
+testing.(*B).run1.func1()
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:245 +0x48 fp=0xc000280fe0 sp=0xc000280fa0 pc=0x4fd428
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000280fe8 sp=0xc000280fe0 pc=0x47adc1
+created by testing.(*B).run1 in goroutine 49
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:238 +0x90
+
+goroutine 1313 gp=0xc0000a6e00 m=nil [runnable]:
+math/big.nat.montgomery({0xc0004e4000?, 0x1c?, 0x3e?}, {0xc0004dfc00?, 0x1c?, 0x3e?}, {0xc0004dfc00?, 0x1c?, 0x3e?}, {0xc000026200, ...}, ...)
+	/home/gottfried/ModExp/go-modexp/src/math/big/nat.go:210 +0x54c fp=0xc000284c58 sp=0xc000284c50 pc=0x5f500c
+math/big.nat.expNNMontgomerySize2({0xc0004dfc00, 0xc0001a1688?, 0x3e}, {0xc00015a480?, 0xc00007a260?, 0xc0001a16a8?}, {0xc00001c3c0, 0x1, 0x1b9db042dac9?}, {0xc000026200, ...})
+	/home/gottfried/ModExp/go-modexp/src/math/big/nat.go:1590 +0xac5 fp=0xc000284e10 sp=0xc000284c58 pc=0x5fc945
+math/big.benchmarkExpNNMontgomery.func2(0xc000212b08)
+	/home/gottfried/ModExp/go-modexp/src/math/big/nat_test.go:1073 +0x1f7 fp=0xc000284f10 sp=0xc000284e10 pc=0x640bd7
+testing.(*B).runN(0xc000212b08, 0x1)
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:219 +0x190 fp=0xc000284fa0 sp=0xc000284f10 pc=0x4fcdb0
+testing.(*B).run1.func1()
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:245 +0x48 fp=0xc000284fe0 sp=0xc000284fa0 pc=0x4fd428
+runtime.goexit({})
+	/home/gottfried/ModExp/go-modexp/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000284fe8 sp=0xc000284fe0 pc=0x47adc1
+created by testing.(*B).run1 in goroutine 1311
+	/home/gottfried/ModExp/go-modexp/src/testing/benchmark.go:238 +0x90
+
+rax    0xca
+rbx    0x0
+rcx    0x47cc03
+rdx    0x0
+rdi    0x91c4a0
+rsi    0x80
+rbp    0x7ffd0310ffa8
+rsp    0x7ffd0310ff60
+r8     0x0
+r9     0x0
+r10    0x0
+r11    0x286
+r12    0x35
+r13    0x1
+r14    0x91b080
+r15    0x1
+rip    0x47cc01
+rflags 0x286
+cs     0x33
+fs     0x0
+gs     0x0
+*** Test killed with quit: ran too long (11m0s).
+exit status 2
+FAIL	math/big	660.015s

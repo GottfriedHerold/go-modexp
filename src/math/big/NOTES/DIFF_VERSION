@@ -1,0 +1,1082 @@
+diff --git a/src/math/big/nat.go b/src/math/big/nat.go
+index 541da229d6..d00eb86ff0 100644
+--- a/src/math/big/nat.go
++++ b/src/math/big/nat.go
+@@ -930,6 +930,8 @@ func (z nat) random(rand *rand.Rand, limit nat, n int) nat {
+ 
+ // If m != 0 (i.e., len(m) != 0), expNN sets z to x**y mod m;
+ // otherwise it sets z to x**y. The result is the value of z.
++//
++// This function asserts that m does not alias z (this needs to be ensured by the caller).
+ func (z nat) expNN(x, y, m nat, slow bool) nat {
+ 	if alias(z, x) || alias(z, y) {
+ 		// We cannot allow in-place modification of x or y.
+@@ -978,17 +980,47 @@ func (z nat) expNN(x, y, m nat, slow bool) nat {
+ 		// and a CRT-decomposed Montgomery method for the remaining values
+ 		// (even values times non-trivial odd values, which decompose into one
+ 		// instance of each of the first two cases).
+-		if len(y) > 1 && !slow {
++
++		// we use the more elaborate algorithm once the exponents has at least this many bits.
++
++		// compute bit length of exponent. If it it very large, we may take a (large) replacement value.
++		// This is merely to avoid overflows. We only care about this value to select the exponentiation algorithm.
++		exponentBitLength := len(y)
++		if exponentBitLength < 100000 {
++			exponentBitLength *= _W
++			exponentBitLength += _W - int(nlz(y[len(y)-1]))
++		}
++
++		const threshold_for_slow_algorithm = 4 // we use the slow algorithm for bit-lengths <= this
++		const threshold_for_window_size4 = 128 // we use a 4-bit windows for bitlengths >= this
++
++		if !slow && (exponentBitLength > threshold_for_slow_algorithm) {
+ 			if m[0]&1 == 1 {
+-				return z.expNNMontgomery(x, y, m)
++				if exponentBitLength > threshold_for_window_size4 {
++					return z.expNNMontgomerySize4(x, y, m)
++				} else {
++					return z.expNNMontgomerySize2(x, y, m)
++				}
+ 			}
+ 			if logM, ok := m.isPow2(); ok {
+-				return z.expNNWindowed(x, y, logM)
++				if exponentBitLength > threshold_for_window_size4 {
++					return z.expNNWindowedSize4(x, y, logM)
++				} else {
++					return z.expNNWindowedSize2(x, y, logM)
++				}
+ 			}
+ 			return z.expNNMontgomeryEven(x, y, m)
+ 		}
+ 	}
++	return z.expNNSlow(x, y, m)
++}
+ 
++// expNNSlow computes x**y mod m by a naive square-and-multiply algorithm, using nat.div for modular reduction.
++// This is the base case used for small exponents or m == 0.
++//
++// This function asserts (but does not check) that z does not alias x,y or m.
++// We further assert that x > 0
++func (z nat) expNNSlow(x, y, m nat) nat {
+ 	z = z.set(x)
+ 	v := y[len(y)-1] // v > 0 because y is normalized and y > 0
+ 	shift := nlz(v) + 1
+@@ -1095,96 +1127,424 @@ func (z nat) expNNMontgomeryEven(x, y, m nat) nat {
+ 	return z
+ }
+ 
+-// expNNWindowed calculates x**y mod m using a fixed, 4-bit window,
++// build_precomputation_window builds a precomputation window for exponentiation:
++//
++// Notably, it sets powers[i] to x**i modulo m, where m == 2**logM for
++// 0 <= i < 2**window_size.
++// powers must be a non-nil slice of size *exactly* 2**window_size.
++func build_precomputation_window(powers []*nat, window_size int, logM uint, x nat) {
++	if len(powers) != 1<<window_size {
++		panic("big: misuse of build_precomputation_window")
++	}
++	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
++	for i := range powers {
++		powers[i] = getNat(w)
++	}
++	*powers[0] = powers[0].set(natOne)
++	*powers[1] = powers[1].trunc(x, logM)
++	// While we could compute each powers[i] as powers[i-1] * x,
++	// we instead compute powers[i] and powers[i+1] from powers[i/2].
++	// This replaces half the multiplications needed by squarings, which is more efficient.
++	// It may also has better memory access patterns.
++	for i := 2; i < 1<<window_size; i += 2 {
++		p2, p, p1 := powers[i/2], powers[i], powers[i+1]
++		*p = p.sqr(*p2)
++		*p = p.trunc(*p, logM)
++		*p1 = p1.mul(*p, x)
++		*p1 = p1.trunc(*p1, logM)
++	}
++}
++
++// expNNWindowedSize4 calculates x**y mod m using a fixed, 4-bit window,
+ // where m = 2**logM.
+-func (z nat) expNNWindowed(x, y nat, logM uint) nat {
+-	if len(y) <= 1 {
+-		panic("big: misuse of expNNWindowed")
++//
++// This function requires y > 0, otherwise, it panics.
++func (z nat) expNNWindowedSize4(x, y nat, logM uint) nat {
++	// Gotti: The original algorithm would not work for len(y) <= 1;
++	// I made some modifications to make it work, sacrificing some efficiency in the process. This sacrifice is not needed, but simplifies the code.
++	// This should be OK, as for our use-case, we only care about worst-case performance (for given bit-lengths of the exponents)
++	/*
++		if len(y) <= 1 {
++			panic("big: misuse of expNNWindowed")
++		}
++	*/
++
++	if len(y) == 1 && y[0] == 0 {
++		panic("big: called expNNWindowed for exponent 0")
+ 	}
+-	if x[0]&1 == 0 {
++
++	// Gotti: NOTE: setWord does not work correctly on nil, so we need to catch this when handling special cases.
++	// This does not matter for the calls from expNN, but it causes issues in testing.
++
++	if (len(y) > 1) && (x[0]&1 == 0) {
+ 		// len(y) > 1, so y  > logM.
+ 		// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
++		if z == nil {
++			return nat{0}.norm()
++		}
+ 		return z.setWord(0)
+ 	}
+-	if logM == 1 {
+-		return z.setWord(1)
++	if logM == 1 { // i.e. m == 2;
++		if z == nil {
++			return nat{x[0] & 1}.norm()
++		}
++		return z.setWord(x[0] & 1) // since the exponent is at least 1, we just take the parity of the base x.
+ 	}
+ 
+ 	// zz is used to avoid allocating in mul as otherwise
+ 	// the arguments would alias.
+-	w := int((logM + _W - 1) / _W)
++	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
+ 	zzp := getNat(w)
+ 	zz := *zzp
+ 
+-	const n = 4
+-	// powers[i] contains x^i.
+-	var powers [1 << n]*nat
++	const window_size = 4 // size of precomputed windows. We precompute x^i for any i with at most n bits.
++	// window_size must be at least 1 and divide _W.
++
++	// We build a precomputation table, where powers[i] contains x^i.
++	var powers [1 << window_size]*nat
++	build_precomputation_window(powers[:], window_size, logM, x)
++
++	// Gotti: The reasoning below is only true if gcd(x, m) = 1, i.e. if x is odd.
++	// The original implementation fully handled the case of even x above;
++	// our generalization now needs to handle that case as well.
++	// While we could still essentially truncate y by splitting
++	// x = 2^k * odd and then handling the even part separately (which reduces m),
++	// I do not believe this optimization by splitting x is helpful for the worst-case, so to keep the changes simple
++	// we just deactivate the y -> y mod phi(n) - optimization in case it does not work easily.
++
++	// PREVIOUS REASONING (KEPT FOR CLARITY), NO LONGER TRUE:
++	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
++	// so we can compute x**(y mod 2**(logM-1)) instead of x**y.
++	// That is, we can throw away all but the bottom logM-1 bits of y.
++	// Instead of allocating a new y, we start reading y at the right word
++	// and truncate it appropriately at the start of the loop.
++
++	var (
++		i     int  // i ranges over the words of y, going down and starting from mtop
++		mtop  int  // index of the highest *relevant* word of y
++		mmask Word // bitmask for y[mtop], to set unneeded bits to zero (due to reduction mod phi(2**logM)).
++	)
++
++	// Gotti: Actually, the mmask was not doing anything at all in the code.
++	// The reason is that setting some bits in y[mtop] to 0 did not improve the algorithm at all:
++	// The algorithm still performed pretty much the same work for those zeroed bits (squaring 1's).
++	// Fixed this.
++
++	if (len(y) > 1) || (x[0]&1 == 1) { // Note: conditions are exclusive, because the && - case has been handled before
++		i = len(y) - 1
++		mtop = int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
++		mmask = ^Word(0)
++		if mbits := (logM - 1) & (_W - 1); mbits != 0 {
++			mmask = (1 << mbits) - 1
++		}
++		if i > mtop {
++			i = mtop
++		}
++	} else { // Gotti (New case): x is even and len(y) == 1. In this case, we don't try to do anything clever.
++		i = 0    // == len(y) - 1
++		mtop = 0 // == len(y) - 1
++		mmask = ^Word(0)
++		mmask >>= nlz(y[0])
++	}
++
++	// Gotti: The structure of the algorithm below silently currently relies on this.
++	// Make it explicit, in case someone changes window_size.
++	if _W%window_size != 0 {
++		panic("big: window_size must divide the word size")
++	}
++
++	// Gotti: Special - case the first loop iteration for the mtop - word:
++	yi := y[i]
++	if i == mtop { // if i == mtop, we can skip some bits of yi due to reducing modulo phi(m)
++		yi &= mmask
++	}
++
++	// ensure that the top (remaining, relevant)  word is != 0.
++	for yi == 0 {
++		if i == 0 {
++			*zzp = zz
++			putNat(zzp)
++			for i := range powers {
++				putNat(powers[i])
++			}
++			if z == nil {
++				return nat{1}
++			}
++			z.setWord(1)
++			return z.norm()
++		}
++		i--
++		mmask = ^Word(0) // unneeded, but added for clarity.
++		yi = y[i]
++	}
++
++	bitLenYi := 64 - bits.LeadingZeros64(uint64(yi))  // bit-lengh of yi
++	k := (bitLenYi + (window_size - 1)) / window_size // number of window_size parts needed to process yi. Note k >= 1, since yi != 0.
++
++	// we directly copy in the first iteration, rather than multiplying 1 with a precomputed value.
++	k -= 1
++	z = z.set(*powers[yi>>(k*window_size)])
++
++	// process rest of yi
++	for j := int(k - 1); j >= 0; j-- {
++		if window_size != 4 {
++			panic("big: optimization for window size 4 invalid")
++		}
++		// square 4 times
++		zz = zz.sqr(z)
++		zz, z = z, zz
++		z = z.trunc(z, logM)
++
++		zz = zz.sqr(z)
++		zz, z = z, zz
++		z = z.trunc(z, logM)
++
++		zz = zz.sqr(z)
++		zz, z = z, zz
++		z = z.trunc(z, logM)
++
++		zz = zz.sqr(z)
++		zz, z = z, zz
++		z = z.trunc(z, logM)
++
++		// multiply by appropriate power
++		zz = zz.mul(z, *powers[(yi>>(j*window_size))&((1<<window_size)-1)])
++		zz, z = z, zz
++		z = z.trunc(z, logM)
++	}
++
++	// process y[:i]
++	i -= 1
++	for ; i >= 0; i-- {
++		yi := y[i]
++		for j := 0; j < _W; j += window_size {
++
++			// Gotti: Loop is unrolled for window size 4. We make the assumption explicit, so changing
++			// window_size will panic here. The check here should be optimized away by any reasonable compiler, since window_size is const.
++			if window_size != 4 {
++				panic("big: optimization for window size 4 invalid")
++			}
++
++			// Account for use of 4 bits in previous iteration.
++			// Unrolled loop for significant performance
++			// gain. Use go test -bench=".*" in crypto/rsa
++			// to check performance before making changes.
++			zz = zz.sqr(z)
++			zz, z = z, zz
++			z = z.trunc(z, logM)
++
++			zz = zz.sqr(z)
++			zz, z = z, zz
++			z = z.trunc(z, logM)
++
++			zz = zz.sqr(z)
++			zz, z = z, zz
++			z = z.trunc(z, logM)
++
++			zz = zz.sqr(z)
++			zz, z = z, zz
++			z = z.trunc(z, logM)
++
++			zz = zz.mul(z, *powers[yi>>(_W-window_size)])
++			zz, z = z, zz
++			z = z.trunc(z, logM)
++
++			yi <<= window_size
++		}
++	}
++
++	// put the used temporary variables back into the pool, to possibly avoid reallocations in the future.
++	*zzp = zz
++	putNat(zzp)
+ 	for i := range powers {
+-		powers[i] = getNat(w)
++		putNat(powers[i])
+ 	}
+-	*powers[0] = powers[0].set(natOne)
+-	*powers[1] = powers[1].trunc(x, logM)
+-	for i := 2; i < 1<<n; i += 2 {
+-		p2, p, p1 := powers[i/2], powers[i], powers[i+1]
+-		*p = p.sqr(*p2)
+-		*p = p.trunc(*p, logM)
+-		*p1 = p1.mul(*p, x)
+-		*p1 = p1.trunc(*p1, logM)
++
++	return z.norm()
++}
++
++// expNNWindowedSize4 calculates x**y mod m using a fixed, 2-bit window,
++// where m = 2**logM.
++//
++// This function requires y > 0, otherwise, it panics.
++func (z nat) expNNWindowedSize2(x, y nat, logM uint) nat {
++	// Gotti: The original algorithm would not work for len(y) <= 1;
++	// I made some modifications to make it work, sacrificing some efficiency in the process. This sacrifice is not needed, but simplifies the code.
++	// This should be OK, as for our use-case, we only care about worst-case performance (for given bit-lengths of the exponents)
++	/*
++		if len(y) <= 1 {
++			panic("big: misuse of expNNWindowed")
++		}
++	*/
++
++	if len(y) == 1 && y[0] == 0 {
++		panic("big: called expNNWindowed for exponent 0")
++	}
++
++	// Gotti: NOTE: setWord does not work correctly on nil, so we need to catch this when handling special cases.
++	// This does not matter for the calls from expNN, but it causes issues in testing.
++
++	if (len(y) > 1) && (x[0]&1 == 0) {
++		// len(y) > 1, so y  > logM.
++		// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
++		if z == nil {
++			return nat{0}.norm()
++		}
++		return z.setWord(0)
++	}
++	if logM == 1 { // i.e. m == 2;
++		if z == nil {
++			return nat{x[0] & 1}.norm()
++		}
++		return z.setWord(x[0] & 1) // since the exponent is at least 1, we just take the parity of the base x.
+ 	}
+ 
++	// zz is used to avoid allocating in mul as otherwise
++	// the arguments would alias.
++	w := int((logM + _W - 1) / _W) // number of words that would be needed to store the modulus.
++	zzp := getNat(w)
++	zz := *zzp
++
++	const window_size = 2 // size of precomputed windows. We precompute x^i for any i with at most n bits.
++	// window_size must be at least 1 and divide _W.
++
++	// We build a precomputation table, where powers[i] contains x^i.
++	var powers [1 << window_size]*nat
++	build_precomputation_window(powers[:], window_size, logM, x)
++
++	// Gotti: The reasoning below is only true if gcd(x, m) = 1, i.e. if x is odd.
++	// The original implementation fully handled the case of even x above;
++	// our generalization now needs to handle that case as well.
++	// While we could still essentially truncate y by splitting
++	// x = 2^k * odd and then handling the even part separately (which reduces m),
++	// I do not believe this optimization by splitting x is helpful for the worst-case, so to keep the changes simple
++	// we just deactivate the y -> y mod phi(n) - optimization in case it does not work easily.
++
++	// PREVIOUS REASONING (KEPT FOR CLARITY), NO LONGER TRUE:
+ 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
+ 	// so we can compute x**(y mod 2**(logM-1)) instead of x**y.
+ 	// That is, we can throw away all but the bottom logM-1 bits of y.
+ 	// Instead of allocating a new y, we start reading y at the right word
+ 	// and truncate it appropriately at the start of the loop.
+-	i := len(y) - 1
+-	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
+-	mmask := ^Word(0)
+-	if mbits := (logM - 1) & (_W - 1); mbits != 0 {
+-		mmask = (1 << mbits) - 1
++
++	var (
++		i     int  // i ranges over the words of y, going down and starting from mtop
++		mtop  int  // index of the highest *relevant* word of y
++		mmask Word // bitmask for y[mtop], to set unneeded bits to zero (due to reduction mod phi(2**logM)).
++	)
++
++	// Gotti: Actually, the mmask was not doing anything at all in the code.
++	// The reason is that setting some bits in y[mtop] to 0 did not improve the algorithm at all:
++	// The algorithm still performed pretty much the same work for those zeroed bits (squaring 1's).
++	// Fixed this.
++
++	if (len(y) > 1) || (x[0]&1 == 1) { // Note: conditions are exclusive, because the && - case has been handled before
++		i = len(y) - 1
++		mtop = int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
++		mmask = ^Word(0)
++		if mbits := (logM - 1) & (_W - 1); mbits != 0 {
++			mmask = (1 << mbits) - 1
++		}
++		if i > mtop {
++			i = mtop
++		}
++	} else { // Gotti (New case): x is even and len(y) == 1. In this case, we don't try to do anything clever.
++		i = 0    // == len(y) - 1
++		mtop = 0 // == len(y) - 1
++		mmask = ^Word(0)
++		mmask >>= nlz(y[0])
+ 	}
+-	if i > mtop {
+-		i = mtop
++
++	// Gotti: The structure of the algorithm below silently currently relies on this.
++	// Make it explicit, in case someone changes window_size.
++	if _W%window_size != 0 {
++		panic("big: window_size must divide the word size")
+ 	}
+-	advance := false
+-	z = z.setWord(1)
+-	for ; i >= 0; i-- {
+-		yi := y[i]
+-		if i == mtop {
+-			yi &= mmask
++
++	// Gotti: Special - case the first loop iteration for the mtop - word:
++	yi := y[i]
++	if i == mtop { // if i == mtop, we can skip some bits of yi due to reducing modulo phi(m)
++		yi &= mmask
++	}
++
++	// ensure that the top (remaining, relevant)  word is != 0.
++	for yi == 0 {
++		if i == 0 {
++			*zzp = zz
++			putNat(zzp)
++			for i := range powers {
++				putNat(powers[i])
++			}
++			if z == nil {
++				return nat{1}
++			}
++			z.setWord(1)
++			return z.norm()
+ 		}
+-		for j := 0; j < _W; j += n {
+-			if advance {
+-				// Account for use of 4 bits in previous iteration.
+-				// Unrolled loop for significant performance
+-				// gain. Use go test -bench=".*" in crypto/rsa
+-				// to check performance before making changes.
+-				zz = zz.sqr(z)
+-				zz, z = z, zz
+-				z = z.trunc(z, logM)
++		i--
++		mmask = ^Word(0) // unneeded, but added for clarity.
++		yi = y[i]
++	}
+ 
+-				zz = zz.sqr(z)
+-				zz, z = z, zz
+-				z = z.trunc(z, logM)
++	bitLenYi := 64 - bits.LeadingZeros64(uint64(yi))  // bit-lengh of yi
++	k := (bitLenYi + (window_size - 1)) / window_size // number of window_size parts needed to process yi. Note k >= 1, since yi != 0.
+ 
+-				zz = zz.sqr(z)
+-				zz, z = z, zz
+-				z = z.trunc(z, logM)
++	// we directly copy in the first iteration, rather than multiplying 1 with a precomputed value.
++	k -= 1
++	z = z.set(*powers[yi>>(k*window_size)])
+ 
+-				zz = zz.sqr(z)
+-				zz, z = z, zz
+-				z = z.trunc(z, logM)
++	// process rest of yi
++	for j := int(k - 1); j >= 0; j-- {
++		if window_size != 2 {
++			panic("big: optimization for window size 2 invalid")
++		}
++		// square 2 times
++		zz = zz.sqr(z)
++		zz, z = z, zz
++		z = z.trunc(z, logM)
++
++		zz = zz.sqr(z)
++		zz, z = z, zz
++		z = z.trunc(z, logM)
++
++		// multiply by appropriate power
++		zz = zz.mul(z, *powers[(yi>>(j*window_size))&((1<<window_size)-1)])
++		zz, z = z, zz
++		z = z.trunc(z, logM)
++	}
++
++	// process y[:i]
++	i -= 1
++	for ; i >= 0; i-- {
++		yi := y[i]
++		for j := 0; j < _W; j += window_size {
++
++			// Gotti: Loop is unrolled for window size 2. We make the assumption explicit, so changing
++			// window_size will panic here. The check here should be optimized away by any reasonable compiler, since window_size is const.
++			if window_size != 2 {
++				panic("big: optimization for window size 2 invalid")
+ 			}
+ 
+-			zz = zz.mul(z, *powers[yi>>(_W-n)])
++			// Unrolled loop for significant performance
++			// gain. Use go test -bench=".*" in crypto/rsa
++			// to check performance before making changes.
++			zz = zz.sqr(z)
++			zz, z = z, zz
++			z = z.trunc(z, logM)
++
++			zz = zz.sqr(z)
++			zz, z = z, zz
++			z = z.trunc(z, logM)
++
++			zz = zz.mul(z, *powers[yi>>(_W-window_size)])
+ 			zz, z = z, zz
+ 			z = z.trunc(z, logM)
+ 
+-			yi <<= n
+-			advance = true
++			yi <<= window_size
+ 		}
+ 	}
+ 
++	// put the used temporary variables back into the pool, to possibly avoid reallocations in the future.
+ 	*zzp = zz
+ 	putNat(zzp)
+ 	for i := range powers {
+@@ -1194,9 +1554,27 @@ func (z nat) expNNWindowed(x, y nat, logM uint) nat {
+ 	return z.norm()
+ }
+ 
+-// expNNMontgomery calculates x**y mod m using a fixed, 4-bit window.
++// compute_montgomery_k0 computes k0 := - m0**(-1) modulo 2**_W and returns k0.
++//
++// This is used for Montgomery multiplication. We assert (but do not check) that m0 is odd,
++// as otherwise the inverse does not exists (and Montgomery multiplication does not work).
++func compute_montgomery_k0(m0 Word) (k0 Word) {
++	// Ideally the precomputations would be performed outside, and reused
++	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
++	// Iteration for Multiplicative Inverses Modulo Prime Powers".
++	k0 = 2 - m0
++	t := m0 - 1
++	for i := 1; i < _W; i <<= 1 {
++		t *= t
++		k0 *= (t + 1)
++	}
++	k0 = -k0
++	return
++}
++
++// expNNMontgomerySize4 calculates x**y mod m using a fixed, 4-bit window. Asserts that m is odd.
+ // Uses Montgomery representation.
+-func (z nat) expNNMontgomery(x, y, m nat) nat {
++func (z nat) expNNMontgomerySize4(x, y, m nat) nat {
+ 	numWords := len(m)
+ 
+ 	// We want the lengths of x and m to be equal.
+@@ -1211,16 +1589,7 @@ func (z nat) expNNMontgomery(x, y, m nat) nat {
+ 		x = rr
+ 	}
+ 
+-	// Ideally the precomputations would be performed outside, and reused
+-	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
+-	// Iteration for Multiplicative Inverses Modulo Prime Powers".
+-	k0 := 2 - m[0]
+-	t := m[0] - 1
+-	for i := 1; i < _W; i <<= 1 {
+-		t *= t
+-		k0 *= (t + 1)
+-	}
+-	k0 = -k0
++	k0 := compute_montgomery_k0(m[0])
+ 
+ 	// RR = 2**(2*_W*len(m)) mod m
+ 	RR := nat(nil).setWord(1)
+@@ -1235,34 +1604,186 @@ func (z nat) expNNMontgomery(x, y, m nat) nat {
+ 	one := make(nat, numWords)
+ 	one[0] = 1
+ 
+-	const n = 4
++	const window_size = 4
+ 	// powers[i] contains x^i
+-	var powers [1 << n]nat
++	var powers [1 << window_size]nat
+ 	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
+ 	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
+-	for i := 2; i < 1<<n; i++ {
++	for i := 2; i < 1<<window_size; i++ {
+ 		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
+ 	}
+ 
+-	// initialize z = 1 (Montgomery 1)
+ 	z = z.make(numWords)
+-	copy(z, powers[0])
++	zz = zz.make(numWords)
++
++	// same windowed exponent, but with Montgomery multiplications
++
++	// Gotti: The algorithm asserts that window_size divides _W and
++	// the unrolling hardcodes window_size == 4.
++	// Add checks for this, to guard against modifications of window_size:
++
++	if _W%window_size != 0 {
++		panic("big: window_size must divide _W")
++	}
++	if window_size != 4 {
++		panic("big: window_size was changed without changing the unrolled loop below")
++	}
++
++	// Gotti: If the most significant word of y has a lot of leading zeros, we do not need
++	// to run the iteration _W / window_size many times.
++	// So we special cast the start of the loop:
++
++	yi := y[len(y)-1]                               // most significant word of y. This is never 0
++	bitLenY := 64 - bits.LeadingZeros64(uint64(yi)) // bit-lengh of it
++
++	k := (bitLenY + (window_size - 1)) / window_size // number of window_size parts needed.
++
++	// we directly copy in first iteration, rather than multiplying 1 with a precomputed value.
++	k -= 1
++	copy(z, powers[yi>>(k*window_size)])
++
++	// only perform k iterations for the most significant word of y:
++	const mask = (1 << window_size) - 1
++	for i := int(k - 1); i >= 0; i-- {
++		// square four times
++		zz = zz.montgomery(z, z, m, k0, numWords)
++		z = z.montgomery(zz, zz, m, k0, numWords)
++		zz = zz.montgomery(z, z, m, k0, numWords)
++		z = z.montgomery(zz, zz, m, k0, numWords)
++		// multiply by appropriate power
++		zz = zz.montgomery(z, powers[(yi>>(i*window_size))&mask], m, k0, numWords)
++		z, zz = zz, z
++	}
++
++	// handle the remaining words of y
++	for i := len(y) - 2; i >= 0; i-- {
++		yi := y[i]
++		for j := 0; j < _W; j += window_size {
++
++			zz = zz.montgomery(z, z, m, k0, numWords)
++			z = z.montgomery(zz, zz, m, k0, numWords)
++			zz = zz.montgomery(z, z, m, k0, numWords)
++			z = z.montgomery(zz, zz, m, k0, numWords)
++
++			zz = zz.montgomery(z, powers[yi>>(_W-window_size)], m, k0, numWords)
++			z, zz = zz, z
++			yi <<= window_size
++		}
++	}
++	// convert to regular number
++	zz = zz.montgomery(z, one, m, k0, numWords)
++
++	// One last reduction, just in case.
++	// See golang.org/issue/13907.
++	if zz.cmp(m) >= 0 {
++		// Common case is m has high bit set; in that case,
++		// since zz is the same length as m, there can be just
++		// one multiple of m to remove. Just subtract.
++		// We think that the subtract should be sufficient in general,
++		// so do that unconditionally, but double-check,
++		// in case our beliefs are wrong.
++		// The div is not expected to be reached.
++		zz = zz.sub(zz, m)
++		if zz.cmp(m) >= 0 {
++			_, zz = nat(nil).div(nil, zz, m)
++		}
++	}
++
++	return zz.norm()
++}
++
++// expNNMontgomerySize2 calculates x**y mod m using a fixed, 2-bit window. Asserts that m is odd.
++// Uses Montgomery representation.
++func (z nat) expNNMontgomerySize2(x, y, m nat) nat {
++	numWords := len(m)
++
++	// We want the lengths of x and m to be equal.
++	// It is OK if x >= m as long as len(x) == len(m).
++	if len(x) > numWords {
++		_, x = nat(nil).div(nil, x, m)
++		// Note: now len(x) <= numWords, not guaranteed ==.
++	}
++	if len(x) < numWords {
++		rr := make(nat, numWords)
++		copy(rr, x)
++		x = rr
++	}
++
++	k0 := compute_montgomery_k0(m[0])
+ 
++	// RR = 2**(2*_W*len(m)) mod m
++	RR := nat(nil).setWord(1)
++	zz := nat(nil).shl(RR, uint(2*numWords*_W))
++	_, RR = nat(nil).div(RR, zz, m)
++	if len(RR) < numWords {
++		zz = zz.make(numWords)
++		copy(zz, RR)
++		RR = zz
++	}
++	// one = 1, with equal length to that of m
++	one := make(nat, numWords)
++	one[0] = 1
++
++	const window_size = 2
++	// powers[i] contains x^i
++	var powers [1 << window_size]nat
++	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
++	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
++	for i := 2; i < 1<<window_size; i++ {
++		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
++	}
++
++	z = z.make(numWords)
+ 	zz = zz.make(numWords)
+ 
+ 	// same windowed exponent, but with Montgomery multiplications
+-	for i := len(y) - 1; i >= 0; i-- {
++
++	// Gotti: The algorithm asserts that window_size divides _W and
++	// the unrolling hardcodes window_size.
++	// Add checks for this, to guard against modifications of window_size:
++
++	if _W%window_size != 0 {
++		panic("big: window_size must divide _W")
++	}
++	if window_size != 2 {
++		panic("big: window_size was changed without changing the unrolled loop below")
++	}
++
++	// Gotti: If the most significant word of y has a lot of leading zeros, we do not need
++	// to run the iteration _W / window_size many times.
++	// So we special cast the start of the loop:
++
++	yi := y[len(y)-1]                               // most significant word of y. This is never 0
++	bitLenY := 64 - bits.LeadingZeros64(uint64(yi)) // bit-lengh of it
++
++	k := (bitLenY + (window_size - 1)) / window_size // number of window_size parts needed.
++
++	// we directly copy in first iteration, rather than multiplying 1 with a precomputed value.
++	k -= 1
++	copy(z, powers[yi>>(k*window_size)])
++
++	// only perform k iterations for the most significant word of y:
++	const mask = (1 << window_size) - 1
++	for i := int(k - 1); i >= 0; i-- {
++		// square twice
++		zz = zz.montgomery(z, z, m, k0, numWords)
++		z = z.montgomery(zz, zz, m, k0, numWords)
++		// multiply by appropriate power
++		zz = zz.montgomery(z, powers[(yi>>(i*window_size))&mask], m, k0, numWords)
++		z, zz = zz, z
++	}
++
++	// handle the remaining words of y
++	for i := len(y) - 2; i >= 0; i-- {
+ 		yi := y[i]
+-		for j := 0; j < _W; j += n {
+-			if i != len(y)-1 || j != 0 {
+-				zz = zz.montgomery(z, z, m, k0, numWords)
+-				z = z.montgomery(zz, zz, m, k0, numWords)
+-				zz = zz.montgomery(z, z, m, k0, numWords)
+-				z = z.montgomery(zz, zz, m, k0, numWords)
+-			}
+-			zz = zz.montgomery(z, powers[yi>>(_W-n)], m, k0, numWords)
++		for j := 0; j < _W; j += window_size {
++
++			zz = zz.montgomery(z, z, m, k0, numWords)
++			z = z.montgomery(zz, zz, m, k0, numWords)
++
++			zz = zz.montgomery(z, powers[yi>>(_W-window_size)], m, k0, numWords)
+ 			z, zz = zz, z
+-			yi <<= n
++			yi <<= window_size
+ 		}
+ 	}
+ 	// convert to regular number
+diff --git a/src/math/big/nat_test.go b/src/math/big/nat_test.go
+index 4722548fa9..a955f71c08 100644
+--- a/src/math/big/nat_test.go
++++ b/src/math/big/nat_test.go
+@@ -7,6 +7,7 @@ package big
+ import (
+ 	"fmt"
+ 	"math"
++	"math/rand"
+ 	"runtime"
+ 	"strings"
+ 	"testing"
+@@ -534,6 +535,13 @@ var expNNTests = []struct {
+ 	{"0xeffffff900002f00", "0x40000000000000", "0x200", "0"},
+ 	{"5", "1435700818", "72", "49"},
+ 	{"0xffff", "0x300030003000300030003000300030003000302a3000300030003000300030003000300030003000300030003000300030003030623066307f3030783062303430383064303630343036", "0x300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "0xa3f94c08b0b90e87af637cacc9383f7ea032352b8961fc036a52b659b6c9b33491b335ffd74c927f64ddd62cfca0001"},
++	{"2", "16", "0x1000000", "0x10000"},
++	{"2", "16", "0x1000001", "0x10000"},
++	{"0", "16", "0x1000000", "0"},
++	{"0", "16", "0x1000001", "0"},
++
++	// 6, 16, 5*2^17, 2^16
++	{"6", "16", "655360", "65536"},
+ }
+ 
+ func TestExpNN(t *testing.T) {
+@@ -889,3 +897,262 @@ func TestIssue42552(t *testing.T) {
+ 	q := nat(nil).make(16)
+ 	q.div(q, u, v)
+ }
++
++// computeModExpGasSimplfied computes the (simplified) gas cost corresponding to a ModExp-precompile call with a
++// base and modulus of a given length (in bytes) and an exponents of a given length in bits.
++//
++// version must be either "EIP2565" or "EIP7883" to select the corresponding gas pricing function.
++//
++// Note that this does not 100% match the gas cost specified in the EIP. The latter may differ in case of (a large number of) leading zeros.
++// The reason why this simplification is allowed here is that we only use this to benchmark the implementation of nat.expNN and creating a nat will normalize away leading zeros. Also, we don't really care about overflows.
++func computeModExpGasSimplified(baseByteLength uint, modulusByteLength uint, exponentBitLenght uint, version string) uint64 {
++	if modulusByteLength == 0 {
++		panic("called computeModExpGasSimplified with a modulus byte length of 0") // This would correspond to an exponentiation in Z, rather than a modular exponentiation.
++	}
++
++	// maxLen := Max{baseByteLength, modulusByteLength}
++	var maxLen uint = baseByteLength
++	if modulusByteLength > maxLen {
++		maxLen = modulusByteLength
++	}
++	switch version {
++	case "EIP2565":
++		WordLength := (maxLen + 7) / 8 // number of 64-bit words in max{modulus,base}
++		MultComplexity := uint64(WordLength) * uint64(WordLength)
++		var iteration_count uint64
++		if exponentBitLenght <= 1 {
++			iteration_count = 1
++		} else {
++			iteration_count = uint64(exponentBitLenght - 1) // the case distinction exponentBitLength > 32 from the EIP is not needed due to not considering leading 0s.
++		}
++		result := (MultComplexity * iteration_count) / 2
++		if result < 200 {
++			result = 200
++		}
++		return result
++
++	case "EIP7883":
++		WordLength := (maxLen + 7) / 8 // number of 64-bit words in max{modulus,base}
++		MultComplexity := uint64(16)
++		if maxLen > 32 {
++			MultComplexity = 2 * uint64(WordLength) * uint64(WordLength) // strangely discontinuous formula, but that's what the EIP says.
++		}
++		var iteration_count uint64
++		if exponentBitLenght <= 1 {
++			iteration_count = 1
++		} else if exponentBitLenght <= 256 {
++			iteration_count = uint64(exponentBitLenght - 1)
++		} else {
++			iteration_count = uint64(exponentBitLenght-1) + 8*((uint64(exponentBitLenght)+7)/8-32)
++		}
++		result := MultComplexity * iteration_count
++		if result < 500 {
++			result = 500
++		}
++		return result
++
++	default:
++		panic(fmt.Sprintf("math/big/computeModExpGasSimplied: could not recognize version string %v. Valid inputs are \"EIP2565\" and \"EIP7883\"", version))
++	}
++}
++
++// createBaseModExp creates a random triple (base, exponent, modulus) of nats with the prescribed lengths in bytes resp. bits.
++// Modulus will have exactly modulus2adicity many trailing zeros among its 8*modulusByteLength many bits.
++//
++// Note that this functions guarantees that the byte-length / bit-length is *exactly* the requested amount by setting the appropriate highest bit to 1. Consequently, the length arguments must not be 0.
++// If modulus2adicity is >= 8*modulusByteLength, we truncate modulus2adicity to its maximum meaningful value of 8*modulusByteLength-1 instead.
++func createBaseModExp(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, modulus2adicity uint) (base nat, exponent nat, modulus nat) {
++	// NOTE: This is not the most efficient way to create those numbers. We do not care.
++	if modulus2adicity >= 8*modulusByteLength {
++		modulus2adicity = 8*modulusByteLength - 1
++	}
++	if baseByteLength == 0 {
++		panic("baseByteLength set to 0")
++	}
++	if modulusByteLength == 0 {
++		panic("modulusByteLength set to 0")
++	}
++	if exponentBitLength == 0 {
++		panic("exponentBitLength set to 0")
++	}
++	// create a random number for modulus with *exactly* modulusByteLength bytes with the highest bit set.
++	// we also ensure that exactly modulus2adicity least significant bits are 0, followed by a 1.
++	modulusPowerOf2 := nat{}.setBit(nat{}, 8*modulusByteLength-1, 1)             // set highest bit to 1
++	modulusTail := nat{}.random(rand, modulusPowerOf2, 8*int(modulusByteLength)) // set other bits randomly
++	modulus = modulusTail.add(modulusTail, modulusPowerOf2)
++
++	// set modulus2adicity many least significant bits to 0 and the next one to 1.
++	for i := uint(0); i < modulus2adicity; i++ {
++		modulus = modulus.setBit(modulus, i, 0)
++	}
++	modulus = modulus.setBit(modulus, modulus2adicity, 1)
++
++	// set base to a random number with exactly baseByteLength many bytes, again with the highest bit forcibly set to 1.
++	basePowerOf2 := nat{}.setBit(nat{}, 8*baseByteLength-1, 1)
++	baseTail := nat{}.random(rand, basePowerOf2, 8*int(baseByteLength))
++	base = baseTail.add(baseTail, basePowerOf2)
++
++	// set exponent to a random number with exactly exponentBitLenght bits (again, msb set to 1)
++	// NOTE: Using a random bit-pattern for the exponent is expected to be the worst case for a fixed-window exponentiation.
++	// If we use a different exponentiation algorithm, this might no longer be true.
++	exponentPowerOf2 := nat{}.setBit(nat{}, exponentBitLength-1, 1)
++	exponentTail := nat{}.random(rand, exponentPowerOf2, int(exponentBitLength))
++	exponent = exponentPowerOf2.add(exponentPowerOf2, exponentTail)
++	return
++}
++
++// benchmarkNatExpNN returns a benchmarking function (intendend for use with *testing.B.Run) that runs
++// a benchmark on nat.expNN with the given parameters.
++//
++// Notably, it calls nat.expNN to compute base^exponent modulo modulus, where
++// base, exponent resp. modulus have exactly baseByteLength, modulusByteLength resp. exponentBitLength many bytes/bits.
++// Note that having exactly the given number of bytes/bits means that the leading byte/bit is guaranteed to be 1.
++// modulus2adicty is used to select the number of trailing 0 bits of the modulus (this is, because the exponentiation algorithm need to treat that differently).
++// Selecting a modulus2adicity >= 8*modulusByteLength will set it to the maximum meaningful value instead.
++//
++// The returned benchmarking function records custom entries Gas/op and ns/Gas in addition to the usual ones.
++// To select a gas schedule, gasScheduleVersion needs to be one of "EIP2565" or "EIP7833".
++// To simplify reading out the ns/Gas value (and not just printing it), e.g. to take a maximum among multiple benchmarks, that value will also be stored in *nsPerGas, unless nsPerGas == nil.
++func benchmarkNatExpNN(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, gasScheduleVersion string, modulus2adicity uint, nsPerGas *float64, slow bool) func(*testing.B) {
++	// Setup base, modulus and exponent of the required lengths.
++	base, exponent, modulus := createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, modulus2adicity)
++
++	// compute gas
++	gasCost := computeModExpGasSimplified(baseByteLength, modulusByteLength, exponentBitLength, gasScheduleVersion)
++
++	return func(b *testing.B) {
++		var z nat = nat{}.set(modulus) // reserve space. We copy the modulus to reserve as much space as the modulus. Note that using nat{}.make() would have us make an assumption on the Word-size.
++		for b.Loop() {
++			z = z.expNN(base, exponent, modulus, slow)
++		}
++		b.ReportMetric(float64(gasCost), "Gas/op")
++		reportedNsPerGas := float64(b.Elapsed().Nanoseconds()) / (float64(b.N) * float64(gasCost))
++		if nsPerGas != nil {
++			*nsPerGas = reportedNsPerGas
++		}
++		b.ReportMetric(reportedNsPerGas, "ns/Gas")
++	}
++}
++
++func benchmarkExpNNMontgomery(rand *rand.Rand, baseByteLength uint, modulusByteLength uint, exponentBitLength uint, compareWithSlow bool) func(*testing.B) {
++	base, exponent, modulus := createBaseModExp(rand, baseByteLength, modulusByteLength, exponentBitLength, 0) // 2-adicity must be 0, since expNNMotgomery is restricted to odd moduli
++	/*
++		base = nat{3}
++		modulus = nat{101}
++		exponent = nat{0b10111}
++	*/
++
++	base = nat{}.rem(base, modulus) // to avoid corner-cases because we directly call expNNSlow and this does not catch this otherwise for exponent == 1
++	// Compute the desired results once. This serves both as a warmup and as a test.
++	resultSlowEXP := nat{}.expNN(base, exponent, modulus, true)
++	resultSlowNaive := nat{}.expNNSlow(base, exponent, modulus)
++	result2 := nat{}.expNNMontgomerySize2(base, exponent, modulus)
++	result4 := nat{}.expNNMontgomerySize4(base, exponent, modulus)
++
++	if resultSlowEXP.cmp(resultSlowNaive) != 0 {
++		panic("big: error in expNNSlow") // sanity check
++	}
++
++	if resultSlowEXP.cmp(result4) != 0 {
++		panic("big: error in expNNMontgomery4")
++	}
++	if resultSlowEXP.cmp(result2) != 0 {
++		panic("big: error in expNNMontgomery2")
++	}
++
++	f2 := func(b *testing.B) {
++		var z nat = nat{}.set(modulus)
++		for b.Loop() {
++			z = z.expNNMontgomerySize2(base, exponent, modulus)
++		}
++	}
++	f4 := func(b *testing.B) {
++		var z nat = nat{}.set(modulus)
++		for b.Loop() {
++			z = z.expNNMontgomerySize4(base, exponent, modulus)
++		}
++	}
++	fSlow := func(b *testing.B) {
++		var z nat = nat{}.set(modulus)
++		for b.Loop() {
++			z = z.expNN(base, exponent, modulus, true)
++		}
++	}
++
++	return func(b *testing.B) {
++		b.Run("WindowSize-4", f4)
++		b.Run("WindowSize-2", f2)
++		if compareWithSlow {
++			b.Run("NaiveAlg", fSlow)
++		}
++	}
++}
++
++// BenchmarkNatExpNN will run a set of benchmarks for nat.expNN for varying input lengths and report each of those. This is a very slow benchmark.
++func BenchmarkNatExpNN(b *testing.B) {
++	rand := rand.New(rand.NewSource(100))
++	var maxGas float64
++	for modulusByteLength := 32; modulusByteLength < 320; modulusByteLength += 32 {
++		for _, exponentBitLengh := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 32, 40, 48, 56, 64, 96, 128, 256, 384, 512, 1024, 2048, 3 * 1024, 4 * 1024, 5 * 1024} {
++			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, false))
++			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, false))
++			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, false))
++			if exponentBitLengh <= 64 {
++				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-OddModulus-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 0, &maxGas, true))
++				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity1-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 1, &maxGas, true))
++				b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit-2Adicity8-SLOW", modulusByteLength, modulusByteLength, exponentBitLengh), benchmarkNatExpNN(rand, uint(modulusByteLength), uint(modulusByteLength), exponentBitLengh, "EIP7883", 8, &maxGas, true))
++			}
++		}
++	}
++	//b.Run("Foo", benchmarkNatExpNN(rand, 256, 256, 1000, "EIP7883", 0, nil))
++}
++
++// Benchmark for selecting threshold when to switch algorithms.
++func BenchmarkNatExpMontgomeryVaryingWindows(b *testing.B) {
++	rand := rand.New(rand.NewSource(101))
++	for modulusByteLength := 32; modulusByteLength < 384; modulusByteLength += 32 {
++		baseByteLength := modulusByteLength
++		for _, exponentBitLength := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 16, 32, 40, 48, 56, 64, 72, 80, 88, 96, 128, 256, 512, 1024, 2048, 3 * 1024} {
++			b.Run(fmt.Sprintf("Base%vBytes-Mod%vBytes-Exp%vBit", baseByteLength, modulusByteLength, exponentBitLength), benchmarkExpNNMontgomery(rand, uint(baseByteLength), uint(modulusByteLength), exponentBitLength, true))
++		}
++	}
++}
++
++func TestImprovedExpNNWindowed(t *testing.T) {
++	rand := rand.New(rand.NewSource(101))
++	for _, modulusBitLength := range []uint{1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 24, 25, 31, 32, 33, 64, 63, 65, 127, 128, 129, 256, 255, 257, 1024} {
++
++		for _, exponentBitLength := range []uint{2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 64, 65, 128, 256, 257, 512, 1024} {
++
++			modulus := nat{}.setBit(nat{}, modulusBitLength, 1)
++			logM := modulusBitLength
++
++			exponentPowerOf2 := nat{}.setBit(nat{}, exponentBitLength-1, 1)
++			exponentTail := nat{}.random(rand, exponentPowerOf2, int(exponentBitLength))
++			exponent := exponentPowerOf2.add(exponentPowerOf2, exponentTail)
++
++			for _, baseUnred := range []nat{nat{3}, nat{6}, nat{2}, nat{0x100000000000}} {
++				base := nat{1}
++				base = base.rem(baseUnred, modulus)
++				if base.cmp(nil) == 0 {
++					continue
++				}
++
++				naiveResult := nat{}.expNN(base, exponent, modulus, true)
++				result2Window := nat{1}.expNNWindowedSize2(base, exponent, logM)
++				result4Window := nat{1}.expNNWindowedSize4(base, exponent, logM)
++
++				if naiveResult.cmp(result2Window) != 0 {
++					t.Logf("correct result = %v, got result = %v\n", naiveResult, result2Window)
++					t.Fatalf("big: expNNWindowedSize2 gives mismatching result.\nexponent = %b\nlogM = %v\nbase=%v", exponent, logM, base)
++				}
++
++				if naiveResult.cmp(result4Window) != 0 {
++					t.Logf("correct result = %v, got result = %v\n", naiveResult, result4Window)
++					t.Logf("exponentLenght = %v\n", exponentBitLength)
++					t.Fatalf("big: expNNWindowedSize4 gives mismatching result.\nexponent = %b\nlogM = %v\nbase=%v", exponent, logM, base)
++				}
++			}
++		}
++	}
++}

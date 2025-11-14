@@ -1,0 +1,12 @@
+Branches:
+
+RelativeBenchmark:
+	- introduces extended benchmarking functionality.
+EthereumGasBenchmark:
+	- based on RelativeBenchmark
+	
+Everything else based on EthereumGasBenchmark
+(rebase or merge in regularly, changes are to orthogonal files)
+
+Docfixes:
+	- minor documentation fixes

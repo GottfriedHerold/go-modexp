@@ -1,0 +1,1207 @@
+goos: linux
+goarch: amd64
+pkg: math/big
+cpu: Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz
+BenchmarkNatExpNN
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1Bit-OddModulus-8         	11627102	        96.07 ns/op	       200.0 Gas/op	         0.4803 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1Bit-2Adicity1-8          	12117211	        93.12 ns/op	       200.0 Gas/op	         0.4656 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1Bit-2Adicity8-8          	12866640	        91.52 ns/op	       200.0 Gas/op	         0.4576 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2Bit-OddModulus-8         	 3450984	       337.3 ns/op	       200.0 Gas/op	         1.687 ns/Gas	     120 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2Bit-2Adicity1-8          	 3129270	       373.7 ns/op	       200.0 Gas/op	         1.868 ns/Gas	     120 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2Bit-2Adicity8-8          	 4112728	       304.5 ns/op	       200.0 Gas/op	         1.523 ns/Gas	     104 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3Bit-OddModulus-8         	 1695703	       648.3 ns/op	       200.0 Gas/op	         3.242 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3Bit-2Adicity1-8          	 2282065	       476.9 ns/op	       200.0 Gas/op	         2.385 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3Bit-2Adicity8-8          	 2232976	       546.5 ns/op	       200.0 Gas/op	         2.732 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4Bit-OddModulus-8         	 1927653	       587.8 ns/op	       200.0 Gas/op	         2.939 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4Bit-2Adicity1-8          	 1832044	       655.5 ns/op	       200.0 Gas/op	         3.277 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4Bit-2Adicity8-8          	 2287332	       525.4 ns/op	       200.0 Gas/op	         2.627 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5Bit-OddModulus-8         	 1647820	       726.1 ns/op	       200.0 Gas/op	         3.630 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5Bit-2Adicity1-8          	 1422998	       853.2 ns/op	       200.0 Gas/op	         4.266 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5Bit-2Adicity8-8          	 1517658	       767.2 ns/op	       200.0 Gas/op	         3.836 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp6Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp6Bit-OddModulus-8         	 1482129	       810.8 ns/op	       200.0 Gas/op	         4.054 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp6Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp6Bit-2Adicity1-8          	 1469569	       812.7 ns/op	       200.0 Gas/op	         4.063 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp6Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp6Bit-2Adicity8-8          	 1594030	       759.7 ns/op	       200.0 Gas/op	         3.799 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp7Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp7Bit-OddModulus-8         	 1338066	       883.2 ns/op	       200.0 Gas/op	         4.416 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp7Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp7Bit-2Adicity1-8          	 1319413	       911.7 ns/op	       200.0 Gas/op	         4.559 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp7Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp7Bit-2Adicity8-8          	 1238037	       951.5 ns/op	       200.0 Gas/op	         4.758 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp8Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp8Bit-OddModulus-8         	 1214720	       988.4 ns/op	       200.0 Gas/op	         4.942 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp8Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp8Bit-2Adicity1-8          	  989847	      1149 ns/op	       200.0 Gas/op	         5.747 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp8Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp8Bit-2Adicity8-8          	 1335484	       896.4 ns/op	       200.0 Gas/op	         4.482 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp16Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp16Bit-OddModulus-8        	  692256	      1736 ns/op	       200.0 Gas/op	         8.681 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp16Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp16Bit-2Adicity1-8         	  627000	      1863 ns/op	       200.0 Gas/op	         9.315 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp16Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp16Bit-2Adicity8-8         	  652729	      1960 ns/op	       200.0 Gas/op	         9.802 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp24Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp24Bit-OddModulus-8        	  459060	      2301 ns/op	       200.0 Gas/op	        11.51 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp24Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp24Bit-2Adicity1-8         	  485515	      2432 ns/op	       200.0 Gas/op	        12.16 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp24Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp24Bit-2Adicity8-8         	  450906	      2580 ns/op	       200.0 Gas/op	        12.90 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp32Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp32Bit-OddModulus-8        	  353252	      3453 ns/op	       200.0 Gas/op	        17.27 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp32Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp32Bit-2Adicity1-8         	  348841	      3348 ns/op	       200.0 Gas/op	        16.74 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp32Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp32Bit-2Adicity8-8         	  377298	      3174 ns/op	       200.0 Gas/op	        15.87 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp40Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp40Bit-OddModulus-8        	  276354	      4291 ns/op	       200.0 Gas/op	        21.45 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp40Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp40Bit-2Adicity1-8         	  267735	      4603 ns/op	       200.0 Gas/op	        23.01 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp40Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp40Bit-2Adicity8-8         	  286652	      4370 ns/op	       200.0 Gas/op	        21.85 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp48Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp48Bit-OddModulus-8        	  251103	      4770 ns/op	       200.0 Gas/op	        23.85 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp48Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp48Bit-2Adicity1-8         	  235380	      5004 ns/op	       200.0 Gas/op	        25.02 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp48Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp48Bit-2Adicity8-8         	  252493	      4797 ns/op	       200.0 Gas/op	        23.99 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp56Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp56Bit-OddModulus-8        	  199746	      5995 ns/op	       200.0 Gas/op	        29.97 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp56Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp56Bit-2Adicity1-8         	  202659	      5907 ns/op	       200.0 Gas/op	        29.54 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp56Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp56Bit-2Adicity8-8         	  226218	      5356 ns/op	       200.0 Gas/op	        26.78 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp64Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp64Bit-OddModulus-8        	  182686	      6496 ns/op	       200.0 Gas/op	        32.48 ns/Gas	     152 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp64Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp64Bit-2Adicity1-8         	  180085	      7288 ns/op	       200.0 Gas/op	        36.44 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp64Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp64Bit-2Adicity8-8         	  181594	      6482 ns/op	       200.0 Gas/op	        32.41 ns/Gas	     168 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp96Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp96Bit-OddModulus-8        	  126814	      9349 ns/op	       200.0 Gas/op	        46.75 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp96Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp96Bit-2Adicity1-8         	  114009	     10318 ns/op	       200.0 Gas/op	        51.59 ns/Gas	    1120 B/op	      31 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp96Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp96Bit-2Adicity8-8         	  111992	     11133 ns/op	       200.0 Gas/op	        55.67 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp128Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp128Bit-OddModulus-8       	  124491	      9452 ns/op	       200.0 Gas/op	        47.26 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp128Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp128Bit-2Adicity1-8        	  109350	     10471 ns/op	       200.0 Gas/op	        52.36 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp128Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp128Bit-2Adicity8-8        	  112896	     10383 ns/op	       200.0 Gas/op	        51.91 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp256Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp256Bit-OddModulus-8       	   68880	     18053 ns/op	       200.0 Gas/op	        90.27 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp256Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp256Bit-2Adicity1-8        	   56374	     19996 ns/op	       200.0 Gas/op	        99.98 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp256Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp256Bit-2Adicity8-8        	   67765	     17716 ns/op	       200.0 Gas/op	        88.58 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp384Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp384Bit-OddModulus-8       	   46138	     25209 ns/op	       200.0 Gas/op	       126.0 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp384Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp384Bit-2Adicity1-8        	   48669	     25086 ns/op	       200.0 Gas/op	       125.4 ns/Gas	    1120 B/op	      31 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp384Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp384Bit-2Adicity8-8        	   47413	     27232 ns/op	       200.0 Gas/op	       136.2 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp512Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp512Bit-OddModulus-8       	   36854	     32399 ns/op	       255.0 Gas/op	       127.1 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp512Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp512Bit-2Adicity1-8        	   36830	     32157 ns/op	       255.0 Gas/op	       126.1 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp512Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp512Bit-2Adicity8-8        	   36896	     32066 ns/op	       255.0 Gas/op	       125.8 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1024Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1024Bit-OddModulus-8      	   17640	     70500 ns/op	       511.0 Gas/op	       138.0 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1024Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1024Bit-2Adicity1-8       	   19329	     61870 ns/op	       511.0 Gas/op	       121.1 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1024Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp1024Bit-2Adicity8-8       	   18746	     63919 ns/op	       511.0 Gas/op	       125.1 ns/Gas	    1888 B/op	      47 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2048Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2048Bit-OddModulus-8      	    8919	    130930 ns/op	      1023 Gas/op	       128.0 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2048Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2048Bit-2Adicity1-8       	    9738	    124571 ns/op	      1023 Gas/op	       121.8 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2048Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp2048Bit-2Adicity8-8       	    9885	    122893 ns/op	      1023 Gas/op	       120.1 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3072Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3072Bit-OddModulus-8      	    6394	    185261 ns/op	      1535 Gas/op	       120.7 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3072Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3072Bit-2Adicity1-8       	    6668	    175066 ns/op	      1535 Gas/op	       114.0 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3072Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp3072Bit-2Adicity8-8       	    6330	    179138 ns/op	      1535 Gas/op	       116.7 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4096Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4096Bit-OddModulus-8      	    4424	    269473 ns/op	      2047 Gas/op	       131.6 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4096Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4096Bit-2Adicity1-8       	    4971	    233603 ns/op	      2047 Gas/op	       114.1 ns/Gas	    1120 B/op	      31 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4096Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp4096Bit-2Adicity8-8       	    5030	    236006 ns/op	      2047 Gas/op	       115.3 ns/Gas	    1889 B/op	      47 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5120Bit-OddModulus
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5120Bit-OddModulus-8      	    4018	    299148 ns/op	      2559 Gas/op	       116.9 ns/Gas	     896 B/op	      18 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5120Bit-2Adicity1
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5120Bit-2Adicity1-8       	    3735	    306001 ns/op	      2559 Gas/op	       119.6 ns/Gas	    1120 B/op	      31 allocs/op
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5120Bit-2Adicity8
+BenchmarkNatExpNN/Base8Bytes-Mod8Bytes-Exp5120Bit-2Adicity8-8       	    3924	    293166 ns/op	      2559 Gas/op	       114.6 ns/Gas	    1168 B/op	      32 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1Bit-OddModulus-8       	13074696	        90.50 ns/op	       200.0 Gas/op	         0.4525 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1Bit-2Adicity1-8        	13285185	        90.49 ns/op	       200.0 Gas/op	         0.4524 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1Bit-2Adicity8-8        	13216417	        92.89 ns/op	       200.0 Gas/op	         0.4644 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2Bit-OddModulus-8       	 1599493	       745.8 ns/op	       200.0 Gas/op	         3.729 ns/Gas	     160 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2Bit-2Adicity1-8        	 2119806	       562.9 ns/op	       200.0 Gas/op	         2.815 ns/Gas	     144 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2Bit-2Adicity8-8        	 1634576	       731.5 ns/op	       200.0 Gas/op	         3.657 ns/Gas	     160 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3Bit-OddModulus-8       	 1000000	      1214 ns/op	       200.0 Gas/op	         6.068 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3Bit-2Adicity1-8        	 1000000	      1352 ns/op	       200.0 Gas/op	         6.758 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3Bit-2Adicity8-8        	 1000000	      1135 ns/op	       200.0 Gas/op	         5.677 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4Bit-OddModulus-8       	  696658	      1640 ns/op	       200.0 Gas/op	         8.199 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4Bit-2Adicity1-8        	  657644	      1807 ns/op	       200.0 Gas/op	         9.035 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4Bit-2Adicity8-8        	  762032	      1708 ns/op	       200.0 Gas/op	         8.540 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5Bit-OddModulus-8       	  558589	      2131 ns/op	       200.0 Gas/op	        10.65 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5Bit-2Adicity1-8        	  556126	      2107 ns/op	       200.0 Gas/op	        10.54 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5Bit-2Adicity8-8        	  633939	      1791 ns/op	       200.0 Gas/op	         8.956 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp6Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp6Bit-OddModulus-8       	  450260	      2777 ns/op	       200.0 Gas/op	        13.88 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp6Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp6Bit-2Adicity1-8        	  507583	      2355 ns/op	       200.0 Gas/op	        11.77 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp6Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp6Bit-2Adicity8-8        	  481605	      2498 ns/op	       200.0 Gas/op	        12.49 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp7Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp7Bit-OddModulus-8       	  395956	      2823 ns/op	       200.0 Gas/op	        14.11 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp7Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp7Bit-2Adicity1-8        	  424731	      2953 ns/op	       200.0 Gas/op	        14.76 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp7Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp7Bit-2Adicity8-8        	  427372	      2726 ns/op	       200.0 Gas/op	        13.63 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp8Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp8Bit-OddModulus-8       	  369750	      3128 ns/op	       200.0 Gas/op	        15.64 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp8Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp8Bit-2Adicity1-8        	  315237	      3768 ns/op	       200.0 Gas/op	        18.84 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp8Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp8Bit-2Adicity8-8        	  351139	      3370 ns/op	       200.0 Gas/op	        16.85 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp16Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp16Bit-OddModulus-8      	  184177	      7120 ns/op	       200.0 Gas/op	        35.60 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp16Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp16Bit-2Adicity1-8       	  174061	      6465 ns/op	       200.0 Gas/op	        32.33 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp16Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp16Bit-2Adicity8-8       	  184813	      6425 ns/op	       200.0 Gas/op	        32.12 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp24Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp24Bit-OddModulus-8      	  124549	      9883 ns/op	       200.0 Gas/op	        49.42 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp24Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp24Bit-2Adicity1-8       	  114913	     10155 ns/op	       200.0 Gas/op	        50.77 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp24Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp24Bit-2Adicity8-8       	  123390	      9623 ns/op	       200.0 Gas/op	        48.11 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp32Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp32Bit-OddModulus-8      	   83647	     14208 ns/op	       200.0 Gas/op	        71.04 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp32Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp32Bit-2Adicity1-8       	   90319	     13185 ns/op	       200.0 Gas/op	        65.92 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp32Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp32Bit-2Adicity8-8       	   91956	     13337 ns/op	       200.0 Gas/op	        66.68 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp40Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp40Bit-OddModulus-8      	   72754	     16223 ns/op	       200.0 Gas/op	        81.12 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp40Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp40Bit-2Adicity1-8       	   71000	     16904 ns/op	       200.0 Gas/op	        84.52 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp40Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp40Bit-2Adicity8-8       	   67953	     17681 ns/op	       200.0 Gas/op	        88.41 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp48Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp48Bit-OddModulus-8      	   54978	     22967 ns/op	       200.0 Gas/op	       114.8 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp48Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp48Bit-2Adicity1-8       	   63014	     19189 ns/op	       200.0 Gas/op	        95.95 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp48Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp48Bit-2Adicity8-8       	   60982	     19439 ns/op	       200.0 Gas/op	        97.19 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp56Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp56Bit-OddModulus-8      	   51852	     23261 ns/op	       200.0 Gas/op	       116.3 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp56Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp56Bit-2Adicity1-8       	   49041	     25212 ns/op	       200.0 Gas/op	       126.1 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp56Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp56Bit-2Adicity8-8       	   50280	     23791 ns/op	       200.0 Gas/op	       119.0 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp64Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp64Bit-OddModulus-8      	   43014	     27726 ns/op	       200.0 Gas/op	       138.6 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp64Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp64Bit-2Adicity1-8       	   42397	     28275 ns/op	       200.0 Gas/op	       141.4 ns/Gas	     224 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp64Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp64Bit-2Adicity8-8       	   44493	     27575 ns/op	       200.0 Gas/op	       137.9 ns/Gas	     208 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp96Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp96Bit-OddModulus-8      	   71762	     17161 ns/op	       200.0 Gas/op	        85.81 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp96Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp96Bit-2Adicity1-8       	   68373	     17516 ns/op	       200.0 Gas/op	        87.58 ns/Gas	    1672 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp96Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp96Bit-2Adicity8-8       	   56708	     21637 ns/op	       200.0 Gas/op	       108.2 ns/Gas	    2488 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp128Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp128Bit-OddModulus-8     	   75481	     15753 ns/op	       254.0 Gas/op	        62.02 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp128Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp128Bit-2Adicity1-8      	   59876	     19581 ns/op	       254.0 Gas/op	        77.09 ns/Gas	    1672 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp128Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp128Bit-2Adicity8-8      	   58881	     18191 ns/op	       254.0 Gas/op	        71.62 ns/Gas	    1656 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp256Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp256Bit-OddModulus-8     	   40852	     29304 ns/op	       510.0 Gas/op	        57.46 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp256Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp256Bit-2Adicity1-8      	   40534	     29486 ns/op	       510.0 Gas/op	        57.82 ns/Gas	    1608 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp256Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp256Bit-2Adicity8-8      	   35544	     36646 ns/op	       510.0 Gas/op	        71.85 ns/Gas	    2488 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp384Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp384Bit-OddModulus-8     	   27558	     45046 ns/op	       766.0 Gas/op	        58.81 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp384Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp384Bit-2Adicity1-8      	   28356	     42275 ns/op	       766.0 Gas/op	        55.19 ns/Gas	    1608 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp384Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp384Bit-2Adicity8-8      	   25964	     46064 ns/op	       766.0 Gas/op	        60.14 ns/Gas	    2488 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp512Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp512Bit-OddModulus-8     	   20906	     58624 ns/op	      1022 Gas/op	        57.36 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp512Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp512Bit-2Adicity1-8      	   21474	     55496 ns/op	      1022 Gas/op	        54.30 ns/Gas	    1608 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp512Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp512Bit-2Adicity8-8      	   20734	     58055 ns/op	      1022 Gas/op	        56.80 ns/Gas	    2488 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1024Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1024Bit-OddModulus-8    	   10000	    109719 ns/op	      2046 Gas/op	        53.63 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1024Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1024Bit-2Adicity1-8     	   10000	    106358 ns/op	      2046 Gas/op	        51.98 ns/Gas	    1608 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1024Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp1024Bit-2Adicity8-8     	   10000	    109335 ns/op	      2046 Gas/op	        53.44 ns/Gas	    1656 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2048Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2048Bit-OddModulus-8    	    4875	    235962 ns/op	      4094 Gas/op	        57.64 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2048Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2048Bit-2Adicity1-8     	    5792	    205458 ns/op	      4094 Gas/op	        50.19 ns/Gas	    1608 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2048Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp2048Bit-2Adicity8-8     	    5605	    210897 ns/op	      4094 Gas/op	        51.51 ns/Gas	    2489 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3072Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3072Bit-OddModulus-8    	    3397	    355160 ns/op	      6142 Gas/op	        57.82 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3072Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3072Bit-2Adicity1-8     	    3567	    306699 ns/op	      6142 Gas/op	        49.93 ns/Gas	    1672 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3072Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp3072Bit-2Adicity8-8     	    3895	    307587 ns/op	      6142 Gas/op	        50.08 ns/Gas	    2489 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4096Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4096Bit-OddModulus-8    	    2727	    443468 ns/op	      8190 Gas/op	        54.15 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4096Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4096Bit-2Adicity1-8     	    2899	    409213 ns/op	      8190 Gas/op	        49.96 ns/Gas	    1672 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4096Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp4096Bit-2Adicity8-8     	    2918	    416840 ns/op	      8190 Gas/op	        50.90 ns/Gas	    2489 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5120Bit-OddModulus
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5120Bit-OddModulus-8    	    2209	    536146 ns/op	     10238 Gas/op	        52.37 ns/Gas	    1248 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5120Bit-2Adicity1
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5120Bit-2Adicity1-8     	    2305	    518497 ns/op	     10238 Gas/op	        50.64 ns/Gas	    1673 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5120Bit-2Adicity8
+BenchmarkNatExpNN/Base16Bytes-Mod16Bytes-Exp5120Bit-2Adicity8-8     	    2360	    505866 ns/op	     10238 Gas/op	        49.41 ns/Gas	    2489 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1Bit-OddModulus-8       	 4444359	       256.9 ns/op	       200.0 Gas/op	         1.284 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1Bit-2Adicity1-8        	13171892	        90.59 ns/op	       200.0 Gas/op	         0.4530 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1Bit-2Adicity8-8        	13235943	        90.18 ns/op	       200.0 Gas/op	         0.4509 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2Bit-OddModulus-8       	 1334875	       898.1 ns/op	       200.0 Gas/op	         4.490 ns/Gas	     192 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2Bit-2Adicity1-8        	 1750497	       687.4 ns/op	       200.0 Gas/op	         3.437 ns/Gas	     176 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2Bit-2Adicity8-8        	 1000000	      1140 ns/op	       200.0 Gas/op	         5.702 ns/Gas	     192 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3Bit-OddModulus-8       	 1000000	      1206 ns/op	       200.0 Gas/op	         6.028 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3Bit-2Adicity1-8        	  749269	      1627 ns/op	       200.0 Gas/op	         8.133 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3Bit-2Adicity8-8        	  983829	      1208 ns/op	       200.0 Gas/op	         6.039 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4Bit-OddModulus-8       	  665538	      2011 ns/op	       200.0 Gas/op	        10.05 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4Bit-2Adicity1-8        	  669799	      1800 ns/op	       200.0 Gas/op	         9.000 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4Bit-2Adicity8-8        	  535640	      2255 ns/op	       200.0 Gas/op	        11.27 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5Bit-OddModulus-8       	  470088	      2498 ns/op	       200.0 Gas/op	        12.49 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5Bit-2Adicity1-8        	  463550	      2622 ns/op	       200.0 Gas/op	        13.11 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5Bit-2Adicity8-8        	  611226	      1981 ns/op	       200.0 Gas/op	         9.907 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp6Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp6Bit-OddModulus-8       	  400323	      2890 ns/op	       200.0 Gas/op	        14.45 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp6Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp6Bit-2Adicity1-8        	  362227	      3151 ns/op	       200.0 Gas/op	        15.75 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp6Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp6Bit-2Adicity8-8        	  362912	      3432 ns/op	       200.0 Gas/op	        17.16 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp7Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp7Bit-OddModulus-8       	  325530	      3540 ns/op	       200.0 Gas/op	        17.70 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp7Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp7Bit-2Adicity1-8        	  308355	      3822 ns/op	       200.0 Gas/op	        19.11 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp7Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp7Bit-2Adicity8-8        	  305605	      3868 ns/op	       200.0 Gas/op	        19.34 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp8Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp8Bit-OddModulus-8       	  261196	      4780 ns/op	       200.0 Gas/op	        23.90 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp8Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp8Bit-2Adicity1-8        	  301671	      4075 ns/op	       200.0 Gas/op	        20.38 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp8Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp8Bit-2Adicity8-8        	  263463	      4364 ns/op	       200.0 Gas/op	        21.82 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp16Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp16Bit-OddModulus-8      	  145160	      7988 ns/op	       200.0 Gas/op	        39.94 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp16Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp16Bit-2Adicity1-8       	  144537	      8440 ns/op	       200.0 Gas/op	        42.20 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp16Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp16Bit-2Adicity8-8       	  106023	      9589 ns/op	       200.0 Gas/op	        47.94 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp24Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp24Bit-OddModulus-8      	   93712	     12665 ns/op	       200.0 Gas/op	        63.32 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp24Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp24Bit-2Adicity1-8       	   86002	     14004 ns/op	       200.0 Gas/op	        70.02 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp24Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp24Bit-2Adicity8-8       	   92512	     12883 ns/op	       200.0 Gas/op	        64.41 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp32Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp32Bit-OddModulus-8      	   70462	     16723 ns/op	       200.0 Gas/op	        83.62 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp32Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp32Bit-2Adicity1-8       	   64681	     18051 ns/op	       200.0 Gas/op	        90.26 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp32Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp32Bit-2Adicity8-8       	   66952	     17918 ns/op	       200.0 Gas/op	        89.59 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp40Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp40Bit-OddModulus-8      	   56914	     21049 ns/op	       200.0 Gas/op	       105.2 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp40Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp40Bit-2Adicity1-8       	   56252	     22032 ns/op	       200.0 Gas/op	       110.2 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp40Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp40Bit-2Adicity8-8       	   50997	     23632 ns/op	       200.0 Gas/op	       118.2 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp48Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp48Bit-OddModulus-8      	   47437	     25301 ns/op	       211.0 Gas/op	       119.9 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp48Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp48Bit-2Adicity1-8       	   43212	     27939 ns/op	       211.0 Gas/op	       132.4 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp48Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp48Bit-2Adicity8-8       	   47451	     25763 ns/op	       211.0 Gas/op	       122.1 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp56Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp56Bit-OddModulus-8      	   35788	     33566 ns/op	       247.0 Gas/op	       135.9 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp56Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp56Bit-2Adicity1-8       	   34678	     33324 ns/op	       247.0 Gas/op	       134.9 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp56Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp56Bit-2Adicity8-8       	   41722	     28874 ns/op	       247.0 Gas/op	       116.9 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp64Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp64Bit-OddModulus-8      	   37180	     33687 ns/op	       283.0 Gas/op	       119.0 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp64Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp64Bit-2Adicity1-8       	   31284	     38279 ns/op	       283.0 Gas/op	       135.3 ns/Gas	     256 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp64Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp64Bit-2Adicity8-8       	   32719	     36577 ns/op	       283.0 Gas/op	       129.2 ns/Gas	     272 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp96Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp96Bit-OddModulus-8      	   50365	     23700 ns/op	       427.0 Gas/op	        55.50 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp96Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp96Bit-2Adicity1-8       	   47910	     25084 ns/op	       427.0 Gas/op	        58.75 ns/Gas	    1976 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp96Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp96Bit-2Adicity8-8       	   39254	     30475 ns/op	       427.0 Gas/op	        71.37 ns/Gas	    2857 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp128Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp128Bit-OddModulus-8     	   48097	     24105 ns/op	       571.0 Gas/op	        42.21 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp128Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp128Bit-2Adicity1-8      	   39426	     26319 ns/op	       571.0 Gas/op	        46.09 ns/Gas	    1976 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp128Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp128Bit-2Adicity8-8      	   42007	     28389 ns/op	       571.0 Gas/op	        49.72 ns/Gas	    2856 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp256Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp256Bit-OddModulus-8     	   26763	     45466 ns/op	      1147 Gas/op	        39.64 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp256Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp256Bit-2Adicity1-8      	   26230	     45420 ns/op	      1147 Gas/op	        39.60 ns/Gas	    1976 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp256Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp256Bit-2Adicity8-8      	   27001	     44341 ns/op	      1147 Gas/op	        38.66 ns/Gas	    2024 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp384Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp384Bit-OddModulus-8     	   18158	     66089 ns/op	      1723 Gas/op	        38.36 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp384Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp384Bit-2Adicity1-8      	   18567	     65476 ns/op	      1723 Gas/op	        38.00 ns/Gas	    2040 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp384Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp384Bit-2Adicity8-8      	   18628	     64642 ns/op	      1723 Gas/op	        37.52 ns/Gas	    2024 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp512Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp512Bit-OddModulus-8     	   14313	     83792 ns/op	      2299 Gas/op	        36.45 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp512Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp512Bit-2Adicity1-8      	   14322	     83451 ns/op	      2299 Gas/op	        36.30 ns/Gas	    1976 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp512Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp512Bit-2Adicity8-8      	   13861	     86442 ns/op	      2299 Gas/op	        37.60 ns/Gas	    2857 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1024Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1024Bit-OddModulus-8    	    6631	    177621 ns/op	      4603 Gas/op	        38.59 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1024Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1024Bit-2Adicity1-8     	    7387	    161910 ns/op	      4603 Gas/op	        35.17 ns/Gas	    2040 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1024Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp1024Bit-2Adicity8-8     	    6763	    165245 ns/op	      4603 Gas/op	        35.90 ns/Gas	    2857 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2048Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2048Bit-OddModulus-8    	    3447	    343572 ns/op	      9211 Gas/op	        37.30 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2048Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2048Bit-2Adicity1-8     	    3802	    318903 ns/op	      9211 Gas/op	        34.62 ns/Gas	    2040 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2048Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp2048Bit-2Adicity8-8     	    3640	    325200 ns/op	      9211 Gas/op	        35.31 ns/Gas	    2024 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3072Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3072Bit-OddModulus-8    	    2186	    544511 ns/op	     13819 Gas/op	        39.40 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3072Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3072Bit-2Adicity1-8     	    2557	    469335 ns/op	     13819 Gas/op	        33.96 ns/Gas	    2040 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3072Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp3072Bit-2Adicity8-8     	    2523	    480604 ns/op	     13819 Gas/op	        34.78 ns/Gas	    2858 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4096Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4096Bit-OddModulus-8    	    1784	    660678 ns/op	     18427 Gas/op	        35.85 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4096Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4096Bit-2Adicity1-8     	    1876	    628686 ns/op	     18427 Gas/op	        34.12 ns/Gas	    2041 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4096Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp4096Bit-2Adicity8-8     	    1922	    622742 ns/op	     18427 Gas/op	        33.80 ns/Gas	    2025 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5120Bit-OddModulus
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5120Bit-OddModulus-8    	    1412	    851463 ns/op	     23035 Gas/op	        36.96 ns/Gas	    1552 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5120Bit-2Adicity1
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5120Bit-2Adicity1-8     	    1407	    790545 ns/op	     23035 Gas/op	        34.32 ns/Gas	    1976 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5120Bit-2Adicity8
+BenchmarkNatExpNN/Base24Bytes-Mod24Bytes-Exp5120Bit-2Adicity8-8     	    1490	    778729 ns/op	     23035 Gas/op	        33.81 ns/Gas	    2024 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1Bit-OddModulus-8       	 4734760	       252.1 ns/op	       200.0 Gas/op	         1.260 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1Bit-2Adicity1-8        	12495079	        91.60 ns/op	       200.0 Gas/op	         0.4580 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1Bit-2Adicity8-8        	 4784515	       255.7 ns/op	       200.0 Gas/op	         1.278 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2Bit-OddModulus-8       	  945637	      1176 ns/op	       200.0 Gas/op	         5.878 ns/Gas	     240 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2Bit-2Adicity1-8        	 1000000	      1058 ns/op	       200.0 Gas/op	         5.290 ns/Gas	     240 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2Bit-2Adicity8-8        	 1611214	       741.8 ns/op	       200.0 Gas/op	         3.709 ns/Gas	     208 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3Bit-OddModulus-8       	  689596	      1696 ns/op	       200.0 Gas/op	         8.482 ns/Gas	     336 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3Bit-2Adicity1-8        	  672319	      1886 ns/op	       200.0 Gas/op	         9.431 ns/Gas	     336 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3Bit-2Adicity8-8        	  696426	      1714 ns/op	       200.0 Gas/op	         8.568 ns/Gas	     448 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4Bit-OddModulus-8       	  490575	      2201 ns/op	       200.0 Gas/op	        11.01 ns/Gas	     448 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4Bit-2Adicity1-8        	  453417	      2520 ns/op	       200.0 Gas/op	        12.60 ns/Gas	     480 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4Bit-2Adicity8-8        	  535250	      2417 ns/op	       200.0 Gas/op	        12.09 ns/Gas	     336 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5Bit-OddModulus-8       	  364149	      3241 ns/op	       200.0 Gas/op	        16.20 ns/Gas	     336 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5Bit-2Adicity1-8        	  365386	      3197 ns/op	       200.0 Gas/op	        15.99 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5Bit-2Adicity8-8        	  434006	      2646 ns/op	       200.0 Gas/op	        13.23 ns/Gas	     304 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp6Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp6Bit-OddModulus-8       	  286647	      4061 ns/op	       200.0 Gas/op	        20.30 ns/Gas	     448 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp6Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp6Bit-2Adicity1-8        	  378153	      3329 ns/op	       200.0 Gas/op	        16.64 ns/Gas	     304 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp6Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp6Bit-2Adicity8-8        	  325099	      3492 ns/op	       200.0 Gas/op	        17.46 ns/Gas	     448 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp7Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp7Bit-OddModulus-8       	  230499	      4788 ns/op	       200.0 Gas/op	        23.94 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp7Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp7Bit-2Adicity1-8        	  232584	      5119 ns/op	       200.0 Gas/op	        25.59 ns/Gas	     480 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp7Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp7Bit-2Adicity8-8        	  247305	      5257 ns/op	       200.0 Gas/op	        26.29 ns/Gas	     480 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp8Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp8Bit-OddModulus-8       	  239677	      4807 ns/op	       200.0 Gas/op	        24.04 ns/Gas	     448 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp8Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp8Bit-2Adicity1-8        	  203438	      5810 ns/op	       200.0 Gas/op	        29.05 ns/Gas	     448 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp8Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp8Bit-2Adicity8-8        	  209053	      5553 ns/op	       200.0 Gas/op	        27.77 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp16Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp16Bit-OddModulus-8      	  106550	     10978 ns/op	       200.0 Gas/op	        54.89 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp16Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp16Bit-2Adicity1-8       	  118362	      9988 ns/op	       200.0 Gas/op	        49.94 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp16Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp16Bit-2Adicity8-8       	  113708	     10516 ns/op	       200.0 Gas/op	        52.58 ns/Gas	     480 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp24Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp24Bit-OddModulus-8      	   74546	     16178 ns/op	       200.0 Gas/op	        80.89 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp24Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp24Bit-2Adicity1-8       	   77460	     16109 ns/op	       200.0 Gas/op	        80.54 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp24Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp24Bit-2Adicity8-8       	   74014	     16839 ns/op	       200.0 Gas/op	        84.20 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp32Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp32Bit-OddModulus-8      	   56486	     21202 ns/op	       248.0 Gas/op	        85.49 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp32Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp32Bit-2Adicity1-8       	   57511	     21001 ns/op	       248.0 Gas/op	        84.68 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp32Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp32Bit-2Adicity8-8       	   56038	     22001 ns/op	       248.0 Gas/op	        88.71 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp40Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp40Bit-OddModulus-8      	   37052	     30977 ns/op	       312.0 Gas/op	        99.29 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp40Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp40Bit-2Adicity1-8       	   43531	     27727 ns/op	       312.0 Gas/op	        88.87 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp40Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp40Bit-2Adicity8-8       	   44032	     26575 ns/op	       312.0 Gas/op	        85.17 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp48Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp48Bit-OddModulus-8      	   40111	     30443 ns/op	       376.0 Gas/op	        80.97 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp48Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp48Bit-2Adicity1-8       	   37324	     35703 ns/op	       376.0 Gas/op	        94.95 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp48Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp48Bit-2Adicity8-8       	   37831	     31520 ns/op	       376.0 Gas/op	        83.83 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp56Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp56Bit-OddModulus-8      	   31342	     38182 ns/op	       440.0 Gas/op	        86.78 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp56Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp56Bit-2Adicity1-8       	   32378	     37450 ns/op	       440.0 Gas/op	        85.11 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp56Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp56Bit-2Adicity8-8       	   32854	     36633 ns/op	       440.0 Gas/op	        83.26 ns/Gas	     592 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp64Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp64Bit-OddModulus-8      	   27967	     42684 ns/op	       504.0 Gas/op	        84.69 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp64Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp64Bit-2Adicity1-8       	   27694	     43322 ns/op	       504.0 Gas/op	        85.96 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp64Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp64Bit-2Adicity8-8       	   28438	     41955 ns/op	       504.0 Gas/op	        83.24 ns/Gas	     624 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp96Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp96Bit-OddModulus-8      	   34174	     38293 ns/op	       760.0 Gas/op	        50.38 ns/Gas	    1840 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp96Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp96Bit-2Adicity1-8       	   29479	     36404 ns/op	       760.0 Gas/op	        47.90 ns/Gas	    2344 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp96Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp96Bit-2Adicity8-8       	   31942	     37678 ns/op	       760.0 Gas/op	        49.58 ns/Gas	    3257 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp128Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp128Bit-OddModulus-8     	   36298	     32953 ns/op	      1016 Gas/op	        32.43 ns/Gas	    1840 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp128Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp128Bit-2Adicity1-8      	   34658	     35582 ns/op	      1016 Gas/op	        35.02 ns/Gas	    2264 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp128Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp128Bit-2Adicity8-8      	   29649	     37236 ns/op	      1016 Gas/op	        36.65 ns/Gas	    2312 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp256Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp256Bit-OddModulus-8     	   18721	     63466 ns/op	      2040 Gas/op	        31.11 ns/Gas	    1840 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp256Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp256Bit-2Adicity1-8      	   19533	     61451 ns/op	      2040 Gas/op	        30.12 ns/Gas	    2264 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp256Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp256Bit-2Adicity8-8      	   19417	     62576 ns/op	      2040 Gas/op	        30.67 ns/Gas	    2312 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp384Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp384Bit-OddModulus-8     	   13002	     91848 ns/op	      3064 Gas/op	        29.98 ns/Gas	    1840 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp384Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp384Bit-2Adicity1-8      	   13270	     90268 ns/op	      3064 Gas/op	        29.46 ns/Gas	    2344 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp384Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp384Bit-2Adicity8-8      	   13437	     89339 ns/op	      3064 Gas/op	        29.16 ns/Gas	    2312 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp512Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp512Bit-OddModulus-8     	    8772	    124584 ns/op	      4088 Gas/op	        30.48 ns/Gas	    1840 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp512Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp512Bit-2Adicity1-8      	   10000	    120152 ns/op	      4088 Gas/op	        29.39 ns/Gas	    2344 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp512Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp512Bit-2Adicity8-8      	    9716	    122513 ns/op	      4088 Gas/op	        29.97 ns/Gas	    3257 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1024Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1024Bit-OddModulus-8    	    4572	    252518 ns/op	      8184 Gas/op	        30.86 ns/Gas	    1840 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1024Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1024Bit-2Adicity1-8     	    5236	    227020 ns/op	      8184 Gas/op	        27.74 ns/Gas	    2344 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1024Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp1024Bit-2Adicity8-8     	    5134	    234361 ns/op	      8184 Gas/op	        28.64 ns/Gas	    2312 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2048Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2048Bit-OddModulus-8    	    2436	    489805 ns/op	     16376 Gas/op	        29.91 ns/Gas	    1841 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2048Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2048Bit-2Adicity1-8     	    2556	    446881 ns/op	     16376 Gas/op	        27.29 ns/Gas	    2264 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2048Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp2048Bit-2Adicity8-8     	    2631	    454826 ns/op	     16376 Gas/op	        27.77 ns/Gas	    3258 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3072Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3072Bit-OddModulus-8    	    1737	    692627 ns/op	     24568 Gas/op	        28.19 ns/Gas	    1840 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3072Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3072Bit-2Adicity1-8     	    1770	    692006 ns/op	     24568 Gas/op	        28.17 ns/Gas	    2265 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3072Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp3072Bit-2Adicity8-8     	    1632	    670800 ns/op	     24568 Gas/op	        27.30 ns/Gas	    2313 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4096Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4096Bit-OddModulus-8    	    1209	    987803 ns/op	     32760 Gas/op	        30.15 ns/Gas	    1841 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4096Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4096Bit-2Adicity1-8     	    1353	    886602 ns/op	     32760 Gas/op	        27.06 ns/Gas	    2264 B/op	      34 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4096Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp4096Bit-2Adicity8-8     	    1341	    908540 ns/op	     32760 Gas/op	        27.73 ns/Gas	    3258 B/op	      50 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5120Bit-OddModulus
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5120Bit-OddModulus-8    	     915	   1267387 ns/op	     40952 Gas/op	        30.95 ns/Gas	    1841 B/op	      19 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5120Bit-2Adicity1
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5120Bit-2Adicity1-8     	    1072	   1114759 ns/op	     40952 Gas/op	        27.22 ns/Gas	    2345 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5120Bit-2Adicity8
+BenchmarkNatExpNN/Base32Bytes-Mod32Bytes-Exp5120Bit-2Adicity8-8     	    1074	   1107122 ns/op	     40952 Gas/op	        27.03 ns/Gas	    2313 B/op	      35 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1Bit-OddModulus-8       	12925293	        97.16 ns/op	       200.0 Gas/op	         0.4858 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1Bit-2Adicity1-8        	12981608	        91.89 ns/op	       200.0 Gas/op	         0.4595 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1Bit-2Adicity8-8        	 4536489	       263.3 ns/op	       200.0 Gas/op	         1.316 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2Bit-OddModulus-8       	 1364954	       875.3 ns/op	       200.0 Gas/op	         4.376 ns/Gas	     240 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2Bit-2Adicity1-8        	  918622	      1344 ns/op	       200.0 Gas/op	         6.721 ns/Gas	     272 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2Bit-2Adicity8-8        	 1000000	      1036 ns/op	       200.0 Gas/op	         5.178 ns/Gas	     240 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3Bit-OddModulus-8       	  538192	      2060 ns/op	       200.0 Gas/op	        10.30 ns/Gas	     512 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3Bit-2Adicity1-8        	  729426	      1547 ns/op	       200.0 Gas/op	         7.736 ns/Gas	     352 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3Bit-2Adicity8-8        	  729124	      1532 ns/op	       200.0 Gas/op	         7.660 ns/Gas	     352 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4Bit-OddModulus-8       	  327584	      3891 ns/op	       200.0 Gas/op	        19.46 ns/Gas	     384 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4Bit-2Adicity1-8        	  445970	      2715 ns/op	       200.0 Gas/op	        13.57 ns/Gas	     512 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4Bit-2Adicity8-8        	  375711	      2945 ns/op	       200.0 Gas/op	        14.73 ns/Gas	     384 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5Bit-OddModulus-8       	  351948	      3244 ns/op	       200.0 Gas/op	        16.22 ns/Gas	     512 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5Bit-2Adicity1-8        	  319032	      3855 ns/op	       200.0 Gas/op	        19.27 ns/Gas	     512 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5Bit-2Adicity8-8        	  342642	      3438 ns/op	       200.0 Gas/op	        17.19 ns/Gas	     512 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp6Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp6Bit-OddModulus-8       	  241785	      4804 ns/op	       200.0 Gas/op	        24.02 ns/Gas	     672 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp6Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp6Bit-2Adicity1-8        	  243907	      4735 ns/op	       200.0 Gas/op	        23.67 ns/Gas	     672 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp6Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp6Bit-2Adicity8-8        	  253554	      4883 ns/op	       200.0 Gas/op	        24.41 ns/Gas	     544 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp7Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp7Bit-OddModulus-8       	  187221	      6674 ns/op	       200.0 Gas/op	        33.37 ns/Gas	     384 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp7Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp7Bit-2Adicity1-8        	  266601	      4469 ns/op	       200.0 Gas/op	        22.35 ns/Gas	     672 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp7Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp7Bit-2Adicity8-8        	  239958	      4921 ns/op	       200.0 Gas/op	        24.60 ns/Gas	     672 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp8Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp8Bit-OddModulus-8       	  208041	      5605 ns/op	       200.0 Gas/op	        28.02 ns/Gas	     544 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp8Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp8Bit-2Adicity1-8        	  195061	      6379 ns/op	       200.0 Gas/op	        31.89 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp8Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp8Bit-2Adicity8-8        	  195855	      6060 ns/op	       200.0 Gas/op	        30.30 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp16Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp16Bit-OddModulus-8      	  100485	     12031 ns/op	       200.0 Gas/op	        60.16 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp16Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp16Bit-2Adicity1-8       	  105175	     11376 ns/op	       200.0 Gas/op	        56.88 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp16Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp16Bit-2Adicity8-8       	   83236	     15053 ns/op	       200.0 Gas/op	        75.27 ns/Gas	     704 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp24Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp24Bit-OddModulus-8      	   68247	     17578 ns/op	       287.0 Gas/op	        61.25 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp24Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp24Bit-2Adicity1-8       	   58942	     20203 ns/op	       287.0 Gas/op	        70.39 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp24Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp24Bit-2Adicity8-8       	   61464	     19198 ns/op	       287.0 Gas/op	        66.89 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp32Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp32Bit-OddModulus-8      	   43855	     29684 ns/op	       387.0 Gas/op	        76.70 ns/Gas	     704 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp32Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp32Bit-2Adicity1-8       	   46011	     24336 ns/op	       387.0 Gas/op	        62.88 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp32Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp32Bit-2Adicity8-8       	   48391	     24577 ns/op	       387.0 Gas/op	        63.51 ns/Gas	     704 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp40Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp40Bit-OddModulus-8      	   39111	     30577 ns/op	       487.0 Gas/op	        62.79 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp40Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp40Bit-2Adicity1-8       	   39316	     30809 ns/op	       487.0 Gas/op	        63.26 ns/Gas	     704 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp40Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp40Bit-2Adicity8-8       	   37658	     31655 ns/op	       487.0 Gas/op	        65.00 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp48Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp48Bit-OddModulus-8      	   29157	     40982 ns/op	       587.0 Gas/op	        69.82 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp48Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp48Bit-2Adicity1-8       	   29168	     41370 ns/op	       587.0 Gas/op	        70.48 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp48Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp48Bit-2Adicity8-8       	   29236	     41354 ns/op	       587.0 Gas/op	        70.45 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp56Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp56Bit-OddModulus-8      	   24781	     49343 ns/op	       687.0 Gas/op	        71.82 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp56Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp56Bit-2Adicity1-8       	   26949	     44327 ns/op	       687.0 Gas/op	        64.52 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp56Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp56Bit-2Adicity8-8       	   26372	     45564 ns/op	       687.0 Gas/op	        66.32 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp64Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp64Bit-OddModulus-8      	   21476	     55931 ns/op	       787.0 Gas/op	        71.07 ns/Gas	     832 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp64Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp64Bit-2Adicity1-8       	   21463	     54766 ns/op	       787.0 Gas/op	        69.59 ns/Gas	     704 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp64Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp64Bit-2Adicity8-8       	   21595	     54724 ns/op	       787.0 Gas/op	        69.53 ns/Gas	     704 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp96Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp96Bit-OddModulus-8      	   26810	     44490 ns/op	      1187 Gas/op	        37.48 ns/Gas	    2192 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp96Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp96Bit-2Adicity1-8       	   26428	     45304 ns/op	      1187 Gas/op	        38.17 ns/Gas	    2793 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp96Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp96Bit-2Adicity8-8       	   24276	     50228 ns/op	      1187 Gas/op	        42.32 ns/Gas	    3785 B/op	      52 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp128Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp128Bit-OddModulus-8     	   21656	     50224 ns/op	      1587 Gas/op	        31.65 ns/Gas	    2192 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp128Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp128Bit-2Adicity1-8      	   26475	     45312 ns/op	      1587 Gas/op	        28.55 ns/Gas	    2792 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp128Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp128Bit-2Adicity8-8      	   26132	     45638 ns/op	      1587 Gas/op	        28.76 ns/Gas	    2841 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp256Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp256Bit-OddModulus-8     	   13760	     90598 ns/op	      3187 Gas/op	        28.43 ns/Gas	    2192 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp256Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp256Bit-2Adicity1-8      	   13120	     90127 ns/op	      3187 Gas/op	        28.28 ns/Gas	    2873 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp256Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp256Bit-2Adicity8-8      	   14373	     83296 ns/op	      3187 Gas/op	        26.14 ns/Gas	    2840 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp384Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp384Bit-OddModulus-8     	    9049	    131374 ns/op	      4787 Gas/op	        27.44 ns/Gas	    2192 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp384Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp384Bit-2Adicity1-8      	    9003	    121847 ns/op	      4787 Gas/op	        25.45 ns/Gas	    2873 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp384Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp384Bit-2Adicity8-8      	    9138	    146220 ns/op	      4787 Gas/op	        30.55 ns/Gas	    2841 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp512Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp512Bit-OddModulus-8     	    6214	    165012 ns/op	      6387 Gas/op	        25.84 ns/Gas	    2192 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp512Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp512Bit-2Adicity1-8      	    7471	    159113 ns/op	      6387 Gas/op	        24.91 ns/Gas	    2873 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp512Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp512Bit-2Adicity8-8      	    7209	    162480 ns/op	      6387 Gas/op	        25.44 ns/Gas	    3785 B/op	      52 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1024Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1024Bit-OddModulus-8    	    3645	    343347 ns/op	     12787 Gas/op	        26.85 ns/Gas	    2193 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1024Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1024Bit-2Adicity1-8     	    3706	    312674 ns/op	     12787 Gas/op	        24.45 ns/Gas	    2873 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1024Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp1024Bit-2Adicity8-8     	    3721	    310178 ns/op	     12787 Gas/op	        24.26 ns/Gas	    2841 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2048Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2048Bit-OddModulus-8    	    1858	    624688 ns/op	     25587 Gas/op	        24.41 ns/Gas	    2193 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2048Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2048Bit-2Adicity1-8     	    1952	    619308 ns/op	     25587 Gas/op	        24.20 ns/Gas	    2873 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2048Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp2048Bit-2Adicity8-8     	    1928	    618508 ns/op	     25587 Gas/op	        24.17 ns/Gas	    2841 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3072Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3072Bit-OddModulus-8    	    1122	   1065739 ns/op	     38387 Gas/op	        27.76 ns/Gas	    2193 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3072Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3072Bit-2Adicity1-8     	    1304	    911665 ns/op	     38387 Gas/op	        23.75 ns/Gas	    2793 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3072Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp3072Bit-2Adicity8-8     	    1296	    918073 ns/op	     38387 Gas/op	        23.92 ns/Gas	    2841 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4096Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4096Bit-OddModulus-8    	     778	   1450515 ns/op	     51187 Gas/op	        28.34 ns/Gas	    2193 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4096Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4096Bit-2Adicity1-8     	     987	   1212910 ns/op	     51187 Gas/op	        23.70 ns/Gas	    2793 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4096Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp4096Bit-2Adicity8-8     	     944	   1230990 ns/op	     51187 Gas/op	        24.05 ns/Gas	    2841 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5120Bit-OddModulus
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5120Bit-OddModulus-8    	     724	   1653397 ns/op	     63987 Gas/op	        25.84 ns/Gas	    2194 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5120Bit-2Adicity1
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5120Bit-2Adicity1-8     	     787	   1597629 ns/op	     63987 Gas/op	        24.97 ns/Gas	    2793 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5120Bit-2Adicity8
+BenchmarkNatExpNN/Base40Bytes-Mod40Bytes-Exp5120Bit-2Adicity8-8     	     787	   1527104 ns/op	     63987 Gas/op	        23.87 ns/Gas	    3787 B/op	      52 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1Bit-OddModulus-8       	13019524	        91.32 ns/op	       200.0 Gas/op	         0.4566 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1Bit-2Adicity1-8        	 4402894	       271.5 ns/op	       200.0 Gas/op	         1.357 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1Bit-2Adicity8-8        	12974120	        94.25 ns/op	       200.0 Gas/op	         0.4713 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2Bit-OddModulus-8       	  954493	      1094 ns/op	       200.0 Gas/op	         5.468 ns/Gas	     272 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2Bit-2Adicity1-8        	 1227831	       980.6 ns/op	       200.0 Gas/op	         4.903 ns/Gas	     272 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2Bit-2Adicity8-8        	  699409	      1546 ns/op	       200.0 Gas/op	         7.728 ns/Gas	     320 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3Bit-OddModulus-8       	  436675	      2516 ns/op	       200.0 Gas/op	        12.58 ns/Gas	     768 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3Bit-2Adicity1-8        	  384327	      3198 ns/op	       200.0 Gas/op	        15.99 ns/Gas	     448 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3Bit-2Adicity8-8        	  573098	      1839 ns/op	       200.0 Gas/op	         9.196 ns/Gas	     400 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4Bit-OddModulus-8       	  330769	      3562 ns/op	       200.0 Gas/op	        17.81 ns/Gas	     448 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4Bit-2Adicity1-8        	  319407	      3721 ns/op	       200.0 Gas/op	        18.61 ns/Gas	     640 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4Bit-2Adicity8-8        	  344792	      3230 ns/op	       200.0 Gas/op	        16.15 ns/Gas	     624 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5Bit-OddModulus-8       	  251296	      5158 ns/op	       200.0 Gas/op	        25.79 ns/Gas	     768 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5Bit-2Adicity1-8        	  286640	      3896 ns/op	       200.0 Gas/op	        19.48 ns/Gas	     768 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5Bit-2Adicity8-8        	  295024	      3898 ns/op	       200.0 Gas/op	        19.49 ns/Gas	     624 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp6Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp6Bit-OddModulus-8       	  221036	      5113 ns/op	       200.0 Gas/op	        25.56 ns/Gas	     624 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp6Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp6Bit-2Adicity1-8        	  175965	      6946 ns/op	       200.0 Gas/op	        34.73 ns/Gas	     768 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp6Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp6Bit-2Adicity8-8        	  216048	      5281 ns/op	       200.0 Gas/op	        26.41 ns/Gas	     816 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp7Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp7Bit-OddModulus-8       	  170437	      7045 ns/op	       200.0 Gas/op	        35.23 ns/Gas	     816 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp7Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp7Bit-2Adicity1-8        	  189460	      6173 ns/op	       200.0 Gas/op	        30.86 ns/Gas	     944 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp7Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp7Bit-2Adicity8-8        	  185289	      6630 ns/op	       200.0 Gas/op	        33.15 ns/Gas	     624 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp8Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp8Bit-OddModulus-8       	  150154	      8024 ns/op	       200.0 Gas/op	        40.12 ns/Gas	     768 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp8Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp8Bit-2Adicity1-8        	  137377	      8364 ns/op	       200.0 Gas/op	        41.82 ns/Gas	     768 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp8Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp8Bit-2Adicity8-8        	  151312	      7779 ns/op	       200.0 Gas/op	        38.90 ns/Gas	     624 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp16Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp16Bit-OddModulus-8      	   72121	     16814 ns/op	       270.0 Gas/op	        62.28 ns/Gas	     768 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp16Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp16Bit-2Adicity1-8       	   71820	     17342 ns/op	       270.0 Gas/op	        64.23 ns/Gas	     800 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp16Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp16Bit-2Adicity8-8       	   77876	     15352 ns/op	       270.0 Gas/op	        56.86 ns/Gas	     976 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp24Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp24Bit-OddModulus-8      	   49324	     24035 ns/op	       414.0 Gas/op	        58.06 ns/Gas	     816 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp24Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp24Bit-2Adicity1-8       	   48522	     25029 ns/op	       414.0 Gas/op	        60.46 ns/Gas	     960 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp24Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp24Bit-2Adicity8-8       	   48165	     24661 ns/op	       414.0 Gas/op	        59.57 ns/Gas	     832 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp32Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp32Bit-OddModulus-8      	   39886	     30064 ns/op	       558.0 Gas/op	        53.88 ns/Gas	     944 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp32Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp32Bit-2Adicity1-8       	   34345	     34722 ns/op	       558.0 Gas/op	        62.23 ns/Gas	     944 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp32Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp32Bit-2Adicity8-8       	   36928	     32182 ns/op	       558.0 Gas/op	        57.67 ns/Gas	     832 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp40Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp40Bit-OddModulus-8      	   28838	     42337 ns/op	       702.0 Gas/op	        60.31 ns/Gas	     960 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp40Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp40Bit-2Adicity1-8       	   27963	     42267 ns/op	       702.0 Gas/op	        60.21 ns/Gas	     960 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp40Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp40Bit-2Adicity8-8       	   29226	     40987 ns/op	       702.0 Gas/op	        58.39 ns/Gas	     944 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp48Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp48Bit-OddModulus-8      	   24460	     48870 ns/op	       846.0 Gas/op	        57.77 ns/Gas	     816 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp48Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp48Bit-2Adicity1-8       	   23413	     50854 ns/op	       846.0 Gas/op	        60.11 ns/Gas	     976 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp48Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp48Bit-2Adicity8-8       	   24212	     49082 ns/op	       846.0 Gas/op	        58.02 ns/Gas	     944 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp56Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp56Bit-OddModulus-8      	   20439	     58977 ns/op	       990.0 Gas/op	        59.57 ns/Gas	     960 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp56Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp56Bit-2Adicity1-8       	   21252	     56268 ns/op	       990.0 Gas/op	        56.84 ns/Gas	     944 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp56Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp56Bit-2Adicity8-8       	   21938	     56121 ns/op	       990.0 Gas/op	        56.69 ns/Gas	     960 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp64Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp64Bit-OddModulus-8      	   16479	     72412 ns/op	      1134 Gas/op	        63.86 ns/Gas	     944 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp64Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp64Bit-2Adicity1-8       	   18482	     64937 ns/op	      1134 Gas/op	        57.26 ns/Gas	     960 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp64Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp64Bit-2Adicity8-8       	   17950	     66703 ns/op	      1134 Gas/op	        58.82 ns/Gas	     832 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp96Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp96Bit-OddModulus-8      	   20576	     59044 ns/op	      1710 Gas/op	        34.53 ns/Gas	    2480 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp96Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp96Bit-2Adicity1-8       	   20142	     62386 ns/op	      1710 Gas/op	        36.48 ns/Gas	    3193 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp96Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp96Bit-2Adicity8-8       	   20422	     58654 ns/op	      1710 Gas/op	        34.30 ns/Gas	    3241 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp128Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp128Bit-OddModulus-8     	   20470	     58582 ns/op	      2286 Gas/op	        25.63 ns/Gas	    2480 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp128Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp128Bit-2Adicity1-8      	   20551	     58322 ns/op	      2286 Gas/op	        25.51 ns/Gas	    3097 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp128Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp128Bit-2Adicity8-8      	   19519	     63094 ns/op	      2286 Gas/op	        27.60 ns/Gas	    3241 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp256Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp256Bit-OddModulus-8     	   10000	    114989 ns/op	      4590 Gas/op	        25.05 ns/Gas	    2480 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp256Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp256Bit-2Adicity1-8      	   10000	    108648 ns/op	      4590 Gas/op	        23.67 ns/Gas	    3097 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp256Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp256Bit-2Adicity8-8      	   10000	    108911 ns/op	      4590 Gas/op	        23.73 ns/Gas	    3241 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp384Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp384Bit-OddModulus-8     	    6942	    170557 ns/op	      6894 Gas/op	        24.74 ns/Gas	    2480 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp384Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp384Bit-2Adicity1-8      	    7186	    164006 ns/op	      6894 Gas/op	        23.79 ns/Gas	    3097 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp384Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp384Bit-2Adicity8-8      	    7282	    161638 ns/op	      6894 Gas/op	        23.45 ns/Gas	    4297 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp512Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp512Bit-OddModulus-8     	    5439	    211557 ns/op	      9198 Gas/op	        23.00 ns/Gas	    2480 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp512Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp512Bit-2Adicity1-8      	    5770	    209042 ns/op	      9198 Gas/op	        22.73 ns/Gas	    3097 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp512Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp512Bit-2Adicity8-8      	    5660	    211311 ns/op	      9198 Gas/op	        22.97 ns/Gas	    3241 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1024Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1024Bit-OddModulus-8    	    2636	    450638 ns/op	     18414 Gas/op	        24.47 ns/Gas	    2480 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1024Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1024Bit-2Adicity1-8     	    2924	    409071 ns/op	     18414 Gas/op	        22.22 ns/Gas	    3193 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1024Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp1024Bit-2Adicity8-8     	    2886	    408521 ns/op	     18414 Gas/op	        22.19 ns/Gas	    4298 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2048Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2048Bit-OddModulus-8    	    1398	    880632 ns/op	     36846 Gas/op	        23.90 ns/Gas	    2481 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2048Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2048Bit-2Adicity1-8     	    1465	    815393 ns/op	     36846 Gas/op	        22.13 ns/Gas	    3193 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2048Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp2048Bit-2Adicity8-8     	    1495	    802644 ns/op	     36846 Gas/op	        21.78 ns/Gas	    3241 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3072Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3072Bit-OddModulus-8    	     885	   1340189 ns/op	     55278 Gas/op	        24.24 ns/Gas	    2481 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3072Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3072Bit-2Adicity1-8     	     994	   1226864 ns/op	     55278 Gas/op	        22.19 ns/Gas	    3193 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3072Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp3072Bit-2Adicity8-8     	     996	   1219232 ns/op	     55278 Gas/op	        22.06 ns/Gas	    3193 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4096Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4096Bit-OddModulus-8    	     711	   1675500 ns/op	     73710 Gas/op	        22.73 ns/Gas	    2482 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4096Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4096Bit-2Adicity1-8     	     751	   1587527 ns/op	     73710 Gas/op	        21.54 ns/Gas	    3097 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4096Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp4096Bit-2Adicity8-8     	     742	   1616279 ns/op	     73710 Gas/op	        21.93 ns/Gas	    4300 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5120Bit-OddModulus
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5120Bit-OddModulus-8    	     456	   2386051 ns/op	     92142 Gas/op	        25.90 ns/Gas	    2483 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5120Bit-2Adicity1
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5120Bit-2Adicity1-8     	     600	   1999341 ns/op	     92142 Gas/op	        21.70 ns/Gas	    3194 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5120Bit-2Adicity8
+BenchmarkNatExpNN/Base48Bytes-Mod48Bytes-Exp5120Bit-2Adicity8-8     	     597	   1988051 ns/op	     92142 Gas/op	        21.58 ns/Gas	    3242 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1Bit-OddModulus-8       	12879852	        93.02 ns/op	       200.0 Gas/op	         0.4651 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1Bit-2Adicity1-8        	12381441	        93.05 ns/op	       200.0 Gas/op	         0.4652 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1Bit-2Adicity8-8        	12272566	        92.49 ns/op	       200.0 Gas/op	         0.4625 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2Bit-OddModulus-8       	  578062	      1783 ns/op	       200.0 Gas/op	         8.914 ns/Gas	     352 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2Bit-2Adicity1-8        	  579175	      1783 ns/op	       200.0 Gas/op	         8.914 ns/Gas	     352 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2Bit-2Adicity8-8        	  603717	      1835 ns/op	       200.0 Gas/op	         9.174 ns/Gas	     352 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3Bit-OddModulus-8       	  327304	      3667 ns/op	       200.0 Gas/op	        18.34 ns/Gas	     496 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3Bit-2Adicity1-8        	  321556	      3428 ns/op	       200.0 Gas/op	        17.14 ns/Gas	     496 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3Bit-2Adicity8-8        	  417096	      2686 ns/op	       200.0 Gas/op	        13.43 ns/Gas	     496 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4Bit-OddModulus-8       	  307460	      3721 ns/op	       200.0 Gas/op	        18.60 ns/Gas	     864 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4Bit-2Adicity1-8        	  295399	      4049 ns/op	       200.0 Gas/op	        20.25 ns/Gas	     864 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4Bit-2Adicity8-8        	  303507	      3884 ns/op	       200.0 Gas/op	        19.42 ns/Gas	     704 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5Bit-OddModulus-8       	  210642	      5189 ns/op	       200.0 Gas/op	        25.95 ns/Gas	     864 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5Bit-2Adicity1-8        	  220568	      5353 ns/op	       200.0 Gas/op	        26.77 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5Bit-2Adicity8-8        	  315199	      4003 ns/op	       200.0 Gas/op	        20.01 ns/Gas	     448 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp6Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp6Bit-OddModulus-8       	  159855	      7375 ns/op	       200.0 Gas/op	        36.87 ns/Gas	     704 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp6Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp6Bit-2Adicity1-8        	  174352	      6714 ns/op	       200.0 Gas/op	        33.57 ns/Gas	     704 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp6Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp6Bit-2Adicity8-8        	  190604	      6137 ns/op	       200.0 Gas/op	        30.68 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp7Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp7Bit-OddModulus-8       	  155722	      7984 ns/op	       200.0 Gas/op	        39.92 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp7Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp7Bit-2Adicity1-8        	  131724	      9053 ns/op	       200.0 Gas/op	        45.27 ns/Gas	     864 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp7Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp7Bit-2Adicity8-8        	  170910	      6741 ns/op	       200.0 Gas/op	        33.70 ns/Gas	     496 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp8Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp8Bit-OddModulus-8       	  141040	      8506 ns/op	       200.0 Gas/op	        42.53 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp8Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp8Bit-2Adicity1-8        	  140364	      8363 ns/op	       200.0 Gas/op	        41.81 ns/Gas	     704 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp8Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp8Bit-2Adicity8-8        	  129316	      9799 ns/op	       200.0 Gas/op	        49.00 ns/Gas	     864 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp16Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp16Bit-OddModulus-8      	   58510	     19677 ns/op	       367.0 Gas/op	        53.61 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp16Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp16Bit-2Adicity1-8       	   60140	     19272 ns/op	       367.0 Gas/op	        52.51 ns/Gas	     704 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp16Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp16Bit-2Adicity8-8       	   64484	     18402 ns/op	       367.0 Gas/op	        50.14 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp24Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp24Bit-OddModulus-8      	   45024	     28100 ns/op	       563.0 Gas/op	        49.91 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp24Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp24Bit-2Adicity1-8       	   41217	     28932 ns/op	       563.0 Gas/op	        51.39 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp24Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp24Bit-2Adicity8-8       	   44840	     26550 ns/op	       563.0 Gas/op	        47.16 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp32Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp32Bit-OddModulus-8      	   31674	     37790 ns/op	       759.0 Gas/op	        49.79 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp32Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp32Bit-2Adicity1-8       	   32570	     37510 ns/op	       759.0 Gas/op	        49.42 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp32Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp32Bit-2Adicity8-8       	   29252	     40402 ns/op	       759.0 Gas/op	        53.23 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp40Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp40Bit-OddModulus-8      	   24922	     48286 ns/op	       955.0 Gas/op	        50.56 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp40Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp40Bit-2Adicity1-8       	   26216	     45617 ns/op	       955.0 Gas/op	        47.77 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp40Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp40Bit-2Adicity8-8       	   25959	     46156 ns/op	       955.0 Gas/op	        48.33 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp48Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp48Bit-OddModulus-8      	   18898	     62154 ns/op	      1151 Gas/op	        54.00 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp48Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp48Bit-2Adicity1-8       	   19536	     61209 ns/op	      1151 Gas/op	        53.18 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp48Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp48Bit-2Adicity8-8       	   20404	     58667 ns/op	      1151 Gas/op	        50.97 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp56Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp56Bit-OddModulus-8      	   19147	     62664 ns/op	      1347 Gas/op	        46.52 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp56Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp56Bit-2Adicity1-8       	   17688	     69266 ns/op	      1347 Gas/op	        51.42 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp56Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp56Bit-2Adicity8-8       	   17337	     68725 ns/op	      1347 Gas/op	        51.02 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp64Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp64Bit-OddModulus-8      	   15873	     75563 ns/op	      1543 Gas/op	        48.97 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp64Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp64Bit-2Adicity1-8       	   16100	     74698 ns/op	      1543 Gas/op	        48.41 ns/Gas	     912 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp64Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp64Bit-2Adicity8-8       	   14920	     80155 ns/op	      1543 Gas/op	        51.95 ns/Gas	    1072 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp96Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp96Bit-OddModulus-8      	   15212	     76731 ns/op	      2327 Gas/op	        32.97 ns/Gas	    2801 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp96Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp96Bit-2Adicity1-8       	   16413	     73009 ns/op	      2327 Gas/op	        31.37 ns/Gas	    3593 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp96Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp96Bit-2Adicity8-8       	   15596	     76865 ns/op	      2327 Gas/op	        33.03 ns/Gas	    4697 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp128Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp128Bit-OddModulus-8     	   16268	     74571 ns/op	      3111 Gas/op	        23.97 ns/Gas	    2801 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp128Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp128Bit-2Adicity1-8      	   15685	     75025 ns/op	      3111 Gas/op	        24.12 ns/Gas	    3497 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp128Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp128Bit-2Adicity8-8      	   16400	     73143 ns/op	      3111 Gas/op	        23.51 ns/Gas	    3641 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp256Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp256Bit-OddModulus-8     	    8475	    138818 ns/op	      6247 Gas/op	        22.22 ns/Gas	    2801 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp256Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp256Bit-2Adicity1-8      	    8440	    137096 ns/op	      6247 Gas/op	        21.95 ns/Gas	    3593 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp256Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp256Bit-2Adicity8-8      	    7580	    157325 ns/op	      6247 Gas/op	        25.18 ns/Gas	    4698 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp384Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp384Bit-OddModulus-8     	    5665	    210509 ns/op	      9383 Gas/op	        22.44 ns/Gas	    2801 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp384Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp384Bit-2Adicity1-8      	    5989	    198939 ns/op	      9383 Gas/op	        21.20 ns/Gas	    3593 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp384Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp384Bit-2Adicity8-8      	    5950	    199476 ns/op	      9383 Gas/op	        21.26 ns/Gas	    3641 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp512Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp512Bit-OddModulus-8     	    4512	    274418 ns/op	     12519 Gas/op	        21.92 ns/Gas	    2801 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp512Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp512Bit-2Adicity1-8      	    4502	    279574 ns/op	     12519 Gas/op	        22.33 ns/Gas	    3497 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp512Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp512Bit-2Adicity8-8      	    3574	    361620 ns/op	     12519 Gas/op	        28.89 ns/Gas	    4698 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1024Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1024Bit-OddModulus-8    	    2294	    531029 ns/op	     25063 Gas/op	        21.19 ns/Gas	    2801 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1024Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1024Bit-2Adicity1-8     	    2276	    521282 ns/op	     25063 Gas/op	        20.80 ns/Gas	    3593 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1024Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp1024Bit-2Adicity8-8     	    2319	    517372 ns/op	     25063 Gas/op	        20.64 ns/Gas	    4698 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2048Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2048Bit-OddModulus-8    	    1132	   1056576 ns/op	     50151 Gas/op	        21.07 ns/Gas	    2801 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2048Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2048Bit-2Adicity1-8     	    1165	   1012133 ns/op	     50151 Gas/op	        20.18 ns/Gas	    3498 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2048Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp2048Bit-2Adicity8-8     	    1177	   1032999 ns/op	     50151 Gas/op	        20.60 ns/Gas	    4699 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3072Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3072Bit-OddModulus-8    	     739	   1602458 ns/op	     75239 Gas/op	        21.30 ns/Gas	    2801 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3072Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3072Bit-2Adicity1-8     	     787	   1519456 ns/op	     75239 Gas/op	        20.20 ns/Gas	    3593 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3072Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp3072Bit-2Adicity8-8     	     783	   1519793 ns/op	     75239 Gas/op	        20.20 ns/Gas	    4701 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4096Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4096Bit-OddModulus-8    	     534	   2290719 ns/op	    100327 Gas/op	        22.83 ns/Gas	    2802 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4096Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4096Bit-2Adicity1-8     	     591	   2091617 ns/op	    100327 Gas/op	        20.85 ns/Gas	    3498 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4096Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp4096Bit-2Adicity8-8     	     594	   2009086 ns/op	    100327 Gas/op	        20.03 ns/Gas	    3641 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5120Bit-OddModulus
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5120Bit-OddModulus-8    	     416	   2877958 ns/op	    125415 Gas/op	        22.95 ns/Gas	    2803 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5120Bit-2Adicity1
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5120Bit-2Adicity1-8     	     466	   2525777 ns/op	    125415 Gas/op	        20.14 ns/Gas	    3594 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5120Bit-2Adicity8
+BenchmarkNatExpNN/Base56Bytes-Mod56Bytes-Exp5120Bit-2Adicity8-8     	     454	   2557124 ns/op	    125415 Gas/op	        20.39 ns/Gas	    4703 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1Bit-OddModulus-8       	 4251346	       276.4 ns/op	       200.0 Gas/op	         1.382 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1Bit-2Adicity1-8        	12991982	        91.57 ns/op	       200.0 Gas/op	         0.4579 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1Bit-2Adicity8-8        	13109098	        90.93 ns/op	       200.0 Gas/op	         0.4546 ns/Gas	       0 B/op	       0 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2Bit-OddModulus-8       	  536955	      1954 ns/op	       200.0 Gas/op	         9.772 ns/Gas	     400 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2Bit-2Adicity1-8        	 1000000	      1315 ns/op	       200.0 Gas/op	         6.577 ns/Gas	     336 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2Bit-2Adicity8-8        	  982076	      1154 ns/op	       200.0 Gas/op	         5.770 ns/Gas	     336 B/op	       2 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3Bit-OddModulus-8       	  379850	      3036 ns/op	       200.0 Gas/op	        15.18 ns/Gas	     960 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3Bit-2Adicity1-8        	  395558	      3125 ns/op	       200.0 Gas/op	        15.62 ns/Gas	     960 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3Bit-2Adicity8-8        	  552102	      2269 ns/op	       200.0 Gas/op	        11.35 ns/Gas	     496 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4Bit-OddModulus-8       	  257766	      4401 ns/op	       200.0 Gas/op	        22.01 ns/Gas	     560 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4Bit-2Adicity1-8        	  262128	      4399 ns/op	       200.0 Gas/op	        21.99 ns/Gas	     560 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4Bit-2Adicity8-8        	  304497	      3810 ns/op	       200.0 Gas/op	        19.05 ns/Gas	     784 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5Bit-OddModulus-8       	  243435	      5006 ns/op	       200.0 Gas/op	        25.03 ns/Gas	     720 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5Bit-2Adicity1-8        	  218662	      5556 ns/op	       200.0 Gas/op	        27.78 ns/Gas	    1024 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5Bit-2Adicity8-8        	  307208	      3824 ns/op	       200.0 Gas/op	        19.12 ns/Gas	     496 B/op	       3 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp6Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp6Bit-OddModulus-8       	  179370	      6318 ns/op	       200.0 Gas/op	        31.59 ns/Gas	     800 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp6Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp6Bit-2Adicity1-8        	  208711	      6153 ns/op	       200.0 Gas/op	        30.76 ns/Gas	     960 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp6Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp6Bit-2Adicity8-8        	  184437	      6668 ns/op	       200.0 Gas/op	        33.34 ns/Gas	     960 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp7Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp7Bit-OddModulus-8       	  136574	      8715 ns/op	       200.0 Gas/op	        43.58 ns/Gas	     800 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp7Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp7Bit-2Adicity1-8        	  145428	      8049 ns/op	       200.0 Gas/op	        40.24 ns/Gas	    1184 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp7Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp7Bit-2Adicity8-8        	  144698	      8201 ns/op	       200.0 Gas/op	        41.00 ns/Gas	     960 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp8Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp8Bit-OddModulus-8       	  154660	      8296 ns/op	       224.0 Gas/op	        37.04 ns/Gas	     784 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp8Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp8Bit-2Adicity1-8        	  132451	      8686 ns/op	       224.0 Gas/op	        38.78 ns/Gas	     784 B/op	       4 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp8Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp8Bit-2Adicity8-8        	  123302	      9648 ns/op	       224.0 Gas/op	        43.07 ns/Gas	     960 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp16Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp16Bit-OddModulus-8      	   55124	     21842 ns/op	       480.0 Gas/op	        45.50 ns/Gas	    1040 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp16Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp16Bit-2Adicity1-8       	   57854	     22685 ns/op	       480.0 Gas/op	        47.26 ns/Gas	    1024 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp16Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp16Bit-2Adicity8-8       	   59222	     19985 ns/op	       480.0 Gas/op	        41.63 ns/Gas	    1040 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp24Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp24Bit-OddModulus-8      	   41113	     29257 ns/op	       736.0 Gas/op	        39.75 ns/Gas	    1184 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp24Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp24Bit-2Adicity1-8       	   37518	     31852 ns/op	       736.0 Gas/op	        43.28 ns/Gas	    1024 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp24Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp24Bit-2Adicity8-8       	   38556	     31434 ns/op	       736.0 Gas/op	        42.71 ns/Gas	    1184 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp32Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp32Bit-OddModulus-8      	   25123	     45131 ns/op	       992.0 Gas/op	        45.49 ns/Gas	    1184 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp32Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp32Bit-2Adicity1-8       	   29119	     41162 ns/op	       992.0 Gas/op	        41.49 ns/Gas	    1024 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp32Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp32Bit-2Adicity8-8       	   30409	     39238 ns/op	       992.0 Gas/op	        39.55 ns/Gas	    1200 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp40Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp40Bit-OddModulus-8      	   23778	     50487 ns/op	      1248 Gas/op	        40.45 ns/Gas	    1200 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp40Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp40Bit-2Adicity1-8       	   22934	     51016 ns/op	      1248 Gas/op	        40.88 ns/Gas	    1200 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp40Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp40Bit-2Adicity8-8       	   23089	     51893 ns/op	      1248 Gas/op	        41.58 ns/Gas	    1200 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp48Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp48Bit-OddModulus-8      	   20634	     58099 ns/op	      1504 Gas/op	        38.63 ns/Gas	    1024 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp48Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp48Bit-2Adicity1-8       	   19976	     60600 ns/op	      1504 Gas/op	        40.29 ns/Gas	    1184 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp48Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp48Bit-2Adicity8-8       	   17113	     70465 ns/op	      1504 Gas/op	        46.85 ns/Gas	    1200 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp56Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp56Bit-OddModulus-8      	   17943	     67187 ns/op	      1760 Gas/op	        38.17 ns/Gas	    1200 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp56Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp56Bit-2Adicity1-8       	   15957	     75148 ns/op	      1760 Gas/op	        42.70 ns/Gas	    1200 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp56Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp56Bit-2Adicity8-8       	   18091	     66766 ns/op	      1760 Gas/op	        37.94 ns/Gas	    1024 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp64Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp64Bit-OddModulus-8      	   14422	     82672 ns/op	      2016 Gas/op	        41.01 ns/Gas	    1024 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp64Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp64Bit-2Adicity1-8       	   14720	     81480 ns/op	      2016 Gas/op	        40.42 ns/Gas	    1184 B/op	       6 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp64Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp64Bit-2Adicity8-8       	   14130	     84692 ns/op	      2016 Gas/op	        42.01 ns/Gas	    1040 B/op	       5 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp96Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp96Bit-OddModulus-8      	   20316	     58961 ns/op	      3040 Gas/op	        19.40 ns/Gas	    3089 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp96Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp96Bit-2Adicity1-8       	   18847	     66324 ns/op	      3040 Gas/op	        21.82 ns/Gas	    3801 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp96Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp96Bit-2Adicity8-8       	   19280	     61471 ns/op	      3040 Gas/op	        20.22 ns/Gas	    3961 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp128Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp128Bit-OddModulus-8     	   20098	     59571 ns/op	      4064 Gas/op	        14.66 ns/Gas	    3089 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp128Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp128Bit-2Adicity1-8      	   19396	     61412 ns/op	      4064 Gas/op	        15.11 ns/Gas	    3913 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp128Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp128Bit-2Adicity8-8      	   18058	     68715 ns/op	      4064 Gas/op	        16.91 ns/Gas	    5129 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp256Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp256Bit-OddModulus-8     	   10000	    113300 ns/op	      8160 Gas/op	        13.88 ns/Gas	    3089 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp256Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp256Bit-2Adicity1-8      	   10000	    112971 ns/op	      8160 Gas/op	        13.84 ns/Gas	    3801 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp256Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp256Bit-2Adicity8-8      	    9742	    116417 ns/op	      8160 Gas/op	        14.27 ns/Gas	    5130 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp384Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp384Bit-OddModulus-8     	    6726	    168290 ns/op	     12256 Gas/op	        13.73 ns/Gas	    3089 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp384Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp384Bit-2Adicity1-8      	    5902	    178039 ns/op	     12256 Gas/op	        14.53 ns/Gas	    3913 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp384Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp384Bit-2Adicity8-8      	    7075	    171997 ns/op	     12256 Gas/op	        14.03 ns/Gas	    3961 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp512Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp512Bit-OddModulus-8     	    5142	    224627 ns/op	     16352 Gas/op	        13.74 ns/Gas	    3089 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp512Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp512Bit-2Adicity1-8      	    5436	    218538 ns/op	     16352 Gas/op	        13.36 ns/Gas	    3801 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp512Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp512Bit-2Adicity8-8      	    5168	    222644 ns/op	     16352 Gas/op	        13.62 ns/Gas	    3961 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1024Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1024Bit-OddModulus-8    	    2539	    460425 ns/op	     32736 Gas/op	        14.06 ns/Gas	    3089 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1024Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1024Bit-2Adicity1-8     	    2784	    425932 ns/op	     32736 Gas/op	        13.01 ns/Gas	    3801 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1024Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp1024Bit-2Adicity8-8     	    2732	    430793 ns/op	     32736 Gas/op	        13.16 ns/Gas	    5130 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2048Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2048Bit-OddModulus-8    	    1363	    893879 ns/op	     65504 Gas/op	        13.65 ns/Gas	    3090 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2048Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2048Bit-2Adicity1-8     	    1388	    852206 ns/op	     65504 Gas/op	        13.01 ns/Gas	    3801 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2048Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp2048Bit-2Adicity8-8     	    1420	    842192 ns/op	     65504 Gas/op	        12.86 ns/Gas	    3961 B/op	      38 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3072Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3072Bit-OddModulus-8    	     836	   1434625 ns/op	     98272 Gas/op	        14.60 ns/Gas	    3089 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3072Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3072Bit-2Adicity1-8     	     936	   1299621 ns/op	     98272 Gas/op	        13.22 ns/Gas	    3914 B/op	      37 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3072Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp3072Bit-2Adicity8-8     	     933	   1274682 ns/op	     98272 Gas/op	        12.97 ns/Gas	    5131 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4096Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4096Bit-OddModulus-8    	     687	   1719811 ns/op	    131040 Gas/op	        13.12 ns/Gas	    3090 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4096Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4096Bit-2Adicity1-8     	     714	   1681293 ns/op	    131040 Gas/op	        12.83 ns/Gas	    3801 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4096Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp4096Bit-2Adicity8-8     	     709	   1671827 ns/op	    131040 Gas/op	        12.76 ns/Gas	    5132 B/op	      53 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5120Bit-OddModulus
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5120Bit-OddModulus-8    	     492	   2455681 ns/op	    163808 Gas/op	        14.99 ns/Gas	    3091 B/op	      20 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5120Bit-2Adicity1
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5120Bit-2Adicity1-8     	     556	   2149890 ns/op	    163808 Gas/op	        13.12 ns/Gas	    3802 B/op	      36 allocs/op
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5120Bit-2Adicity8
+BenchmarkNatExpNN/Base64Bytes-Mod64Bytes-Exp5120Bit-2Adicity8-8     	     559	   2131494 ns/op	    163808 Gas/op	        13.01 ns/Gas	    5133 B/op	      53 allocs/op
+PASS
+ok  	math/big	713.869s
