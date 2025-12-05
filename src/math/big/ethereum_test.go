@@ -66,7 +66,7 @@ func computeCostEIP7883(testCase *ModExpBenchTestCase) float64 {
 
 var (
 	gasCostString   = "gas"
-	gasMetricString = "gas/op"
+	gasMetricString = "ns/gas"
 )
 
 var _ *CostMetric = (&CostMetric{
