@@ -10,3 +10,8 @@ Everything else based on EthereumGasBenchmark
 
 Docfixes:
 	- minor documentation fixes
+	(currently based on EthereumGasBenchmark)
+	
+improve_inverse_mod2:
+	(currently based on EthereumGasBenchmark)
+
