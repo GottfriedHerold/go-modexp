@@ -687,12 +687,14 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// instance of each of the first two cases).
 		if len(y) > 1 && !slow {
 			if m[0]&1 == 1 {
-				return z.expNNMontgomery(stk, x, y, m)
+				return z.expNNOdd(stk, x, y, m)
 			}
 			if logM, ok := m.isPow2(); ok {
-				return z.expNNWindowed(stk, x, y, logM)
+				return z.expNNPowerOfTwo(stk, x, y, logM)
 			}
-			return z.expNNMontgomeryEven(stk, x, y, m)
+			// Use CRT-based algorithm. Note that this will call into expNN twice and dispatch into both expNNOdd and expNNPowerOfTwo.
+			// (We might improve this directly call into expNNOdd and expNNPowerOfTwo later)
+			return z.expNNEven(stk, x, y, m)
 		}
 	}
 
@@ -753,18 +755,18 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	return z.norm()
 }
 
-// expNNMontgomeryEven calculates x**y mod m where m = m1 × m2 for m1 = 2ⁿ and m2 odd with n > 0.
+// expNNEven calculates x**y mod m where m = m1 × m2 for m1 = 2ⁿ and m2 odd with n > 0.
 // It uses two recursive calls to expNN for x**y mod m1 and x**y mod m2
 // and then uses the Chinese Remainder Theorem to combine the results.
-// The recursive call using m1 will use expNNWindowed,
-// while the recursive call using m2 will use expNNMontgomery.
+// The recursive call using m1 will use expNNPowerOfTwo,
+// while the recursive call using m2 will use expNNOdd.
 // For more details, see Ç. K. Koç, “Montgomery Reduction with Even Modulus”,
 // IEE Proceedings: Computers and Digital Techniques, 141(5) 314-316, September 1994.
 // http://www.people.vcu.edu/~jwang3/CMSC691/j34monex.pdf
 //
 // This algorithm assumes m even, m > 0, z may alias x or y, but not m.
-// We do not check this.
-func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
+// We do not check these conditions.
+func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	// Split m = m₁ × m₂ where m₁ = 2ⁿ. We assume n > 0.
 	n := m.trailingZeroBits()
 	m1 := nat(nil).lsh(natOne, n)
@@ -805,9 +807,9 @@ func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
 	return z
 }
 
-// expNNWindowed calculates x**y mod m using a fixed, 4-bit window,
+// expNNPowerOfTwo calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
-func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
+func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	if len(y) <= 1 {
 		panic("big: misuse of expNNWindowed")
 	}
@@ -898,9 +900,9 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-// expNNMontgomery calculates x**y mod m using a fixed, 4-bit window.
+// expNNOdd calculates x**y mod m using a fixed, 4-bit window.
 // Uses Montgomery representation.
-func (z nat) expNNMontgomery(stk *stack, x, y, m nat) nat {
+func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	numWords := len(m)
 
 	// We want the lengths of x and m to be equal.
