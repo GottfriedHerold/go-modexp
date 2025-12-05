@@ -327,6 +327,17 @@ func (s *stack) nat(n int) nat {
 	return x
 }
 
+// reserve grows the stack, such that we can obtain at least n more words without reallocation.
+// Calling this before multiple calls to nat may be used as an optimization.
+func (s *stack) reserve(n int) {
+	nr := (n + 3) & ^3 // round up to multiple of 4
+	off := len(s.w)
+	s.w = slices.Grow(s.w, nr)
+	s.w = s.w[:off+nr]
+}
+
+
+
 // bitLen returns the length of x in bits.
 // Unlike most methods, it works even if x is not normalized.
 func (x nat) bitLen() int {
