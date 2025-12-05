@@ -9,7 +9,7 @@ while getopts ":i:o:" opt; do
 	case ${opt} in
 		i ) 
 			BASE_CONFIG=$OPTARG
-			CSVMETRICARGS="csvmetric=%Improvement(ns/op)"
+			CSVMETRICARGS="-csvmetric=%Improvement(ns/op)"
 			;;
 		o)
 			OUTNAME="BENCHMARKS/BENCHRUN_${OPTARG}"
