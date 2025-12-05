@@ -844,34 +844,55 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	return z
 }
 
-// buildPrecompuationWindowModPower2 builds a precomputation window for exponentiation
+// buildPrecomputationWindowModPower2 builds a precomputation window for exponentiation
 // in the case of power-of-two modulus.
 // More precisely, it sets powers[i] to x**i mod m, where m == 2**logM for
 // 0 <= i < 2**windowSize
 // powers must be a non-nil slice of size *exactly* 2**windowSize.
-// Be aware that this function modifies *stk and powers[i] may be allocated on stk;
-// in particular, powers[i] may become invalid after a call to stk.restore.
+// Be aware that this function modifies *stk and powers[i] may be allocated from stk;
+// Calling stk.restore is the responsibiity of the caller and after restoring the stack, powers[i]
+// may become invalid.
 func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int, logM uint, x nat) {
 	if len(powers) != 1<<windowSize {
 		panic("big: misuse of build_precomputation_window")
 	}
 
 	w := int((logM + _W - 1) / _W) // number of words that would be needed to store numbers reduced modulo the modulus.
-	
+
+	// We reserve space for len(powers) many nats of w words.
+	// For our loop below that actually computes powers[i],
+	// we want each powers[i] to have capacity 2*w to (temporarily) store (yet unreduced) squares/products of
+	// numbers, whose factors are < 2**logM
+	// For that reason, we "borrow" w words from powers[i+1] when computing powers[i]; otherwise
+	// we would reallocate.
+	//
+	// Note that we must NOT defer stk.restoer(stk.save), because the memory allocated from stk
+	// escapes.
+	buf := stk.nat((len(powers) + 1) * w)
+
 	// powers[i] contains x^i.
 	for i := range powers {
-		powers[i] = stk.nat(w)
+		powers[i] = buf[i*w : (i+1)*w : (i+2)*w]
 	}
 	powers[0] = powers[0].set(natOne)
+	powers[0] = powers[0][0:len(powers[0]):w]
 	powers[1] = powers[1].trunc(x, logM)
+	powers[1] = powers[1][0:len(powers[1]):w]
+	// While we could compute each powers[i] as powers[i-1] * x,
+	// we instead compute powers[i] and powers[i+1] from powers[i/2].
+	// This replaces half the multiplications needed by squarings, which is more efficient.
+	// It may also has better memory access patterns.
 	for i := 2; i < 1<<windowSize; i += 2 {
-		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
+ 		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
 		*p = p.sqr(stk, *p2)
 		*p = p.trunc(*p, logM)
-		*p1 = p1.mul(stk, *p, x)
+		*p = (*p)[:len(*p):w]
+		*p1 = p1.mul(stk, *p, powers[1])
 		*p1 = p1.trunc(*p1, logM)
+		*p1 = (*p1)[:len(*p1):w]
 	}
 }
+
 
 // expNNPowerOfTwo calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
@@ -1095,7 +1116,6 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-<<<<<<< HEAD
 // expNNPowerOfTwoWindowSize2 calculates x**y mod m using a fixed, 2-bit window,
 // where m = 2**logM.
 //
@@ -1236,9 +1256,6 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-
-=======
->>>>>>> 028c8d0ac4 (nat.go: Move computation of Montgomery constant k0 into its own function.)
 // computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
 //
 // This value is used for Montgomery multiplication. We assert (but do not check) that
