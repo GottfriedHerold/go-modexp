@@ -1,4 +1,6 @@
 #/usr/bin/bash
+ORIGINAL_PATH=`pwd`
+cd ..
 CURRENT_BRANCH=`git rev-parse HEAD`
 BASE_CONFIG="modexp_bench_config.json"
 OUTNAME="BENCHMARKS/BENCHRUN_${CURRENT_BRANCH}"
@@ -23,4 +25,5 @@ done
 JSONOUT="${OUTNAME}.json"
 CSVOUT="${OUTNAME}.csv"
 echo "Running benchmark, outputting results to ${OUTNAME}. Extra args = ${CSVMETRICARGS}"
-go test -v -run=BenchmarkModExp -modexp=modexp_bench_config.json -name=$CURRENT_BRANCH -jsonout=$JSONOUT -csvout=$CSVOUT $CSVMETRICARGS
+go test -v -run=BenchmarkModExp -modexp=$ORIGINAL_PATH/modexp_bench_config.json -name=$CURRENT_BRANCH -jsonout=$ORIGINAL_PATH/$JSONOUT -csvout=$ORIGINAL_PATH/$CSVOUT $CSVMETRICARGS
+cd $ORIGINAL_PATH
