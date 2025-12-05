@@ -680,6 +680,10 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// We likely end up being as long as the modulus.
 		z = z.make(len(m))
 
+		if slow{
+			return z.expNNSlow(stk, x, y, m)
+		}
+
 		// If the exponent is large, we use the Montgomery method for odd values,
 		// and a 4-bit, windowed exponentiation for powers of two,
 		// and a CRT-decomposed Montgomery method for the remaining values
@@ -697,7 +701,19 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 			return z.expNNEven(stk, x, y, m)
 		}
 	}
+	return z.expNNSlow(stk, x, y, m)
+}
 
+// expNNSlow computes x**y mod m by a naive square-and-multiply algorithm,
+// using nat.div for modular reduction.
+// This is the base case used for small exponents or for m == 0.
+//
+// This function assumes (but does not check) that
+// - z does not alias x,y or m.
+// - x > 0
+// - y > 1 (for y == 1, this performs no modular reduction)
+// - stk is not nil
+func (z nat) expNNSlow(stk *stack, x, y, m nat) nat {
 	z = z.set(x)
 	v := y[len(y)-1] // v > 0 because y is normalized and y > 0
 	shift := nlz(v) + 1
