@@ -823,6 +823,36 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	return z
 }
 
+// buildPrecompuationWindowModPower2 builds a precomputation window for exponentiation
+// in the case of power-of-two modulus.
+// More precisely, it sets powers[i] to x**i mod m, where m == 2**logM for
+// 0 <= i < 2**windowSize
+// powers must be a non-nil slice of size *exactly* 2**windowSize.
+// Be aware that this function modifies *stk and powers[i] may be allocated on stk;
+// in particular, powers[i] may become invalid after a call to stk.restore.
+func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int, logM uint, x nat) {
+	if len(powers) != 1<<windowSize {
+		panic("big: misuse of build_precomputation_window")
+	}
+
+	w := int((logM + _W - 1) / _W) // number of words that would be needed to store numbers reduced modulo the modulus.
+	
+	// powers[i] contains x^i.
+	for i := range powers {
+		powers[i] = stk.nat(w)
+	}
+	powers[0] = powers[0].set(natOne)
+	powers[1] = powers[1].trunc(x, logM)
+	for i := 2; i < 1<<windowSize; i += 2 {
+		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
+		*p = p.sqr(stk, *p2)
+		*p = p.trunc(*p, logM)
+		*p1 = p1.mul(stk, *p, x)
+		*p1 = p1.trunc(*p1, logM)
+	}
+
+}
+
 // expNNPowerOfTwo calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
 func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
@@ -849,21 +879,9 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
 	// Note that if you change this, you need to change the unrolled loop below.
 
-	// powers[i] contains x^i.
-	var powers [1 << windowSize]nat
-	for i := range powers {
-		powers[i] = stk.nat(w)
-	}
-	powers[0] = powers[0].set(natOne)
-	powers[1] = powers[1].trunc(x, logM)
-	for i := 2; i < 1<<windowSize; i += 2 {
-		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
-		*p = p.sqr(stk, *p2)
-		*p = p.trunc(*p, logM)
-		*p1 = p1.mul(stk, *p, x)
-		*p1 = p1.trunc(*p1, logM)
-	}
-
+	var powers [1<<windowSize] nat
+	buildPrecomputationWindowModPower2(stk, powers[:], windowSize, logM, x)
+	
 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
 	// so we can compute x**(y mod 2**(logM-1)) instead of x**y.
 	// That is, we can throw away all but the bottom logM-1 bits of y.
