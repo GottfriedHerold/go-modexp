@@ -828,15 +828,19 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	w := int((logM + _W - 1) / _W)
 	zz := stk.nat(w)
 
-	const n = 4
+	const windowSize = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
+	// where m == 2**logM
+	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
+	// Note that if you change this, you need to change the unrolled loop below.
+
 	// powers[i] contains x^i.
-	var powers [1 << n]nat
+	var powers [1 << windowSize]nat
 	for i := range powers {
 		powers[i] = stk.nat(w)
 	}
 	powers[0] = powers[0].set(natOne)
 	powers[1] = powers[1].trunc(x, logM)
-	for i := 2; i < 1<<n; i += 2 {
+	for i := 2; i < 1<<windowSize; i += 2 {
 		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
 		*p = p.sqr(stk, *p2)
 		*p = p.trunc(*p, logM)
@@ -865,12 +869,21 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 		if i == mtop {
 			yi &= mmask
 		}
-		for j := 0; j < _W; j += n {
+		for j := 0; j < _W; j += windowSize {
 			if advance {
+
+				// The loop is unrolled here for (hardcoded) windowSize == 4,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This check will be optimized away.
+				if windowSize != 4 {
+					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				}
+
 				// Account for use of 4 bits in previous iteration.
 				// Unrolled loop for significant performance
 				// gain. Use go test -bench=".*" in crypto/rsa
 				// to check performance before making changes.
+
 				zz = zz.sqr(stk, z)
 				zz, z = z, zz
 				z = z.trunc(z, logM)
@@ -888,11 +901,11 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 				z = z.trunc(z, logM)
 			}
 
-			zz = zz.mul(stk, z, powers[yi>>(_W-n)])
+			zz = zz.mul(stk, z, powers[yi>>(_W-windowSize)])
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 
-			yi <<= n
+			yi <<= windowSize
 			advance = true
 		}
 	}
@@ -941,12 +954,16 @@ func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	one := make(nat, numWords)
 	one[0] = 1
 
-	const n = 4
+	const windowSize = 4
+	// Note: The current implementation asserts that windowSize divides _W
+	// and the loop below is unrolled for the hardcoded value of windowSize.
+	// If you change windowSize, you need to change the unrolled loop below.
+
 	// powers[i] contains x^i
-	var powers [1 << n]nat
+	var powers [1 << windowSize]nat
 	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
 	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<n; i++ {
+	for i := 2; i < 1<<windowSize; i++ {
 		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
 	}
 
@@ -959,16 +976,23 @@ func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	// same windowed exponent, but with Montgomery multiplications
 	for i := len(y) - 1; i >= 0; i-- {
 		yi := y[i]
-		for j := 0; j < _W; j += n {
+		for j := 0; j < _W; j += windowSize {
 			if i != len(y)-1 || j != 0 {
+				// The loop is unrolled here for (hardcoded) windowSize == 4,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if windowSize != 4 {
+					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				}
+
 				zz = zz.montgomery(z, z, m, k0, numWords)
 				z = z.montgomery(zz, zz, m, k0, numWords)
 				zz = zz.montgomery(z, z, m, k0, numWords)
 				z = z.montgomery(zz, zz, m, k0, numWords)
 			}
-			zz = zz.montgomery(z, powers[yi>>(_W-n)], m, k0, numWords)
+			zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
 			z, zz = zz, z
-			yi <<= n
+			yi <<= windowSize
 		}
 	}
 	// convert to regular number
