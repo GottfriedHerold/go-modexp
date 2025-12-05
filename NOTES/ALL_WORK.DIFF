@@ -112,49 +112,14 @@ index 43e36d3093..ab5a09701e 100644
  // bitLen returns the length of x in bits.
  // Unlike most methods, it works even if x is not normalized.
  func (x nat) bitLen() int {
-@@ -364,6 +450,8 @@ func (x nat) trailingZeroBits() uint {
- }
- 
- // isPow2 returns i, true when x == 2**i and 0, false otherwise.
-+//
-+// Note: This panics for x == 0.
- func (x nat) isPow2() (uint, bool) {
- 	var i uint
- 	for x[i] == 0 {
-@@ -615,19 +703,24 @@ func (z nat) random(rand *rand.Rand, limit nat, n int) nat {
- 			break
- 		}
- 	}
--
- 	return z.norm()
- }
- 
- // If m != 0 (i.e., len(m) != 0), expNN sets z to x**y mod m;
- // otherwise it sets z to x**y. The result is the value of z.
- // The caller may pass stk == nil to request that expNN obtain and release one itself.
-+//
-+// The caller of this function must ensure that m does not alias z.
-+// z aliasing x or y is allowed.
- func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
- 	if alias(z, x) || alias(z, y) {
- 		// We cannot allow in-place modification of x or y.
- 		z = nil
- 	}
- 
-+	// We first check for trivial cases, then dispatch to the appropriate efficient algorithm.
-+	// Note that the latter algorithms may rely on the fact that the simple cases have been handled here.
-+
- 	// x**y mod 1 == 0
- 	if len(m) == 1 && m[0] == 1 {
- 		return z.setWord(0)
+
 @@ -663,29 +756,56 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
  	if len(y) == 1 && y[0] == 1 { // len(m) > 0
  		return z.rem(stk, x, m)
  	}
 -
  	// y > 1
- 
-+	// We now are guaranteed that y > 1, x > 1 and m != 1.
+
 +
 +	// The algorithm we use for the m != 0 case depends on the bitlength on y.
 +
@@ -189,14 +154,6 @@ index 43e36d3093..ab5a09701e 100644
 -				return z.expNNWindowed(stk, x, y, logM)
 -			}
 -			return z.expNNMontgomeryEven(stk, x, y, m)
-+		if m[0]&1 == 1 {
-+			return z.expNNOdd(stk, x, y, m)
-+		}
-+		if logM, ok := m.isPow2(); ok {
-+			return z.expNNPowerOfTwo(stk, x, y, logM)
- 		}
-+		// Use CRT-based algorithm. Note that this will call into expNN twice and dispatch into both expNNOdd and expNNPowerOfTwo.
-+		return z.expNNEven(stk, x, y, m)
  	}
 +	return z.expNNSlow(stk, x, y, m)
 +}
@@ -218,25 +175,11 @@ index 43e36d3093..ab5a09701e 100644
  	return z.norm()
  }
  
--// expNNMontgomeryEven calculates x**y mod m where m = m1 × m2 for m1 = 2ⁿ and m2 odd.
-+// expNNEven calculates x**y mod m where m = m1 × m2 for m1 = 2ⁿ and m2 odd with n > 0.
-+//
  // It uses two recursive calls to expNN for x**y mod m1 and x**y mod m2
  // and then uses the Chinese Remainder Theorem to combine the results.
--// The recursive call using m1 will use expNNWindowed,
--// while the recursive call using m2 will use expNNMontgomery.
-+// The recursive call using m1 will use some expNNPowerOfTwo* - algorithim.
-+// while the recursive call using m2 will use one of the expNNOdd* algorithms.
  // For more details, see Ç. K. Koç, “Montgomery Reduction with Even Modulus”,
  // IEE Proceedings: Computers and Digital Techniques, 141(5) 314-316, September 1994.
  // http://www.people.vcu.edu/~jwang3/CMSC691/j34monex.pdf
--func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
--	// Split m = m₁ × m₂ where m₁ = 2ⁿ
-+//
-+// This algorithm assumes m even, m > 0. z may alias x or y, but not m.
-+func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
-+	// Split m = m₁ × m₂ where m₁ = 2ⁿ. We assume n > 0.
-+
  	n := m.trailingZeroBits()
 -	m1 := nat(nil).lsh(natOne, n)
 -	m2 := nat(nil).rsh(m, n)

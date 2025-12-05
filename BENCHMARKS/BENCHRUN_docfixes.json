@@ -1,0 +1,6301 @@
+{
+	"ResetMemory": false,
+	"ExponentLengths": [
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8,
+		16,
+		24,
+		32,
+		64,
+		128,
+		256,
+		512,
+		1024
+	],
+	"ModulusLengths": [
+		8,
+		16,
+		32,
+		64,
+		128,
+		196,
+		256,
+		512,
+		1024,
+		2048
+	],
+	"ModulusTrailingZeros": [
+		null,
+		4
+	],
+	"FurtherTestCases": null,
+	"Metrics": [
+		"EIP7883"
+	],
+	"TimeImprovements": "Relative",
+	"MemImprovements": "Relative",
+	"AllocImprovements": "Absolute",
+	"Results": [
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 25096682,
+			"T": 1181423508,
+			"Bytes": 0,
+			"MemAllocs": 5,
+			"MemBytes": 1872,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 0.094
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 23630964,
+			"T": 1109057894,
+			"Bytes": 0,
+			"MemAllocs": 5,
+			"MemBytes": 1888,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 0.092,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 4127527,
+			"T": 1178105795,
+			"Bytes": 0,
+			"MemAllocs": 12382879,
+			"MemBytes": 429491672,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 0.57
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 4195276,
+			"T": 1198981216,
+			"Bytes": 0,
+			"MemAllocs": 12586128,
+			"MemBytes": 436545944,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 0.57,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 3161536,
+			"T": 1199573409,
+			"Bytes": 0,
+			"MemAllocs": 12646466,
+			"MemBytes": 480809216,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 0.758
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 3133801,
+			"T": 1187874853,
+			"Bytes": 0,
+			"MemAllocs": 12535535,
+			"MemBytes": 476591936,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 0.758,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 2244822,
+			"T": 1180522916,
+			"Bytes": 0,
+			"MemAllocs": 11224420,
+			"MemBytes": 449204088,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.05
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 2810276,
+			"T": 1206403410,
+			"Bytes": 0,
+			"MemAllocs": 11241390,
+			"MemBytes": 427390192,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 0.858,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 2004703,
+			"T": 1212587639,
+			"Bytes": 0,
+			"MemAllocs": 10023782,
+			"MemBytes": 401154264,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.208
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 2286616,
+			"T": 1248451869,
+			"Bytes": 0,
+			"MemAllocs": 11433386,
+			"MemBytes": 457567896,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.09,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1911300,
+			"T": 1208230359,
+			"Bytes": 0,
+			"MemAllocs": 9556752,
+			"MemBytes": 382463984,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.264
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1933700,
+			"T": 1202667832,
+			"Bytes": 0,
+			"MemAllocs": 9668764,
+			"MemBytes": 386946664,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.242,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1808395,
+			"T": 1176797447,
+			"Bytes": 0,
+			"MemAllocs": 9042221,
+			"MemBytes": 361872400,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.3
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1927975,
+			"T": 1219173833,
+			"Bytes": 0,
+			"MemAllocs": 9640149,
+			"MemBytes": 385802024,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.264,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1802389,
+			"T": 1212684876,
+			"Bytes": 0,
+			"MemAllocs": 9012211,
+			"MemBytes": 360672584,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.344
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1729072,
+			"T": 1204335881,
+			"Bytes": 0,
+			"MemAllocs": 8645602,
+			"MemBytes": 346000792,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.392,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1255437,
+			"T": 1186927530,
+			"Bytes": 0,
+			"MemAllocs": 6277359,
+			"MemBytes": 251222888,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.89
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1254408,
+			"T": 1211629197,
+			"Bytes": 0,
+			"MemAllocs": 6272209,
+			"MemBytes": 251016832,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 1.93,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 783664,
+			"T": 1082513152,
+			"Bytes": 0,
+			"MemAllocs": 3918422,
+			"MemBytes": 156816560,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 2.762
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 912000,
+			"T": 1256938719,
+			"Bytes": 0,
+			"MemAllocs": 4560122,
+			"MemBytes": 182498360,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 2.756,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 625690,
+			"T": 1073137559,
+			"Bytes": 0,
+			"MemAllocs": 3128531,
+			"MemBytes": 125205528,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 3.43
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 1000000,
+			"T": 1692025518,
+			"Bytes": 0,
+			"MemAllocs": 5000134,
+			"MemBytes": 200107768,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 8,
+				"gas": 500,
+				"ns/gas": 3.384,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 438895,
+			"T": 1203513059,
+			"Bytes": 0,
+			"MemAllocs": 2194533,
+			"MemBytes": 87826360,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 8,
+				"gas": 1008,
+				"ns/gas": 2.7202380952380953
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 422040,
+			"T": 1184836423,
+			"Bytes": 0,
+			"MemAllocs": 2110253,
+			"MemBytes": 84453472,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 8,
+				"gas": 1008,
+				"ns/gas": 2.7847222222222223,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 140916,
+			"T": 1215112986,
+			"Bytes": 0,
+			"MemAllocs": 4650341,
+			"MemBytes": 171446704,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 8,
+				"gas": 2032,
+				"ns/gas": 4.243110236220472
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 128366,
+			"T": 1163930831,
+			"Bytes": 0,
+			"MemAllocs": 4236176,
+			"MemBytes": 156176448,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 8,
+				"gas": 2032,
+				"ns/gas": 4.462106299212598,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 91046,
+			"T": 1208108655,
+			"Bytes": 0,
+			"MemAllocs": 3004595,
+			"MemBytes": 110777232,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 8,
+				"gas": 4080,
+				"ns/gas": 3.2522058823529414
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 93298,
+			"T": 1476471359,
+			"Bytes": 0,
+			"MemAllocs": 4478437,
+			"MemBytes": 180727712,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 8,
+				"gas": 4080,
+				"ns/gas": 3.8786764705882355,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 35452,
+			"T": 1024222857,
+			"Bytes": 0,
+			"MemAllocs": 1666291,
+			"MemBytes": 68389896,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 8,
+				"gas": 12272,
+				"ns/gas": 2.3541395045632334
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 45820,
+			"T": 1157778200,
+			"Bytes": 0,
+			"MemAllocs": 2153600,
+			"MemBytes": 86557288,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 8,
+				"gas": 12272,
+				"ns/gas": 2.058914602346806,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 30646,
+			"T": 1195683137,
+			"Bytes": 0,
+			"MemAllocs": 582293,
+			"MemBytes": 28946120,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 8,
+				"gas": 28656,
+				"ns/gas": 1.3614949748743719
+			}
+		},
+		{
+			"ModulusBitLength": 8,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 8,
+			"BaseTrailingZeros": null,
+			"N": 23068,
+			"T": 1131144114,
+			"Bytes": 0,
+			"MemAllocs": 1107300,
+			"MemBytes": 44687048,
+			"Extra": {
+				"bitlen(base)": 8,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 8,
+				"gas": 28656,
+				"ns/gas": 1.7111599664991626,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 23206779,
+			"T": 1191568533,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 0.102
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 22418396,
+			"T": 1199071437,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 0.106,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 4087393,
+			"T": 1185287445,
+			"Bytes": 0,
+			"MemAllocs": 12262510,
+			"MemBytes": 425321696,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 0.578
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 3882184,
+			"T": 1159366150,
+			"Bytes": 0,
+			"MemAllocs": 11646849,
+			"MemBytes": 403966200,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 0.596,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 3728330,
+			"T": 1192391772,
+			"Bytes": 0,
+			"MemAllocs": 11185266,
+			"MemBytes": 387957392,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 0.638
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 3034394,
+			"T": 1188539377,
+			"Bytes": 0,
+			"MemAllocs": 12137910,
+			"MemBytes": 461479240,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 0.782,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 2886253,
+			"T": 1206370552,
+			"Bytes": 0,
+			"MemAllocs": 11545345,
+			"MemBytes": 438950096,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 0.834
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 2404194,
+			"T": 1076818782,
+			"Bytes": 0,
+			"MemAllocs": 12021313,
+			"MemBytes": 481099856,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 0.894,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 2170816,
+			"T": 1131171002,
+			"Bytes": 0,
+			"MemAllocs": 10854389,
+			"MemBytes": 434397864,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 1.042
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 2308946,
+			"T": 1282381842,
+			"Bytes": 0,
+			"MemAllocs": 11545077,
+			"MemBytes": 462041408,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 1.11,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 2044428,
+			"T": 1195492305,
+			"Bytes": 0,
+			"MemAllocs": 10222442,
+			"MemBytes": 409108112,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 1.168
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 2063523,
+			"T": 1214807094,
+			"Bytes": 0,
+			"MemAllocs": 10317913,
+			"MemBytes": 412928464,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 1.176,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 2036019,
+			"T": 1232618030,
+			"Bytes": 0,
+			"MemAllocs": 10180390,
+			"MemBytes": 407431128,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 1.21
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 1930675,
+			"T": 1193512598,
+			"Bytes": 0,
+			"MemAllocs": 9653646,
+			"MemBytes": 386345560,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 1.236,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 1619588,
+			"T": 1161523323,
+			"Bytes": 0,
+			"MemAllocs": 8098157,
+			"MemBytes": 324092936,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 1.434
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 1759066,
+			"T": 1190014536,
+			"Bytes": 0,
+			"MemAllocs": 8795592,
+			"MemBytes": 352004096,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 1.352,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 1000000,
+			"T": 1075910241,
+			"Bytes": 0,
+			"MemAllocs": 5000140,
+			"MemBytes": 200109944,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 2.15
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 1000000,
+			"T": 1122008294,
+			"Bytes": 0,
+			"MemAllocs": 5000132,
+			"MemBytes": 200109064,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 2.244,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 1000000,
+			"T": 1399977657,
+			"Bytes": 0,
+			"MemAllocs": 5000134,
+			"MemBytes": 200109656,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 2.798
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 1000000,
+			"T": 1382958130,
+			"Bytes": 0,
+			"MemAllocs": 5000132,
+			"MemBytes": 200109272,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 2.764,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 702086,
+			"T": 1223878898,
+			"Bytes": 0,
+			"MemAllocs": 3510520,
+			"MemBytes": 140493456,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 3.486
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 640238,
+			"T": 1082738972,
+			"Bytes": 0,
+			"MemAllocs": 3201278,
+			"MemBytes": 128117088,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 16,
+				"gas": 500,
+				"ns/gas": 3.382,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 459674,
+			"T": 1131608843,
+			"Bytes": 0,
+			"MemAllocs": 2298435,
+			"MemBytes": 91986160,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 16,
+				"gas": 1008,
+				"ns/gas": 2.441468253968254
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 571339,
+			"T": 1551632861,
+			"Bytes": 0,
+			"MemAllocs": 2856766,
+			"MemBytes": 114329496,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 16,
+				"gas": 1008,
+				"ns/gas": 2.693452380952381,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 150740,
+			"T": 1270136709,
+			"Bytes": 0,
+			"MemAllocs": 2864156,
+			"MemBytes": 142376688,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 16,
+				"gas": 2032,
+				"ns/gas": 4.146653543307087
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 122889,
+			"T": 1135523527,
+			"Bytes": 0,
+			"MemAllocs": 4055431,
+			"MemBytes": 149514528,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 16,
+				"gas": 2032,
+				"ns/gas": 4.547244094488189,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 76524,
+			"T": 1016951903,
+			"Bytes": 0,
+			"MemAllocs": 1454002,
+			"MemBytes": 72278376,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 16,
+				"gas": 4080,
+				"ns/gas": 3.257107843137255
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 63074,
+			"T": 1077892876,
+			"Bytes": 0,
+			"MemAllocs": 3027634,
+			"MemBytes": 122180224,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 16,
+				"gas": 4080,
+				"ns/gas": 4.188480392156863,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 52233,
+			"T": 1188177884,
+			"Bytes": 0,
+			"MemAllocs": 1619259,
+			"MemBytes": 58533408,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 16,
+				"gas": 12272,
+				"ns/gas": 1.8535691003911343
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 53738,
+			"T": 1225019183,
+			"Bytes": 0,
+			"MemAllocs": 1773396,
+			"MemBytes": 65381728,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 16,
+				"gas": 12272,
+				"ns/gas": 1.8575619295958279,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 35114,
+			"T": 1235683011,
+			"Bytes": 0,
+			"MemAllocs": 667187,
+			"MemBytes": 33165712,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 16,
+				"gas": 28656,
+				"ns/gas": 1.2280150753768844
+			}
+		},
+		{
+			"ModulusBitLength": 16,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 16,
+			"BaseTrailingZeros": null,
+			"N": 29215,
+			"T": 1242984018,
+			"Bytes": 0,
+			"MemAllocs": 1402357,
+			"MemBytes": 56591224,
+			"Extra": {
+				"bitlen(base)": 16,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 16,
+				"gas": 28656,
+				"ns/gas": 1.484715242881072,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 24668665,
+			"T": 1189429840,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 0.096
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 21516036,
+			"T": 1028198193,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 0.094,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 3912355,
+			"T": 1244687597,
+			"Bytes": 0,
+			"MemAllocs": 11737355,
+			"MemBytes": 407106760,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 0.636
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 5688919,
+			"T": 1152987436,
+			"Bytes": 0,
+			"MemAllocs": 11378070,
+			"MemBytes": 318753888,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 0.404,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 3771207,
+			"T": 1205445595,
+			"Bytes": 0,
+			"MemAllocs": 11313900,
+			"MemBytes": 392419680,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 0.638
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 3837585,
+			"T": 1223784665,
+			"Bytes": 0,
+			"MemAllocs": 11513037,
+			"MemBytes": 399326584,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 0.636,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 2269693,
+			"T": 1194084765,
+			"Bytes": 0,
+			"MemAllocs": 11348781,
+			"MemBytes": 454187320,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.052
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1881650,
+			"T": 1206412794,
+			"Bytes": 0,
+			"MemAllocs": 9408508,
+			"MemBytes": 376536264,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.282,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1692480,
+			"T": 1187838916,
+			"Bytes": 0,
+			"MemAllocs": 8462636,
+			"MemBytes": 338681080,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.402
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1775812,
+			"T": 1203346158,
+			"Bytes": 0,
+			"MemAllocs": 8879314,
+			"MemBytes": 355356424,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.354,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1730419,
+			"T": 1201785766,
+			"Bytes": 0,
+			"MemAllocs": 8652334,
+			"MemBytes": 346273664,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.388
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1458339,
+			"T": 1188829874,
+			"Bytes": 0,
+			"MemAllocs": 7291902,
+			"MemBytes": 291826992,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.63,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1429318,
+			"T": 1200926476,
+			"Bytes": 0,
+			"MemAllocs": 7146784,
+			"MemBytes": 286020384,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.68
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1392763,
+			"T": 1193822836,
+			"Bytes": 0,
+			"MemAllocs": 6964018,
+			"MemBytes": 278706536,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.714,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1307053,
+			"T": 1202693055,
+			"Bytes": 0,
+			"MemAllocs": 6535438,
+			"MemBytes": 261552552,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.84
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1566927,
+			"T": 1192757838,
+			"Bytes": 0,
+			"MemAllocs": 7834852,
+			"MemBytes": 313556880,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 1.522,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 818685,
+			"T": 1116495600,
+			"Bytes": 0,
+			"MemAllocs": 4093532,
+			"MemBytes": 163826216,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 2.726
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 1000000,
+			"T": 1170113486,
+			"Bytes": 0,
+			"MemAllocs": 5000141,
+			"MemBytes": 200109688,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 2.34,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 650970,
+			"T": 1089207142,
+			"Bytes": 0,
+			"MemAllocs": 3254933,
+			"MemBytes": 130264744,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 3.346
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 700138,
+			"T": 1175752911,
+			"Bytes": 0,
+			"MemAllocs": 3500785,
+			"MemBytes": 140104104,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 3.358,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 610509,
+			"T": 1205156085,
+			"Bytes": 0,
+			"MemAllocs": 3052620,
+			"MemBytes": 122168904,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 3.948
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 517790,
+			"T": 1163666769,
+			"Bytes": 0,
+			"MemAllocs": 2589017,
+			"MemBytes": 103614408,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 32,
+				"gas": 500,
+				"ns/gas": 4.494,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 331852,
+			"T": 1196766040,
+			"Bytes": 0,
+			"MemAllocs": 1659303,
+			"MemBytes": 66406792,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 32,
+				"gas": 1008,
+				"ns/gas": 3.5773809523809526
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 467112,
+			"T": 1581299951,
+			"Bytes": 0,
+			"MemAllocs": 2335617,
+			"MemBytes": 93473048,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 32,
+				"gas": 1008,
+				"ns/gas": 3.3581349206349205,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 146133,
+			"T": 1161682421,
+			"Bytes": 0,
+			"MemAllocs": 2776614,
+			"MemBytes": 138025224,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 32,
+				"gas": 2032,
+				"ns/gas": 3.9119094488188977
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 125810,
+			"T": 1210053378,
+			"Bytes": 0,
+			"MemAllocs": 4151829,
+			"MemBytes": 153068552,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 32,
+				"gas": 2032,
+				"ns/gas": 4.733267716535433,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 76686,
+			"T": 1094225742,
+			"Bytes": 0,
+			"MemAllocs": 2530698,
+			"MemBytes": 93300936,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 32,
+				"gas": 4080,
+				"ns/gas": 3.4970588235294118
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 66600,
+			"T": 1154896838,
+			"Bytes": 0,
+			"MemAllocs": 3196901,
+			"MemBytes": 129014472,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 32,
+				"gas": 4080,
+				"ns/gas": 4.25,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 60916,
+			"T": 1218350313,
+			"Bytes": 0,
+			"MemAllocs": 1157441,
+			"MemBytes": 57537128,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 32,
+				"gas": 12272,
+				"ns/gas": 1.6297262059973925
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 47514,
+			"T": 1193992730,
+			"Bytes": 0,
+			"MemAllocs": 2280736,
+			"MemBytes": 92039832,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 32,
+				"gas": 12272,
+				"ns/gas": 2.047669491525424,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 30091,
+			"T": 1131866501,
+			"Bytes": 0,
+			"MemAllocs": 571747,
+			"MemBytes": 28422104,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 32,
+				"gas": 28656,
+				"ns/gas": 1.312604690117253
+			}
+		},
+		{
+			"ModulusBitLength": 32,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 32,
+			"BaseTrailingZeros": null,
+			"N": 30744,
+			"T": 1243962369,
+			"Bytes": 0,
+			"MemAllocs": 1475756,
+			"MemBytes": 59554984,
+			"Extra": {
+				"bitlen(base)": 32,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 32,
+				"gas": 28656,
+				"ns/gas": 1.4119556113902847,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 23767528,
+			"T": 1200288498,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 0.1
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 22618990,
+			"T": 1199443077,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 0.106,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 5602200,
+			"T": 1287560309,
+			"Bytes": 0,
+			"MemAllocs": 11204629,
+			"MemBytes": 313897192,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 0.458
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 5171900,
+			"T": 1269051941,
+			"Bytes": 0,
+			"MemAllocs": 10344012,
+			"MemBytes": 289787944,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 0.49,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 2842827,
+			"T": 1192040531,
+			"Bytes": 0,
+			"MemAllocs": 11371648,
+			"MemBytes": 432350080,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 0.838
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 2369667,
+			"T": 1204660237,
+			"Bytes": 0,
+			"MemAllocs": 11848701,
+			"MemBytes": 512130576,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.016,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 2192348,
+			"T": 1237417472,
+			"Bytes": 0,
+			"MemAllocs": 10962081,
+			"MemBytes": 473809312,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.128
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 2499840,
+			"T": 1209750308,
+			"Bytes": 0,
+			"MemAllocs": 9999643,
+			"MemBytes": 380186816,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 0.966,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 1834206,
+			"T": 1205013222,
+			"Bytes": 0,
+			"MemAllocs": 7337058,
+			"MemBytes": 308317424,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.312
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 1801068,
+			"T": 1202421322,
+			"Bytes": 0,
+			"MemAllocs": 9005607,
+			"MemBytes": 389246072,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.334,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 1448239,
+			"T": 1179036539,
+			"Bytes": 0,
+			"MemAllocs": 7241418,
+			"MemBytes": 312993312,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.628
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 1418749,
+			"T": 1219547225,
+			"Bytes": 0,
+			"MemAllocs": 7093981,
+			"MemBytes": 329331136,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.718,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 1392331,
+			"T": 1206527074,
+			"Bytes": 0,
+			"MemAllocs": 6961869,
+			"MemBytes": 300909888,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.732
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 1310727,
+			"T": 1199875600,
+			"Bytes": 0,
+			"MemAllocs": 6553827,
+			"MemBytes": 283273840,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.83,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 1296808,
+			"T": 1208678169,
+			"Bytes": 0,
+			"MemAllocs": 6484234,
+			"MemBytes": 280265824,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.864
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 1227248,
+			"T": 1205342197,
+			"Bytes": 0,
+			"MemAllocs": 6136421,
+			"MemBytes": 265231624,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 1.964,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 649657,
+			"T": 1173263223,
+			"Bytes": 0,
+			"MemAllocs": 3248384,
+			"MemBytes": 140404528,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 3.61
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 640131,
+			"T": 1041967026,
+			"Bytes": 0,
+			"MemAllocs": 3200747,
+			"MemBytes": 138344632,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 3.254,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 472179,
+			"T": 1014801337,
+			"Bytes": 0,
+			"MemAllocs": 2360966,
+			"MemBytes": 109605680,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 4.298
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 464100,
+			"T": 1094576704,
+			"Bytes": 0,
+			"MemAllocs": 2320571,
+			"MemBytes": 107731168,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 4.716,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 341540,
+			"T": 1079237909,
+			"Bytes": 0,
+			"MemAllocs": 1707748,
+			"MemBytes": 73814296,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 6.318
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 334814,
+			"T": 1015297581,
+			"Bytes": 0,
+			"MemAllocs": 1674120,
+			"MemBytes": 77720272,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 64,
+				"gas": 500,
+				"ns/gas": 6.064,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 274930,
+			"T": 1206280925,
+			"Bytes": 0,
+			"MemAllocs": 1374689,
+			"MemBytes": 59417552,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 64,
+				"gas": 1008,
+				"ns/gas": 4.3521825396825395
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 257468,
+			"T": 1182577776,
+			"Bytes": 0,
+			"MemAllocs": 1287378,
+			"MemBytes": 55644024,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 64,
+				"gas": 1008,
+				"ns/gas": 4.556547619047619,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 185001,
+			"T": 1494288028,
+			"Bytes": 0,
+			"MemAllocs": 3330125,
+			"MemBytes": 165851352,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 64,
+				"gas": 2032,
+				"ns/gas": 3.9749015748031495
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 98492,
+			"T": 1177373545,
+			"Bytes": 0,
+			"MemAllocs": 4629248,
+			"MemBytes": 186058240,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 64,
+				"gas": 2032,
+				"ns/gas": 5.8828740157480315,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 105981,
+			"T": 1467465665,
+			"Bytes": 0,
+			"MemAllocs": 3285485,
+			"MemBytes": 118763736,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 64,
+				"gas": 4080,
+				"ns/gas": 3.393627450980392
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 73430,
+			"T": 1098393968,
+			"Bytes": 0,
+			"MemAllocs": 2349816,
+			"MemBytes": 85813464,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 64,
+				"gas": 4080,
+				"ns/gas": 3.666176470588235,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 61906,
+			"T": 1251904472,
+			"Bytes": 0,
+			"MemAllocs": 1114343,
+			"MemBytes": 55498400,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 64,
+				"gas": 12272,
+				"ns/gas": 1.6478161668839635
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 43058,
+			"T": 1133331378,
+			"Bytes": 0,
+			"MemAllocs": 2023784,
+			"MemBytes": 81340816,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 64,
+				"gas": 12272,
+				"ns/gas": 2.1448011734028682,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 31286,
+			"T": 1105760574,
+			"Bytes": 0,
+			"MemAllocs": 1001178,
+			"MemBytes": 36563816,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 64,
+				"gas": 28656,
+				"ns/gas": 1.233354271356784
+			}
+		},
+		{
+			"ModulusBitLength": 64,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 64,
+			"BaseTrailingZeros": null,
+			"N": 34531,
+			"T": 1214933353,
+			"Bytes": 0,
+			"MemAllocs": 1105019,
+			"MemBytes": 40355720,
+			"Extra": {
+				"bitlen(base)": 64,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 64,
+				"gas": 28656,
+				"ns/gas": 1.2277707984366275,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 7606095,
+			"T": 1179273162,
+			"Bytes": 0,
+			"MemAllocs": 5,
+			"MemBytes": 2024,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 0.31
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 7371012,
+			"T": 1144992324,
+			"Bytes": 0,
+			"MemAllocs": 2,
+			"MemBytes": 1800,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 0.31,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 2288173,
+			"T": 1205977986,
+			"Bytes": 0,
+			"MemAllocs": 4576634,
+			"MemBytes": 329681400,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 1.054
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 2387605,
+			"T": 1211175266,
+			"Bytes": 0,
+			"MemAllocs": 4775508,
+			"MemBytes": 344007000,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 1.014,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 904207,
+			"T": 1022340267,
+			"Bytes": 0,
+			"MemAllocs": 2712774,
+			"MemBytes": 188179824,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 2.26
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 1000000,
+			"T": 1133960130,
+			"Bytes": 0,
+			"MemAllocs": 4000231,
+			"MemBytes": 304169824,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 2.266,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 640876,
+			"T": 1087347573,
+			"Bytes": 0,
+			"MemAllocs": 2563654,
+			"MemBytes": 194935992,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 3.392
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 780100,
+			"T": 1070209469,
+			"Bytes": 0,
+			"MemAllocs": 3120575,
+			"MemBytes": 212306336,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 2.742,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 609578,
+			"T": 1190807688,
+			"Bytes": 0,
+			"MemAllocs": 2438447,
+			"MemBytes": 165898624,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 3.906
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 466911,
+			"T": 1018766898,
+			"Bytes": 0,
+			"MemAllocs": 1867745,
+			"MemBytes": 142020720,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 4.362,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 508771,
+			"T": 1094820517,
+			"Bytes": 0,
+			"MemAllocs": 2035179,
+			"MemBytes": 138461848,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 4.302
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 525796,
+			"T": 1182401634,
+			"Bytes": 0,
+			"MemAllocs": 2103294,
+			"MemBytes": 159930832,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 4.496,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 382557,
+			"T": 1024310814,
+			"Bytes": 0,
+			"MemAllocs": 1530308,
+			"MemBytes": 104113968,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 5.354
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 411708,
+			"T": 1080200324,
+			"Bytes": 0,
+			"MemAllocs": 1646920,
+			"MemBytes": 125229888,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 5.246,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 333936,
+			"T": 1070421705,
+			"Bytes": 0,
+			"MemAllocs": 1335816,
+			"MemBytes": 101572800,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 6.41
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 366752,
+			"T": 1012379910,
+			"Bytes": 0,
+			"MemAllocs": 1467075,
+			"MemBytes": 99812656,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 5.52,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 192459,
+			"T": 1018656888,
+			"Bytes": 0,
+			"MemAllocs": 769876,
+			"MemBytes": 58540152,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 10.584
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 207590,
+			"T": 1069575614,
+			"Bytes": 0,
+			"MemAllocs": 830408,
+			"MemBytes": 63143792,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 10.304,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 151616,
+			"T": 1069019851,
+			"Bytes": 0,
+			"MemAllocs": 606497,
+			"MemBytes": 46118552,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 14.1
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 144316,
+			"T": 1066999693,
+			"Bytes": 0,
+			"MemAllocs": 577294,
+			"MemBytes": 43897456,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 14.786,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 118114,
+			"T": 1073749186,
+			"Bytes": 0,
+			"MemAllocs": 472479,
+			"MemBytes": 32145128,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 18.18
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 115624,
+			"T": 1093865706,
+			"Bytes": 0,
+			"MemAllocs": 462522,
+			"MemBytes": 35169712,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 128,
+				"gas": 500,
+				"ns/gas": 18.92,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 60331,
+			"T": 1129854343,
+			"Bytes": 0,
+			"MemAllocs": 241343,
+			"MemBytes": 16421168,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 128,
+				"gas": 1008,
+				"ns/gas": 18.578373015873016
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 72288,
+			"T": 1233596056,
+			"Bytes": 0,
+			"MemAllocs": 289167,
+			"MemBytes": 19673256,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 128,
+				"gas": 1008,
+				"ns/gas": 16.92956349206349,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 92004,
+			"T": 1270416554,
+			"Bytes": 0,
+			"MemAllocs": 3128241,
+			"MemBytes": 148026576,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 128,
+				"gas": 2032,
+				"ns/gas": 6.7952755905511815
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 78170,
+			"T": 1146296945,
+			"Bytes": 0,
+			"MemAllocs": 2736040,
+			"MemBytes": 129522432,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 128,
+				"gas": 2032,
+				"ns/gas": 7.216535433070866,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 50660,
+			"T": 1143123301,
+			"Bytes": 0,
+			"MemAllocs": 1773156,
+			"MemBytes": 83940280,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 128,
+				"gas": 4080,
+				"ns/gas": 5.530392156862745
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 52124,
+			"T": 1185814992,
+			"Bytes": 0,
+			"MemAllocs": 1824400,
+			"MemBytes": 86366672,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 128,
+				"gas": 4080,
+				"ns/gas": 5.5757352941176475,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 32025,
+			"T": 1184117511,
+			"Bytes": 0,
+			"MemAllocs": 640533,
+			"MemBytes": 42040704,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 128,
+				"gas": 12272,
+				"ns/gas": 3.0128748370273795
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 34860,
+			"T": 1195100356,
+			"Bytes": 0,
+			"MemAllocs": 1220140,
+			"MemBytes": 58318664,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 128,
+				"gas": 12272,
+				"ns/gas": 2.7935136897001303,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 18316,
+			"T": 1146193935,
+			"Bytes": 0,
+			"MemAllocs": 641084,
+			"MemBytes": 30642632,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 128,
+				"gas": 28656,
+				"ns/gas": 2.1837660524846454
+			}
+		},
+		{
+			"ModulusBitLength": 128,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 128,
+			"BaseTrailingZeros": null,
+			"N": 17934,
+			"T": 1204362509,
+			"Bytes": 0,
+			"MemAllocs": 896736,
+			"MemBytes": 44647208,
+			"Extra": {
+				"bitlen(base)": 128,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 128,
+				"gas": 28656,
+				"ns/gas": 2.3434882747068677,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 26101525,
+			"T": 1189321261,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 0.09
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 3650922,
+			"T": 1180017267,
+			"Bytes": 0,
+			"MemAllocs": 3651245,
+			"MemBytes": 292245160,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 0.646,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 1262194,
+			"T": 1207572572,
+			"Bytes": 0,
+			"MemAllocs": 3786933,
+			"MemBytes": 444542056,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 1.912
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 1935496,
+			"T": 1215860716,
+			"Bytes": 0,
+			"MemAllocs": 3871336,
+			"MemBytes": 371827544,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 1.256,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 616916,
+			"T": 1129440265,
+			"Bytes": 0,
+			"MemAllocs": 2467865,
+			"MemBytes": 276533120,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 3.66
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 877794,
+			"T": 1040310757,
+			"Bytes": 0,
+			"MemAllocs": 2633579,
+			"MemBytes": 252947616,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 2.37,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 684243,
+			"T": 1322727252,
+			"Bytes": 0,
+			"MemAllocs": 2737174,
+			"MemBytes": 262897560,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 3.866
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 617516,
+			"T": 1172945537,
+			"Bytes": 0,
+			"MemAllocs": 2470251,
+			"MemBytes": 237260104,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 3.798,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 447211,
+			"T": 1207068966,
+			"Bytes": 0,
+			"MemAllocs": 1788973,
+			"MemBytes": 171825936,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 5.398
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 411499,
+			"T": 1016992472,
+			"Bytes": 0,
+			"MemAllocs": 1646105,
+			"MemBytes": 158104600,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 4.942,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 325856,
+			"T": 1019112709,
+			"Bytes": 0,
+			"MemAllocs": 1303508,
+			"MemBytes": 125199344,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 6.254
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 309272,
+			"T": 1027731839,
+			"Bytes": 0,
+			"MemAllocs": 1237169,
+			"MemBytes": 118827448,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 6.646,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 290036,
+			"T": 1067760561,
+			"Bytes": 0,
+			"MemAllocs": 1450284,
+			"MemBytes": 143939792,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 7.362
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 321231,
+			"T": 1176803112,
+			"Bytes": 0,
+			"MemAllocs": 1285008,
+			"MemBytes": 123421584,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 7.326,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 262867,
+			"T": 1043590988,
+			"Bytes": 0,
+			"MemAllocs": 1051547,
+			"MemBytes": 100997952,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 7.94
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 257844,
+			"T": 1085261340,
+			"Bytes": 0,
+			"MemAllocs": 1031452,
+			"MemBytes": 99068832,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 8.416,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 158667,
+			"T": 1190280547,
+			"Bytes": 0,
+			"MemAllocs": 793391,
+			"MemBytes": 78744272,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 15.002
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 162205,
+			"T": 1085918873,
+			"Bytes": 0,
+			"MemAllocs": 648870,
+			"MemBytes": 72709488,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 13.388,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 119839,
+			"T": 1183624633,
+			"Bytes": 0,
+			"MemAllocs": 479386,
+			"MemBytes": 46045176,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 19.752
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 116846,
+			"T": 1049414600,
+			"Bytes": 0,
+			"MemAllocs": 467413,
+			"MemBytes": 44894160,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 17.962,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 82574,
+			"T": 1038100280,
+			"Bytes": 0,
+			"MemAllocs": 330317,
+			"MemBytes": 31726512,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 25.142
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 78301,
+			"T": 1036220001,
+			"Bytes": 0,
+			"MemAllocs": 313227,
+			"MemBytes": 30085736,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 196,
+				"gas": 500,
+				"ns/gas": 26.466,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 50937,
+			"T": 1213024656,
+			"Bytes": 0,
+			"MemAllocs": 254704,
+			"MemBytes": 25279304,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 196,
+				"gas": 1008,
+				"ns/gas": 23.625
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 41649,
+			"T": 1065544175,
+			"Bytes": 0,
+			"MemAllocs": 166609,
+			"MemBytes": 16002368,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 196,
+				"gas": 1008,
+				"ns/gas": 25.379960317460316,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 46005,
+			"T": 1125660136,
+			"Bytes": 0,
+			"MemAllocs": 920157,
+			"MemBytes": 89116176,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 196,
+				"gas": 2032,
+				"ns/gas": 12.041338582677165
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 55987,
+			"T": 1165608998,
+			"Bytes": 0,
+			"MemAllocs": 2127593,
+			"MemBytes": 125034072,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 196,
+				"gas": 2032,
+				"ns/gas": 10.245570866141732,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 25417,
+			"T": 1224389935,
+			"Bytes": 0,
+			"MemAllocs": 1270911,
+			"MemBytes": 82807048,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 196,
+				"gas": 4080,
+				"ns/gas": 11.806862745098039
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 31434,
+			"T": 1300194136,
+			"Bytes": 0,
+			"MemAllocs": 1666073,
+			"MemBytes": 99892688,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 196,
+				"gas": 4080,
+				"ns/gas": 10.137745098039217,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 15673,
+			"T": 1205826617,
+			"Bytes": 0,
+			"MemAllocs": 313489,
+			"MemBytes": 30361520,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 196,
+				"gas": 12272,
+				"ns/gas": 6.269230769230769
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 20655,
+			"T": 1259844308,
+			"Bytes": 0,
+			"MemAllocs": 1094766,
+			"MemBytes": 65640432,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 196,
+				"gas": 12272,
+				"ns/gas": 4.970176010430248,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 8965,
+			"T": 1171833836,
+			"Bytes": 0,
+			"MemAllocs": 179316,
+			"MemBytes": 17367288,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 196,
+				"gas": 28656,
+				"ns/gas": 4.56141820212172
+			}
+		},
+		{
+			"ModulusBitLength": 196,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 196,
+			"BaseTrailingZeros": null,
+			"N": 11818,
+			"T": 1163889436,
+			"Bytes": 0,
+			"MemAllocs": 449106,
+			"MemBytes": 26394272,
+			"Extra": {
+				"bitlen(base)": 196,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 196,
+				"gas": 28656,
+				"ns/gas": 3.4367671691792294,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 7492238,
+			"T": 1152249730,
+			"Bytes": 0,
+			"MemAllocs": 3,
+			"MemBytes": 1928,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 0.306
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 24196659,
+			"T": 1074355922,
+			"Bytes": 0,
+			"MemAllocs": 2,
+			"MemBytes": 1800,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 0.088,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 1908226,
+			"T": 1220364819,
+			"Bytes": 0,
+			"MemAllocs": 3816790,
+			"MemBytes": 397137656,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 1.278
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 1837958,
+			"T": 1201141539,
+			"Bytes": 0,
+			"MemAllocs": 3676225,
+			"MemBytes": 382511952,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 1.306,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 742664,
+			"T": 1190399142,
+			"Bytes": 0,
+			"MemAllocs": 2970914,
+			"MemBytes": 344791544,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 3.204
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 948211,
+			"T": 1158736035,
+			"Bytes": 0,
+			"MemAllocs": 2844856,
+			"MemBytes": 288419152,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 2.444,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 443474,
+			"T": 1137387739,
+			"Bytes": 0,
+			"MemAllocs": 1774046,
+			"MemBytes": 205888536,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 5.128
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 413959,
+			"T": 1014333789,
+			"Bytes": 0,
+			"MemAllocs": 1655973,
+			"MemBytes": 192186064,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 4.9,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 505760,
+			"T": 1352783632,
+			"Bytes": 0,
+			"MemAllocs": 2023213,
+			"MemBytes": 234805664,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 5.348
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 418182,
+			"T": 1089764104,
+			"Bytes": 0,
+			"MemAllocs": 1672872,
+			"MemBytes": 194147680,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 5.21,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 278352,
+			"T": 1051453773,
+			"Bytes": 0,
+			"MemAllocs": 1391871,
+			"MemBytes": 169333760,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 7.554
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 282945,
+			"T": 1039696137,
+			"Bytes": 0,
+			"MemAllocs": 1131875,
+			"MemBytes": 131361120,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 7.348,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 352972,
+			"T": 1183642449,
+			"Bytes": 0,
+			"MemAllocs": 1765001,
+			"MemBytes": 192126360,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 6.706
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 292212,
+			"T": 1129327541,
+			"Bytes": 0,
+			"MemAllocs": 1168948,
+			"MemBytes": 135664672,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 7.728,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 328132,
+			"T": 1200542124,
+			"Bytes": 0,
+			"MemAllocs": 1312645,
+			"MemBytes": 152341224,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 7.316
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 238425,
+			"T": 1091867759,
+			"Bytes": 0,
+			"MemAllocs": 953786,
+			"MemBytes": 110693312,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 9.158,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 113227,
+			"T": 1054794254,
+			"Bytes": 0,
+			"MemAllocs": 679422,
+			"MemBytes": 85195744,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 18.63
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 143826,
+			"T": 1232637956,
+			"Bytes": 0,
+			"MemAllocs": 863030,
+			"MemBytes": 108218776,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 17.14,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 89198,
+			"T": 1097442574,
+			"Bytes": 0,
+			"MemAllocs": 624439,
+			"MemBytes": 74256280,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 24.606
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 97688,
+			"T": 1188950697,
+			"Bytes": 0,
+			"MemAllocs": 683871,
+			"MemBytes": 81323368,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 24.34,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 83523,
+			"T": 1140582040,
+			"Bytes": 0,
+			"MemAllocs": 584708,
+			"MemBytes": 69530888,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 27.31
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 71714,
+			"T": 1091561802,
+			"Bytes": 0,
+			"MemAllocs": 502039,
+			"MemBytes": 59700400,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 256,
+				"gas": 500,
+				"ns/gas": 30.442,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 43242,
+			"T": 1224398080,
+			"Bytes": 0,
+			"MemAllocs": 302721,
+			"MemBytes": 35999096,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 256,
+				"gas": 1008,
+				"ns/gas": 28.09027777777778
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 48639,
+			"T": 1183080213,
+			"Bytes": 0,
+			"MemAllocs": 340503,
+			"MemBytes": 40491296,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 256,
+				"gas": 1008,
+				"ns/gas": 24.129960317460316,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 45960,
+			"T": 1264415750,
+			"Bytes": 0,
+			"MemAllocs": 919264,
+			"MemBytes": 89029592,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 256,
+				"gas": 2032,
+				"ns/gas": 13.538877952755906
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 37321,
+			"T": 1225295349,
+			"Bytes": 0,
+			"MemAllocs": 1866136,
+			"MemBytes": 121588280,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 256,
+				"gas": 2032,
+				"ns/gas": 16.156988188976378,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 25298,
+			"T": 1256379113,
+			"Bytes": 0,
+			"MemAllocs": 1264961,
+			"MemBytes": 82419544,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 256,
+				"gas": 4080,
+				"ns/gas": 12.172303921568627
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 25322,
+			"T": 1216159323,
+			"Bytes": 0,
+			"MemAllocs": 1266160,
+			"MemBytes": 82497576,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 256,
+				"gas": 4080,
+				"ns/gas": 11.771323529411765,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 16063,
+			"T": 1210564767,
+			"Bytes": 0,
+			"MemAllocs": 321280,
+			"MemBytes": 31115968,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 256,
+				"gas": 12272,
+				"ns/gas": 6.1410528031290745
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 17313,
+			"T": 1217789904,
+			"Bytes": 0,
+			"MemAllocs": 605986,
+			"MemBytes": 40051504,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 256,
+				"gas": 12272,
+				"ns/gas": 5.731665580182529,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 9010,
+			"T": 1207729280,
+			"Bytes": 0,
+			"MemAllocs": 180212,
+			"MemBytes": 17454160,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 256,
+				"gas": 28656,
+				"ns/gas": 4.677659128978225
+			}
+		},
+		{
+			"ModulusBitLength": 256,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 256,
+			"BaseTrailingZeros": null,
+			"N": 8497,
+			"T": 1181004205,
+			"Bytes": 0,
+			"MemAllocs": 424875,
+			"MemBytes": 27684528,
+			"Extra": {
+				"bitlen(base)": 256,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 256,
+				"gas": 28656,
+				"ns/gas": 4.850293132328308,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 6478268,
+			"T": 1071990535,
+			"Bytes": 0,
+			"MemAllocs": 6,
+			"MemBytes": 2144,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 512,
+				"gas": 500,
+				"ns/gas": 0.33
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 6909266,
+			"T": 1131546012,
+			"Bytes": 0,
+			"MemAllocs": 6,
+			"MemBytes": 2144,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 512,
+				"gas": 500,
+				"ns/gas": 0.326,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 1192131,
+			"T": 1190878022,
+			"Bytes": 0,
+			"MemAllocs": 2384598,
+			"MemBytes": 400789880,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 512,
+				"gas": 500,
+				"ns/gas": 1.996
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 1213492,
+			"T": 1199600532,
+			"Bytes": 0,
+			"MemAllocs": 2427319,
+			"MemBytes": 407970368,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 512,
+				"gas": 500,
+				"ns/gas": 1.976,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 610916,
+			"T": 1132897456,
+			"Bytes": 0,
+			"MemAllocs": 1832975,
+			"MemBytes": 303188472,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 512,
+				"gas": 500,
+				"ns/gas": 3.708
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 421454,
+			"T": 1163656734,
+			"Bytes": 0,
+			"MemAllocs": 1686053,
+			"MemBytes": 330609664,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 512,
+				"gas": 500,
+				"ns/gas": 5.522,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 258746,
+			"T": 1173986955,
+			"Bytes": 0,
+			"MemAllocs": 1293921,
+			"MemBytes": 265107464,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 512,
+				"gas": 500,
+				"ns/gas": 9.074
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 269508,
+			"T": 1021651651,
+			"Bytes": 0,
+			"MemAllocs": 1617259,
+			"MemBytes": 302021800,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 512,
+				"gas": 500,
+				"ns/gas": 7.58,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 194313,
+			"T": 1132335992,
+			"Bytes": 0,
+			"MemAllocs": 971711,
+			"MemBytes": 199091696,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 512,
+				"gas": 512,
+				"ns/gas": 11.380859375
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 250057,
+			"T": 1135503965,
+			"Bytes": 0,
+			"MemAllocs": 1500541,
+			"MemBytes": 280224232,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 512,
+				"gas": 512,
+				"ns/gas": 8.8671875,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 218646,
+			"T": 1183763223,
+			"Bytes": 0,
+			"MemAllocs": 1312053,
+			"MemBytes": 245024208,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 512,
+				"gas": 640,
+				"ns/gas": 8.459375
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 149924,
+			"T": 1167961973,
+			"Bytes": 0,
+			"MemAllocs": 599785,
+			"MemBytes": 117608304,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 512,
+				"gas": 640,
+				"ns/gas": 12.171875,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 162435,
+			"T": 1306003981,
+			"Bytes": 0,
+			"MemAllocs": 649834,
+			"MemBytes": 127422224,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 512,
+				"gas": 768,
+				"ns/gas": 10.46875
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 140972,
+			"T": 1113161011,
+			"Bytes": 0,
+			"MemAllocs": 704957,
+			"MemBytes": 144438568,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 512,
+				"gas": 768,
+				"ns/gas": 10.28125,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 112998,
+			"T": 1027935317,
+			"Bytes": 0,
+			"MemAllocs": 452050,
+			"MemBytes": 88641024,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 512,
+				"gas": 896,
+				"ns/gas": 10.151785714285714
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 123036,
+			"T": 1152982274,
+			"Bytes": 0,
+			"MemAllocs": 615271,
+			"MemBytes": 126061840,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 512,
+				"gas": 896,
+				"ns/gas": 10.458705357142858,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 76486,
+			"T": 1096979096,
+			"Bytes": 0,
+			"MemAllocs": 535474,
+			"MemBytes": 104080896,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 512,
+				"gas": 1920,
+				"ns/gas": 7.469791666666667
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 97366,
+			"T": 1212722499,
+			"Bytes": 0,
+			"MemAllocs": 389517,
+			"MemBytes": 76378584,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 512,
+				"gas": 1920,
+				"ns/gas": 6.486979166666667,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 58198,
+			"T": 1177873878,
+			"Bytes": 0,
+			"MemAllocs": 349238,
+			"MemBytes": 72672848,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 512,
+				"gas": 2944,
+				"ns/gas": 6.874660326086956
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 52093,
+			"T": 1141924421,
+			"Bytes": 0,
+			"MemAllocs": 416798,
+			"MemBytes": 82563912,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 512,
+				"gas": 2944,
+				"ns/gas": 7.445652173913044,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 41186,
+			"T": 1233056496,
+			"Bytes": 0,
+			"MemAllocs": 247153,
+			"MemBytes": 52089952,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 512,
+				"gas": 3968,
+				"ns/gas": 7.544858870967742
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 42529,
+			"T": 1055147394,
+			"Bytes": 0,
+			"MemAllocs": 255212,
+			"MemBytes": 53107136,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 512,
+				"gas": 3968,
+				"ns/gas": 6.252520161290323,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 23550,
+			"T": 1206176833,
+			"Bytes": 0,
+			"MemAllocs": 188427,
+			"MemBytes": 37701848,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 512,
+				"gas": 8064,
+				"ns/gas": 6.351314484126984
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 25704,
+			"T": 1276653786,
+			"Bytes": 0,
+			"MemAllocs": 205658,
+			"MemBytes": 40738536,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 512,
+				"gas": 8064,
+				"ns/gas": 6.159102182539683,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 23148,
+			"T": 1228062132,
+			"Bytes": 0,
+			"MemAllocs": 486164,
+			"MemBytes": 75228592,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 512,
+				"gas": 16256,
+				"ns/gas": 3.263533464566929
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 21649,
+			"T": 1119445907,
+			"Bytes": 0,
+			"MemAllocs": 822721,
+			"MemBytes": 85780952,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 512,
+				"gas": 16256,
+				"ns/gas": 3.1808562992125986,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 14186,
+			"T": 1233857955,
+			"Bytes": 0,
+			"MemAllocs": 751914,
+			"MemBytes": 72789096,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 512,
+				"gas": 32640,
+				"ns/gas": 2.664736519607843
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 14064,
+			"T": 1246131235,
+			"Bytes": 0,
+			"MemAllocs": 745447,
+			"MemBytes": 72164000,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 512,
+				"gas": 32640,
+				"ns/gas": 2.714583333333333,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 8272,
+			"T": 1198138334,
+			"Bytes": 0,
+			"MemAllocs": 173734,
+			"MemBytes": 26884000,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 512,
+				"gas": 98176,
+				"ns/gas": 1.4753300195567145
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 8716,
+			"T": 1225097255,
+			"Bytes": 0,
+			"MemAllocs": 331230,
+			"MemBytes": 34535240,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 512,
+				"gas": 98176,
+				"ns/gas": 1.4316839146023468,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 3961,
+			"T": 1086884380,
+			"Bytes": 0,
+			"MemAllocs": 83194,
+			"MemBytes": 12874576,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 512,
+				"gas": 229248,
+				"ns/gas": 1.1969395589056393
+			}
+		},
+		{
+			"ModulusBitLength": 512,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 512,
+			"BaseTrailingZeros": null,
+			"N": 4648,
+			"T": 1175755771,
+			"Bytes": 0,
+			"MemAllocs": 176639,
+			"MemBytes": 18417144,
+			"Extra": {
+				"bitlen(base)": 512,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 512,
+				"gas": 229248,
+				"ns/gas": 1.1034294737576773,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 25503295,
+			"T": 1181844310,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 1024,
+				"gas": 512,
+				"ns/gas": 0.08984375
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 25726766,
+			"T": 1191124014,
+			"Bytes": 0,
+			"MemAllocs": 4,
+			"MemBytes": 1856,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 1024,
+				"gas": 512,
+				"ns/gas": 0.08984375,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 525703,
+			"T": 1057069021,
+			"Bytes": 0,
+			"MemAllocs": 1051661,
+			"MemBytes": 319823632,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 1024,
+				"gas": 512,
+				"ns/gas": 3.92578125
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 556971,
+			"T": 1153895731,
+			"Bytes": 0,
+			"MemAllocs": 1114208,
+			"MemBytes": 338844720,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 1024,
+				"gas": 512,
+				"ns/gas": 4.044921875,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 135502,
+			"T": 1096507329,
+			"Bytes": 0,
+			"MemAllocs": 542155,
+			"MemBytes": 195240816,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 1024,
+				"gas": 1024,
+				"ns/gas": 7.90234375
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 165543,
+			"T": 1020971875,
+			"Bytes": 0,
+			"MemAllocs": 662351,
+			"MemBytes": 238527536,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 1024,
+				"gas": 1024,
+				"ns/gas": 6.0224609375,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 147198,
+			"T": 1190767568,
+			"Bytes": 0,
+			"MemAllocs": 883409,
+			"MemBytes": 301639200,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 1024,
+				"gas": 1536,
+				"ns/gas": 5.266276041666667
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 122791,
+			"T": 1216550142,
+			"Bytes": 0,
+			"MemAllocs": 614129,
+			"MemBytes": 231969232,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 1024,
+				"gas": 1536,
+				"ns/gas": 6.449869791666667,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 119403,
+			"T": 1174971488,
+			"Bytes": 0,
+			"MemAllocs": 716584,
+			"MemBytes": 244680816,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 1024,
+				"gas": 2048,
+				"ns/gas": 4.8046875
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 96361,
+			"T": 1184614837,
+			"Bytes": 0,
+			"MemAllocs": 481930,
+			"MemBytes": 182036944,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 1024,
+				"gas": 2048,
+				"ns/gas": 6.00244140625,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 87097,
+			"T": 1429957634,
+			"Bytes": 0,
+			"MemAllocs": 348475,
+			"MemBytes": 125494464,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 1024,
+				"gas": 2560,
+				"ns/gas": 6.412890625
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 81049,
+			"T": 1271373203,
+			"Bytes": 0,
+			"MemAllocs": 486406,
+			"MemBytes": 166086440,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 1024,
+				"gas": 2560,
+				"ns/gas": 6.12734375,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 65799,
+			"T": 1167063248,
+			"Bytes": 0,
+			"MemAllocs": 460709,
+			"MemBytes": 164331168,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 1024,
+				"gas": 3072,
+				"ns/gas": 5.7734375
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 103532,
+			"T": 1158392968,
+			"Bytes": 0,
+			"MemAllocs": 414218,
+			"MemBytes": 122655856,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 1024,
+				"gas": 3072,
+				"ns/gas": 3.6419270833333335,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 68554,
+			"T": 1200780391,
+			"Bytes": 0,
+			"MemAllocs": 411434,
+			"MemBytes": 158041992,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 1024,
+				"gas": 3584,
+				"ns/gas": 4.886997767857143
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 55099,
+			"T": 1125628543,
+			"Bytes": 0,
+			"MemAllocs": 275570,
+			"MemBytes": 104089288,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 1024,
+				"gas": 3584,
+				"ns/gas": 5.700055803571429,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 33525,
+			"T": 1230187174,
+			"Bytes": 0,
+			"MemAllocs": 268267,
+			"MemBytes": 98755992,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 1024,
+				"gas": 7680,
+				"ns/gas": 4.777864583333334
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 27968,
+			"T": 1140759609,
+			"Bytes": 0,
+			"MemAllocs": 223803,
+			"MemBytes": 82387376,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 1024,
+				"gas": 7680,
+				"ns/gas": 5.3109375,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 20910,
+			"T": 1151742153,
+			"Bytes": 0,
+			"MemAllocs": 167323,
+			"MemBytes": 61595832,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 1024,
+				"gas": 11776,
+				"ns/gas": 4.677309782608695
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 23961,
+			"T": 1160495762,
+			"Bytes": 0,
+			"MemAllocs": 143810,
+			"MemBytes": 56007072,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 1024,
+				"gas": 11776,
+				"ns/gas": 4.112771739130435,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 19251,
+			"T": 1222584091,
+			"Bytes": 0,
+			"MemAllocs": 115540,
+			"MemBytes": 44382192,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 1024,
+				"gas": 15872,
+				"ns/gas": 4.001197076612903
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 20941,
+			"T": 1201568362,
+			"Bytes": 0,
+			"MemAllocs": 125682,
+			"MemBytes": 47607640,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 1024,
+				"gas": 15872,
+				"ns/gas": 3.615045362903226,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 10000,
+			"T": 1061240191,
+			"Bytes": 0,
+			"MemAllocs": 80023,
+			"MemBytes": 29138792,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 1024,
+				"gas": 32256,
+				"ns/gas": 3.2900545634920637
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 10023,
+			"T": 1200525013,
+			"Bytes": 0,
+			"MemAllocs": 80209,
+			"MemBytes": 29205960,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 1024,
+				"gas": 32256,
+				"ns/gas": 3.7133246527777777,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 9870,
+			"T": 1194698030,
+			"Bytes": 0,
+			"MemAllocs": 207309,
+			"MemBytes": 57675096,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 1024,
+				"gas": 65024,
+				"ns/gas": 1.8615126722440944
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 7918,
+			"T": 1048245220,
+			"Bytes": 0,
+			"MemAllocs": 419706,
+			"MemBytes": 67249848,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 1024,
+				"gas": 65024,
+				"ns/gas": 2.035971333661417,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 6808,
+			"T": 1393059004,
+			"Bytes": 0,
+			"MemAllocs": 258751,
+			"MemBytes": 46815400,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 1024,
+				"gas": 130560,
+				"ns/gas": 1.5672487745098038
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 5743,
+			"T": 1174642379,
+			"Bytes": 0,
+			"MemAllocs": 218263,
+			"MemBytes": 39489808,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 1024,
+				"gas": 130560,
+				"ns/gas": 1.5665900735294118,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 3386,
+			"T": 1195214223,
+			"Bytes": 0,
+			"MemAllocs": 71124,
+			"MemBytes": 19787376,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 1024,
+				"gas": 392704,
+				"ns/gas": 0.8988627566818774
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 3121,
+			"T": 1165198837,
+			"Bytes": 0,
+			"MemAllocs": 165438,
+			"MemBytes": 26509360,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 1024,
+				"gas": 392704,
+				"ns/gas": 0.9506931429269883,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 1729,
+			"T": 1206461564,
+			"Bytes": 0,
+			"MemAllocs": 62252,
+			"MemBytes": 11501616,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 1024,
+				"gas": 916992,
+				"ns/gas": 0.7609433888190955
+			}
+		},
+		{
+			"ModulusBitLength": 1024,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 1024,
+			"BaseTrailingZeros": null,
+			"N": 1701,
+			"T": 1183009203,
+			"Bytes": 0,
+			"MemAllocs": 90172,
+			"MemBytes": 14449360,
+			"Extra": {
+				"bitlen(base)": 1024,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 1024,
+				"gas": 916992,
+				"ns/gas": 0.7584340975711893,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 4975578,
+			"T": 1116261988,
+			"Bytes": 0,
+			"MemAllocs": 6,
+			"MemBytes": 2720,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 2048,
+				"gas": 2048,
+				"ns/gas": 0.109375
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 21580531,
+			"T": 1036569402,
+			"Bytes": 0,
+			"MemAllocs": 2,
+			"MemBytes": 1800,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 1,
+				"bitlen(modulus)": 2048,
+				"gas": 2048,
+				"ns/gas": 0.0234375,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 243903,
+			"T": 1218345867,
+			"Bytes": 0,
+			"MemAllocs": 488020,
+			"MemBytes": 281149472,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 2048,
+				"gas": 2048,
+				"ns/gas": 2.43896484375
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 2,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 105975,
+			"T": 1221841497,
+			"Bytes": 0,
+			"MemAllocs": 318104,
+			"MemBytes": 251098776,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 2,
+				"bitlen(modulus)": 2048,
+				"gas": 2048,
+				"ns/gas": 5.62939453125,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 71247,
+			"T": 1203042133,
+			"Bytes": 0,
+			"MemAllocs": 356422,
+			"MemBytes": 250942696,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 2048,
+				"gas": 4096,
+				"ns/gas": 4.122314453125
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 3,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 56293,
+			"T": 1196039273,
+			"Bytes": 0,
+			"MemAllocs": 225290,
+			"MemBytes": 165826024,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 3,
+				"bitlen(modulus)": 2048,
+				"gas": 4096,
+				"ns/gas": 5.18701171875,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 57758,
+			"T": 1177923470,
+			"Bytes": 0,
+			"MemAllocs": 346715,
+			"MemBytes": 236719160,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 2048,
+				"gas": 6144,
+				"ns/gas": 3.3193359375
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 4,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 44340,
+			"T": 1150838191,
+			"Bytes": 0,
+			"MemAllocs": 177453,
+			"MemBytes": 130615968,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 4,
+				"bitlen(modulus)": 2048,
+				"gas": 6144,
+				"ns/gas": 4.224283854166667,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 47935,
+			"T": 1214867006,
+			"Bytes": 0,
+			"MemAllocs": 287749,
+			"MemBytes": 196460560,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 2048,
+				"gas": 8192,
+				"ns/gas": 3.09375
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 5,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 38630,
+			"T": 1155701255,
+			"Bytes": 0,
+			"MemAllocs": 231887,
+			"MemBytes": 158322032,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 5,
+				"bitlen(modulus)": 2048,
+				"gas": 8192,
+				"ns/gas": 3.6519775390625,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 31197,
+			"T": 1278445707,
+			"Bytes": 0,
+			"MemAllocs": 187276,
+			"MemBytes": 127860744,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 2048,
+				"gas": 10240,
+				"ns/gas": 4.00185546875
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 6,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 27781,
+			"T": 1159650959,
+			"Bytes": 0,
+			"MemAllocs": 194565,
+			"MemBytes": 138764520,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 6,
+				"bitlen(modulus)": 2048,
+				"gas": 10240,
+				"ns/gas": 4.0763671875,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 25881,
+			"T": 1227477782,
+			"Bytes": 0,
+			"MemAllocs": 103578,
+			"MemBytes": 76240320,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 2048,
+				"gas": 12288,
+				"ns/gas": 3.859619140625
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 7,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 27994,
+			"T": 1264255079,
+			"Bytes": 0,
+			"MemAllocs": 140042,
+			"MemBytes": 107560152,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 7,
+				"bitlen(modulus)": 2048,
+				"gas": 12288,
+				"ns/gas": 3.6752115885416665,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 23168,
+			"T": 1140830664,
+			"Bytes": 0,
+			"MemAllocs": 139076,
+			"MemBytes": 94953776,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 2048,
+				"gas": 14336,
+				"ns/gas": 3.434779575892857
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 8,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 37579,
+			"T": 1340797261,
+			"Bytes": 0,
+			"MemAllocs": 150395,
+			"MemBytes": 110699320,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 8,
+				"bitlen(modulus)": 2048,
+				"gas": 14336,
+				"ns/gas": 2.48876953125,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 13033,
+			"T": 1204572053,
+			"Bytes": 0,
+			"MemAllocs": 104316,
+			"MemBytes": 76783496,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 2048,
+				"gas": 30720,
+				"ns/gas": 3.00859375
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 16,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 12409,
+			"T": 1185324644,
+			"Bytes": 0,
+			"MemAllocs": 99325,
+			"MemBytes": 73109144,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 16,
+				"bitlen(modulus)": 2048,
+				"gas": 30720,
+				"ns/gas": 3.1094075520833333,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 9441,
+			"T": 1196936521,
+			"Bytes": 0,
+			"MemAllocs": 56680,
+			"MemBytes": 44741232,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 2048,
+				"gas": 47104,
+				"ns/gas": 2.6914911684782608
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 24,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 10000,
+			"T": 1210190808,
+			"Bytes": 0,
+			"MemAllocs": 60037,
+			"MemBytes": 47390552,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 24,
+				"bitlen(modulus)": 2048,
+				"gas": 47104,
+				"ns/gas": 2.5691873301630435,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 7934,
+			"T": 1397154974,
+			"Bytes": 0,
+			"MemAllocs": 47630,
+			"MemBytes": 37598824,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 2048,
+				"gas": 63488,
+				"ns/gas": 2.773705267137097
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 32,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 8203,
+			"T": 1081548544,
+			"Bytes": 0,
+			"MemAllocs": 57452,
+			"MemBytes": 40976136,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 32,
+				"bitlen(modulus)": 2048,
+				"gas": 63488,
+				"ns/gas": 2.076723160282258,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 3249,
+			"T": 1032957072,
+			"Bytes": 0,
+			"MemAllocs": 19507,
+			"MemBytes": 15397824,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 2048,
+				"gas": 129024,
+				"ns/gas": 2.464115203373016
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 64,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 4054,
+			"T": 1182348267,
+			"Bytes": 0,
+			"MemAllocs": 24342,
+			"MemBytes": 19214000,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 64,
+				"bitlen(modulus)": 2048,
+				"gas": 129024,
+				"ns/gas": 2.2604244171626986,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 3348,
+			"T": 1205121846,
+			"Bytes": 0,
+			"MemAllocs": 70335,
+			"MemBytes": 38592456,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 2048,
+				"gas": 260096,
+				"ns/gas": 1.383919783464567
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 128,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 3754,
+			"T": 1365901092,
+			"Bytes": 0,
+			"MemAllocs": 142693,
+			"MemBytes": 49614832,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 128,
+				"bitlen(modulus)": 2048,
+				"gas": 260096,
+				"ns/gas": 1.398914247047244,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 1834,
+			"T": 1193830275,
+			"Bytes": 0,
+			"MemAllocs": 67877,
+			"MemBytes": 24150696,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 2048,
+				"gas": 522240,
+				"ns/gas": 1.246444163602941
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 256,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 2059,
+			"T": 1276933811,
+			"Bytes": 0,
+			"MemAllocs": 74150,
+			"MemBytes": 26455136,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 256,
+				"bitlen(modulus)": 2048,
+				"gas": 522240,
+				"ns/gas": 1.187521063112745,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 948,
+			"T": 1130804548,
+			"Bytes": 0,
+			"MemAllocs": 34139,
+			"MemBytes": 12180392,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 2048,
+				"gas": 1570816,
+				"ns/gas": 0.7593702890726858
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 512,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 886,
+			"T": 1054659742,
+			"Bytes": 0,
+			"MemAllocs": 33679,
+			"MemBytes": 11710360,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 512,
+				"bitlen(modulus)": 2048,
+				"gas": 1570816,
+				"ns/gas": 0.7577972213168188,
+				"trailingZeros(modulus)": 4
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": null,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 522,
+			"T": 1185638749,
+			"Bytes": 0,
+			"MemAllocs": 27679,
+			"MemBytes": 8271760,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 2048,
+				"gas": 3667968,
+				"ns/gas": 0.6192360456797878
+			}
+		},
+		{
+			"ModulusBitLength": 2048,
+			"ModulusTrailingZeros": 4,
+			"ExponentBitLength": 1024,
+			"BaseBitLength": 2048,
+			"BaseTrailingZeros": null,
+			"N": 531,
+			"T": 1220843675,
+			"Bytes": 0,
+			"MemAllocs": 20187,
+			"MemBytes": 7019712,
+			"Extra": {
+				"bitlen(base)": 2048,
+				"bitlen(exponent)": 1024,
+				"bitlen(modulus)": 2048,
+				"gas": 3667968,
+				"ns/gas": 0.6268157192211056,
+				"trailingZeros(modulus)": 4
+			}
+		}
+	],
+	"Name": "949468c33bef1f721751f44bd9123547ad35b280",
+	"RndSeed": null,
+	"DisplayResults": false,
+	"JSONOut": "",
+	"JSONOutOverwrite": false,
+	"CSVOut": "",
+	"CSVOutOverwrite": false,
+	"CSVMeta": true,
+	"CSVAll": true,
+	"CSVTableForMetrics": [
+		"ns/gas"
+	],
+	"StartTime": "2025-12-05T05:52:10.843221574+01:00",
+	"EndTime": "2025-12-05T05:58:27.358150486+01:00",
+	"BaseName": null
+}
