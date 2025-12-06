@@ -925,7 +925,7 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 
 	// if the number of bits of the (effective) exponent is at least this threshold, we use a 4-bit windowed exponentiation.
 	// Note that we effectively cap the exponent at logM, because we will only consider the exponent modulo phi(2**logM).
-	const threshold_for_4_bit_window = 48
+	const threshold_for_4_bit_window = 40
 
 	if logM >= threshold_for_4_bit_window && y.bitLen() >= threshold_for_4_bit_window {
 		return z.expNNPowerOfTwoWindowSize4(stk, x, y, logM)
@@ -1125,7 +1125,7 @@ func computeMontgomeryk0(m0 Word) (k0 Word) {
 // Asserts that m is odd, z must not alias x,y or m and y != 0.
 // Uses Montgomery representation and a window of size 4.
 func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
-	const threshold_for_window_size4 = 32
+	const threshold_for_window_size4 = 40
 	if len(y) == 1 && nlz(y[0]) >= _W - threshold_for_window_size4{
 		return z.expNNOddMontgomerySize2(stk, x, y, m)
 	} else{
