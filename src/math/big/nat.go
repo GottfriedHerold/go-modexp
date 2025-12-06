@@ -1122,9 +1122,22 @@ func computeMontgomeryk0(m0 Word) (k0 Word) {
 
 // expNNOdd calculates x**y mod m for odd m.
 //
-// Asserts that m is odd, z must not alias x,y or m.
-// Uses Montgomery representation.
+// Asserts that m is odd, z must not alias x,y or m and y != 0.
+// Uses Montgomery representation and a window of size 4.
 func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
+	const threshold_for_window_size4 = 32
+	if len(y) == 1 && nlz(y[0]) >= _W - threshold_for_window_size4{
+		return z.expNNOddMontgomerySize2(stk, x, y, m)
+	} else{
+		return z.expNNOddMontgomerySize4(stk, x, y, m)
+	}
+}
+
+// expNNOdd calculates x**y mod m for odd m.
+//
+// Asserts that m is odd, z must not alias x,y or m.
+// Uses Montgomery representation and a window of size 4.
+func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 	numWords := len(m)
 
 	// We want the lengths of x and m to be equal.
@@ -1217,6 +1230,103 @@ func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 
 	return zz.norm()
 }
+
+// expNNOdd calculates x**y mod m for odd m.
+//
+// Asserts that m is odd, z must not alias x,y or m.
+// Uses Montgomery representation and a window of size 2.
+func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
+	numWords := len(m)
+
+	// We want the lengths of x and m to be equal.
+	// It is OK if x >= m as long as len(x) == len(m).
+	if len(x) > numWords {
+		_, x = nat(nil).div(stk, nil, x, m)
+		// Note: now len(x) <= numWords, not guaranteed ==.
+	}
+	if len(x) < numWords {
+		rr := make(nat, numWords)
+		copy(rr, x)
+		x = rr
+	}
+
+	// Ideally the precomputations would be performed outside, and reused
+	k0 := computeMontgomeryk0(m[0])
+		
+	// RR = 2**(2*_W*len(m)) mod m
+	RR := nat(nil).setWord(1)
+	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
+	_, RR = nat(nil).div(stk, RR, zz, m)
+	if len(RR) < numWords {
+		zz = zz.make(numWords)
+		copy(zz, RR)
+		RR = zz
+	}
+	// one = 1, with equal length to that of m
+	one := make(nat, numWords)
+	one[0] = 1
+
+	const windowSize = 2
+	// Note: The current implementation asserts that windowSize divides _W
+	// and the loop below is unrolled for the hardcoded value of windowSize.
+	// If you change windowSize, you need to change the unrolled loop below.
+
+	// powers[i] contains x^i
+	var powers [1 << windowSize]nat
+	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
+	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
+	for i := 2; i < 1<<windowSize; i++ {
+		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
+	}
+
+	// initialize z = 1 (Montgomery 1)
+	z = z.make(numWords)
+	copy(z, powers[0])
+
+	zz = zz.make(numWords)
+
+	// same windowed exponent, but with Montgomery multiplications
+	for i := len(y) - 1; i >= 0; i-- {
+		yi := y[i]
+		for j := 0; j < _W; j += windowSize {
+			if i != len(y)-1 || j != 0 {
+				// The loop is unrolled here for (hardcoded) windowSize == 2,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if windowSize != 2 {
+					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				}
+
+				zz = zz.montgomery(z, z, m, k0, numWords)
+				z = z.montgomery(zz, zz, m, k0, numWords)
+			}
+			zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
+			z, zz = zz, z
+			yi <<= windowSize
+		}
+	}
+	// convert to regular number
+	zz = zz.montgomery(z, one, m, k0, numWords)
+
+	// One last reduction, just in case.
+	// See golang.org/issue/13907.
+	if zz.cmp(m) >= 0 {
+		// Common case is m has high bit set; in that case,
+		// since zz is the same length as m, there can be just
+		// one multiple of m to remove. Just subtract.
+		// We think that the subtract should be sufficient in general,
+		// so do that unconditionally, but double-check,
+		// in case our beliefs are wrong.
+		// The div is not expected to be reached.
+		zz = zz.sub(zz, m)
+		if zz.cmp(m) >= 0 {
+			_, zz = nat(nil).div(stk, nil, zz, m)
+		}
+	}
+
+	return zz.norm()
+}
+
 
 // bytes writes the value of z into buf using big-endian encoding.
 // The value of z is encoded in the slice buf[i:]. If the value of z
