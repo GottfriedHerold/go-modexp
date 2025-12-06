@@ -947,6 +947,23 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
+// computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
+//
+// This value is used for Montgomery multiplication. We assert (but do not check) that
+// m0 is odd, as otherwise the inverse does not exists and Montgomery multiplication does not work.
+func computeMontgomeryk0(m0 Word) (k0 Word) {
+	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
+	// Iteration for Multiplicative Inverses Modulo Prime Powers".
+	k0 = 2 - m0
+	t := m0 - 1
+	for i := 1; i < _W; i <<= 1 {
+		t *= t
+		k0 *= (t + 1)
+	}
+	k0 = -k0
+	return
+}
+
 // expNNOdd calculates x**y mod m for odd m.
 //
 // Asserts that m is odd, z must not alias x,y or m.
@@ -967,16 +984,8 @@ func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	}
 
 	// Ideally the precomputations would be performed outside, and reused
-	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
-	// Iteration for Multiplicative Inverses Modulo Prime Powers".
-	k0 := 2 - m[0]
-	t := m[0] - 1
-	for i := 1; i < _W; i <<= 1 {
-		t *= t
-		k0 *= (t + 1)
-	}
-	k0 = -k0
-
+	k0 := computeMontgomeryk0(m[0])
+		
 	// RR = 2**(2*_W*len(m)) mod m
 	RR := nat(nil).setWord(1)
 	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
