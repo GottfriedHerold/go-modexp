@@ -11,7 +11,25 @@ Everything else based on EthereumGasBenchmark
 Docfixes:
 	- minor documentation fixes
 	(currently based on EthereumGasBenchmark)
+
+
+hoist_functions:
+	- Montgomery computation in separate function
+	- Precomputation in separate function for pow2 case
+	(based on docfixed)
 	
+generalize_alg:
+	(based on hoist_function)
+	
+fix_stack_handling:
+	Fix broken memory stuff and bugs
+	
+
 improve_inverse_mod2:
 	(currently based on EthereumGasBenchmark)
 
+special_case_montgomery
+	(currently based on EthereumGasBenchmark)
+	
+NOTE:
+  RelativeBenchmark may need to be reset to correct commit.

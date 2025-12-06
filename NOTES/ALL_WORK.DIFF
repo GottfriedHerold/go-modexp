@@ -5,172 +5,6 @@ diff --git a/src/math/big/nat.go b/src/math/big/nat.go
 index 43e36d3093..ab5a09701e 100644
 --- a/src/math/big/nat.go
 +++ b/src/math/big/nat.go
-@@ -175,6 +175,24 @@ func (x nat) cmp(y nat) (r int) {
- 	return
- }
- 
-+// The code of addWord and mulWord below relies on the fact that [Word]'s underlying type is [uint]
-+// (rather than convertible to and from it, which would also hold for e.g. [uint16])
-+func checkBasedOnInt[T ~uint](_ T) bool { return true }
-+
-+var _ = checkBasedOnInt[Word](Word(0)) // guard to make the assertion that Word is based on uint explicit.
-+
-+// addWord has the same semantics as [bits.Add], but works with [Word] rather than [uint]
-+func addWord(x, y, carry Word) (sum Word, carryOut Word) {
-+	sumUint, carryUint := bits.Add(uint(x), uint(y), uint(carry))
-+	return Word(sumUint), Word(carryUint)
-+}
-+
-+// mulWord has the same semantics as [bits.Mul], but works with [Word] rather than [uint]
-+func mulWord(x, y Word) (hi Word, lo Word) {
-+	hiUint, loUint := bits.Mul(uint(x), uint(y))
-+	return Word(hiUint), Word(loUint)
-+}
-+
- // montgomery computes z mod m = x*y*2**(-n*_W) mod m,
- // assuming k = -1/m mod 2**_W.
- // z is used for storing the result which is returned;
-@@ -217,6 +235,65 @@ func (z nat) montgomery(x, y, m nat, k Word, n int) nat {
- 	return z[:n]
- }
- 
-+func montgomeryUint(x, y, m, k uint) (z uint) {
-+	z, zlo := bits.Mul(x, y)
-+	t := zlo * k
-+	u, _ := bits.Mul(t, m) //Note: We know that the second output = -zlo
-+	var c uint
-+	if t != 0 {
-+		c = 1
-+	}
-+	z, c = bits.Add(z, u, c)
-+	if c == 1 {
-+		z -= m
-+	}
-+	return z
-+}
-+
-+func montgomery2Uint(x0 *uint, x1 *uint, y0, y1, m0, m1 uint, k uint) {
-+	z1, z0 := bits.Mul(*x0, y0)
-+	z2, tmp := bits.Mul(*x1, y0)
-+	z1, c := bits.Add(z1, tmp, 0)
-+	z2 += c
-+	t := z0 * k
-+	if z0 == 0 {
-+		c = 0
-+	} else {
-+		c = 1
-+	}
-+	tmp, _ = bits.Mul(t, m0)
-+	z1, c = bits.Add(z1, tmp, c)
-+	tmp, z0 = bits.Mul(t, m1)
-+	z1, c = bits.Add(z1, z0, c)
-+	z2, z3 := bits.Add(z2, tmp, c)
-+
-+	tmp, z0 = bits.Mul(*x0, y1)
-+	z1, c = bits.Add(z1, z0, 0)
-+	z2, c = bits.Add(z2, tmp, c)
-+
-+	tmp, z0 = bits.Mul(*x1, y1)
-+	z2, c = bits.Add(z2, z0, c)
-+	z3, _ = bits.Add(z3, tmp, c) // z3 was in {0,1}, tmp is at most MAXUINT - 2 (for x1, y1 = MAXUINT)
-+
-+	if z1 == 0 {
-+		c = 0
-+	} else {
-+		c = 1
-+	}
-+	t = z1 * k
-+	tmp, _ = bits.Mul(t, m0)
-+	z2, c = bits.Add(z2, tmp, c)
-+	tmp, z0 = bits.Mul(t, m1)
-+	*x0, c = bits.Add(z2, z0, c)
-+	*x1, c = bits.Add(z3, tmp, c)
-+
-+	for c == 1 {
-+		*x0, c = bits.Sub(*x0, m0, 0)
-+		*x1, _ = bits.Sub(*x1, 1, c)
-+	}
-+
-+}
-+
- // alias reports whether x and y share the same base array.
- //
- // Note: alias assumes that the capacity of underlying arrays
-@@ -327,6 +404,15 @@ func (s *stack) nat(n int) nat {
- 	return x
- }
- 
-+// reserve grows the stack, such that we can obtain at least n more words without reallocation.
-+// Calling this before multiple calls to nat serves as an optimization
-+func (s *stack) reserve(n int) {
-+	nr := (n + 3) & ^3 // round up to multiple of 4
-+	off := len(s.w)
-+	s.w = slices.Grow(s.w, nr)
-+	s.w = s.w[:off+nr]
-+}
-+
- // bitLen returns the length of x in bits.
- // Unlike most methods, it works even if x is not normalized.
- func (x nat) bitLen() int {
-
-@@ -663,29 +756,56 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
- 	if len(y) == 1 && y[0] == 1 { // len(m) > 0
- 		return z.rem(stk, x, m)
- 	}
--
- 	// y > 1
-
-+
-+	// The algorithm we use for the m != 0 case depends on the bitlength on y.
-+
-+	const threshold_for_slow_algorithm = 5 // if bitlength of y is <= this, we use a naive square-and-multiply.
-+	if threshold_for_slow_algorithm > _W { // The code below assumes that we only select the naive algorithm in cases where len(y)==0
-+		panic("big: invalid setting of threshold_for_slow_algorithm")
-+	}
-+
- 	if len(m) != 0 {
- 		// We likely end up being as long as the modulus.
- 		z = z.make(len(m))
- 
-+		if slow {
-+			return z.expNNSlow(stk, x, y, m)
-+		}
-+
-+		if len(y) == 1 && nlz(y[0]) >= _W-threshold_for_slow_algorithm {
-+			return z.expNNSlow(stk, x, y, m)
-+		}
-+
- 		// If the exponent is large, we use the Montgomery method for odd values,
--		// and a 4-bit, windowed exponentiation for powers of two,
-+		// and a windowed exponentiation for powers of two,
- 		// and a CRT-decomposed Montgomery method for the remaining values
- 		// (even values times non-trivial odd values, which decompose into one
- 		// instance of each of the first two cases).
--		if len(y) > 1 && !slow {
--			if m[0]&1 == 1 {
--				return z.expNNMontgomery(stk, x, y, m)
--			}
--			if logM, ok := m.isPow2(); ok {
--				return z.expNNWindowed(stk, x, y, logM)
--			}
--			return z.expNNMontgomeryEven(stk, x, y, m)
- 	}
-+	return z.expNNSlow(stk, x, y, m)
-+}
- 
-+// expNNSlow computes x**y mod m by a naive square-and-multiply algorithm,
-+// using nat.div for modular reduction.
-+// This is the base case used for small exponents or for m == 0.
-+//
-+// This function assumes (but does not check) that
-+// - z does not alias x,y or m.
-+// - x > 0
-+// - y > 1 (for y == 1, this performs no modular reduction)
-+// - stk is not nil
-+func (z nat) expNNSlow(stk *stack, x, y, m nat) nat {
- 	z = z.set(x)
- 	v := y[len(y)-1] // v > 0 because y is normalized and y > 0
- 	shift := nlz(v) + 1
 @@ -743,19 +863,28 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
  	return z.norm()
  }
@@ -243,6 +77,7 @@ index 43e36d3093..ab5a09701e 100644
 -	const n = 4
 -	// powers[i] contains x^i.
 -	var powers [1 << n]nat
+### HOISTED, but not yet changed.
 +// buildPrecompuationWindowModPower2 builds a precomputation window for exponentiation
 +// in the case of power-of-two modulus.
 +// More precisely, it sets powers[i] to x**i mod m, where m == 2**logM for
@@ -297,62 +132,7 @@ index 43e36d3093..ab5a09701e 100644
  	}
 +}
 +
-+// expNNPowerOfTwo calculates x**y mod m, where
-+// m = 2**logM
-+//
-+// z must not alias x or y. (x and y may alias).
-+// The caller needs to guarantee that x > 0, y > 0, logM > 0.
-+func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
-+
-+	// Note: Version in 1.26 was explicitly checking for len(y) > 1, as the
-+	// algorithm depended on that for certain optimizations.
-+	// We modified it to work without that assumption.
-+	// Note that we require x, y > 0.
-+
-+	if len(y) == 0 { // next check would panic anyway, this is just to give a more accurate error message.
-+		panic("big: called expNNPowerOfTwoWindowSize4 for zero-length y")
-+	}
-+	if len(y) == 1 && y[0] == 0 {
-+		panic("big: called expNNPowerOfTwoWindowSize4 for exponent 0")
-+	}
-+
-+	if logM == 1 { // m == 2.
-+		// Since y >= 1, the result will just be x mod m.
-+		return z.setWord(x[0] & 1)
-+	}
-+
-+	// Optimizations: If x is even, we can write x = x' * 2**i with x' odd.
-+	// Then x**y mod 2**logM == x'**y * 2**(i*y) mod 2**logM.
-+	// If i*y >= logM, this equals 0.
-+	// Otherwise, it equals 2**(i*y) * (x'**y mod 2**(logM - i*y))
-+	if x[0]&1 == 0 {
-+		if len(y) > 1 {
-+			// len(y) > 1, so y  > logM.
-+			// This assumes that _W is >= the bitsize of uint.
-+			// We check this, to be sure (the check is between const's, so it can be optimized away)
-+			if _W < bits.UintSize {
-+				panic("big: The Word size of nat is smaller than that of uint. This violates assumptions used for optimization")
-+			}
-+			// x is even, so x**y is a multiple of 2**y which is a multiple of 2**logM.
-+			return z.setWord(0)
-+		}
-+		// len(y) == 1
-+		// Note that we assert x != 0, so xOdd will be odd.
-+		i := x.trailingZeroBits()
-+		// compute y * i, taking care of potential overflow.
-+		resulting2AdicityHi, resulting2AdicityLo := bits.Mul64(uint64(i), uint64(y[0]))
-+		if resulting2AdicityHi != 0 || resulting2AdicityLo >= uint64(logM) {
-+			return z.setWord(0)
-+		}
-+		// We might consider to only perform simplification if we actually save in terms of number of words of the modulus.
-+		// i.e. if resulting2AdicityLo > uint64(logM)%_W.
-+		// For now, we ALWAYS perform the optimization, because then we may assume that x is odd in the code below,
-+		// which greatly simplifies the algorithm.
-+		xOdd := nat(nil).rsh(x, i)                        // odd part of x.
-+		logMRemaining := logM - uint(resulting2AdicityLo) // guaranteed > 0.
-+		z = z.expNNPowerOfTwo(stk, xOdd, y, logMRemaining)
-+		return z.lsh(z, uint(resulting2AdicityLo))
-+	}
+### expNNPowerOfTwo, @ selection of windowSize
 +
 +	// if the number of bits of the (effective) exponent is at least this threshold, we use a 4-bit windowed exponentiation.
 +	// Note that we effectively cap the exponent at logM, because we will only consider the exponent modulo phi(2**logM).
@@ -763,23 +543,6 @@ index 43e36d3093..ab5a09701e 100644
 +	return
 +}
 +
-+// computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
-+//
-+// This value is used for Montgomery multiplication. We assert (but do not check) that
-+// m0 is odd, as otherwise the inverse does not exists and Montgomery multiplication does not work.
-+func computeMontgomeryk0(m0 Word) (k0 Word) {
-+	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
-+	// Iteration for Multiplicative Inverses Modulo Prime Powers".
-+	k0 = 2 - m0
-+	t := m0 - 1
-+	for i := 1; i < _W; i <<= 1 {
-+		t *= t
-+		k0 *= (t + 1)
-+	}
-+	k0 = -k0
-+	return
-+}
-+
 
 +
 +func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
@@ -826,7 +589,7 @@ index 43e36d3093..ab5a09701e 100644
 +		clear(rr[len(x):])
  		x = rr
  	}
- 
+### HOISTED 
 -	// Ideally the precomputations would be performed outside, and reused
 -	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
 -	// Iteration for Multiplicative Inverses Modulo Prime Powers".
@@ -1654,4 +1417,51 @@ index 43e36d3093..ab5a09701e 100644
 +	}
 +}
 +*/
+
+
+### Function is buggy
++func montgomery2Uint(x0 *uint, x1 *uint, y0, y1, m0, m1 uint, k uint) {
++	z1, z0 := bits.Mul(*x0, y0)
++	z2, tmp := bits.Mul(*x1, y0)
++	z1, c := bits.Add(z1, tmp, 0)
++	z2 += c
++	t := z0 * k
++	if z0 == 0 {
++		c = 0
++	} else {
++		c = 1
++	}
++	tmp, _ = bits.Mul(t, m0)
++	z1, c = bits.Add(z1, tmp, c)
++	tmp, z0 = bits.Mul(t, m1)
++	z1, c = bits.Add(z1, z0, c)
++	z2, z3 := bits.Add(z2, tmp, c)
++
++	tmp, z0 = bits.Mul(*x0, y1)
++	z1, c = bits.Add(z1, z0, 0)
++	z2, c = bits.Add(z2, tmp, c)
++
++	tmp, z0 = bits.Mul(*x1, y1)
++	z2, c = bits.Add(z2, z0, c)
++	z3, _ = bits.Add(z3, tmp, c) // z3 was in {0,1}, tmp is at most MAXUINT - 2 (for x1, y1 = MAXUINT)
++
++	if z1 == 0 {
++		c = 0
++	} else {
++		c = 1
++	}
++	t = z1 * k
++	tmp, _ = bits.Mul(t, m0)
++	z2, c = bits.Add(z2, tmp, c)
++	tmp, z0 = bits.Mul(t, m1)
++	*x0, c = bits.Add(z2, z0, c)
++	*x1, c = bits.Add(z3, tmp, c)
++
++	for c == 1 {
++		*x0, c = bits.Sub(*x0, m0, 0)
++		*x1, _ = bits.Sub(*x1, 1, c)
++	}
++
++}
++
 
