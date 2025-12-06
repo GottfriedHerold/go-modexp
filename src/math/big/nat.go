@@ -678,7 +678,7 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 
 	// The algorithm we use for the m != 0 case depends on the bitlength on y.
 
-	const threshold_for_slow_algorithm = 48 // if bitlength of y is <= this, we use a naive square-and-multiply.
+	const threshold_for_slow_algorithm = 16 // if bitlength of y is <= this, we use a naive square-and-multiply.
 	if threshold_for_slow_algorithm > _W { // The code below assumes that we only select the naive algorithm in cases where len(y)==0
 		panic("big: invalid setting of threshold_for_slow_algorithm")
 	}
@@ -922,9 +922,31 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 
 	// because we handled the case of even x above with a recursive call, we know x that  is odd from here on.
 
+
+	// if the number of bits of the (effective) exponent is at least this threshold, we use a 4-bit windowed exponentiation.
+	// Note that we effectively cap the exponent at logM, because we will only consider the exponent modulo phi(2**logM).
+	const threshold_for_4_bit_window = 48
+
+	if logM >= threshold_for_4_bit_window && y.bitLen() >= threshold_for_4_bit_window {
+		return z.expNNPowerOfTwoWindowSize4(stk, x, y, logM)
+	} else {
+		return z.expNNPowerOfTwoWindowSize2(stk, x, y, logM)
+	}
+
+}
+
+
+// expNNPowerOfTwoWindowSize4 calculates x**y mod m using a fixed, 4-bit window,
+// where m = 2**logM.
+//
+// z must not alias x or y. x and y may alias.
+// The caller needs to guarantee that x > 0, y > 0, logM > 1. We also require that x is odd.
+func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
+
 	// zz is used to avoid allocating in mul as otherwise
 	// the arguments would alias.
 	defer stk.restore(stk.save())
+
 	w := int((logM + _W - 1) / _W)
 	zz := stk.nat(w)
 
@@ -1000,6 +1022,86 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 
 	return z.norm()
 }
+
+// expNNPowerOfTwoWindowSize2 calculates x**y mod m using a fixed, 2-bit window,
+// where m = 2**logM.
+//
+// z must not alias x or y. x and y may alias.
+// The caller needs to guarantee that x > 0, y > 0, logM > 1. We also require that x is odd.
+func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
+
+	// zz is used to avoid allocating in mul as otherwise
+	// the arguments would alias.
+	defer stk.restore(stk.save())
+
+	w := int((logM + _W - 1) / _W)
+	zz := stk.nat(w)
+
+	const windowSize = 2 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
+	// where m == 2**logM
+	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
+	// Note that if you change this, you need to change the unrolled loop below.
+
+	var powers [1<<windowSize] nat
+	buildPrecomputationWindowModPower2(stk, powers[:], windowSize, logM, x)
+	
+	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
+	// so we can compute x**(y mod 2**(logM-1)) instead of x**y.
+	// That is, we can throw away all but the bottom logM-1 bits of y.
+	// Instead of allocating a new y, we start reading y at the right word
+	// and truncate it appropriately at the start of the loop.
+	i := len(y) - 1
+	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
+	mmask := ^Word(0)
+	if mbits := (logM - 1) & (_W - 1); mbits != 0 {
+		mmask = (1 << mbits) - 1
+	}
+	if i > mtop {
+		i = mtop
+	}
+	advance := false
+	z = z.setWord(1)
+	for ; i >= 0; i-- {
+		yi := y[i]
+		if i == mtop {
+			yi &= mmask
+		}
+		for j := 0; j < _W; j += windowSize {
+			if advance {
+
+				// The loop is unrolled here for (hardcoded) windowSize == 2,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This check will be optimized away.
+				if windowSize != 2 {
+					panic("big: unrolled loop was hardcoded for windowSize == 2 and was not changed.")
+				}
+
+				// Account for use of 2 bits in previous iteration.
+				// Unrolled loop for significant performance
+				// gain. Use go test -bench=".*" in crypto/rsa
+				// to check performance before making changes.
+
+				zz = zz.sqr(stk, z)
+				zz, z = z, zz
+				z = z.trunc(z, logM)
+
+				zz = zz.sqr(stk, z)
+				zz, z = z, zz
+				z = z.trunc(z, logM)
+			}
+
+			zz = zz.mul(stk, z, powers[yi>>(_W-windowSize)])
+			zz, z = z, zz
+			z = z.trunc(z, logM)
+
+			yi <<= windowSize
+			advance = true
+		}
+	}
+
+	return z.norm()
+}
+
 
 // computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
 //
