@@ -913,7 +913,9 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-// expNNOdd calculates x**y mod m using a fixed, 4-bit window.
+// expNNOdd calculates x**y mod m for odd m.
+//
+// Asserts that m is odd, z must not alias x,y or m.
 // Uses Montgomery representation.
 func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	numWords := len(m)
