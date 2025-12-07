@@ -1255,7 +1255,7 @@ func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	}
 }
 
-// expNNOdd calculates x**y mod m for odd m.
+// expNNOddMontgomerySize4 calculates x**y mod m for odd m.
 //
 // Asserts that m is odd, z must not alias x,y or m.
 // Uses Montgomery representation and a window of size 4.
@@ -1309,28 +1309,51 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 
 	zz = zz.make(numWords)
 
-	// same windowed exponent, but with Montgomery multiplications
-	for i := len(y) - 1; i >= 0; i-- {
-		yi := y[i]
-		for j := 0; j < _W; j += windowSize {
-			if i != len(y)-1 || j != 0 {
-				// The loop is unrolled here for (hardcoded) windowSize == 4,
-				// so changing windowSize will make the algorith (silently) fail with a wrong result.
-				// We add a check here to fail explicitly. This will be optimized away.
-				if windowSize != 4 {
-					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
-				}
+	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
+	// We also avoid the initial squarings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
+	// We follow the same loop structure as expNNPowerOfTwoWindowSize4 for this.
+	
+	i := len(y) - 1                 // index of most significant word of y.
+	yi := y[i]                      // Note: yi is guaranteed to be > 0. This differs from the expNNPowerOfTwo algorithm, where we reduce y mod phi(m)
+	bitLengthyi := nat{yi}.bitLen() // bitLen is explicitly side-channel resistant. We don't want to leak about yi here apart from the bitlength.
 
-				zz = zz.montgomery(z, z, m, k0, numWords)
-				z = z.montgomery(zz, zz, m, k0, numWords)
-				zz = zz.montgomery(z, z, m, k0, numWords)
-				z = z.montgomery(zz, zz, m, k0, numWords)
+	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word within that word.
+	// start by directly copying rather than multiplying 1 by this.
+	
+	copy(z, powers[yi>>(k*windowSize)])	
+	
+	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
+	k -= 1
+
+	// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure 
+	for {
+		for k >= 0 {
+			// The loop is unrolled here for (hardcoded) windowSize == 4,
+			// so changing windowSize will make the algorith (silently) fail with a wrong result.
+			// We add a check here to fail explicitly. This will be optimized away.
+			if windowSize != 4 {
+				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
 			}
-			zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
+ 			zz = zz.montgomery(z, z, m, k0, numWords)
+ 			z = z.montgomery(zz, zz, m, k0, numWords)
+ 			zz = zz.montgomery(z, z, m, k0, numWords)
+ 			z = z.montgomery(zz, zz, m, k0, numWords)
+
+			bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
+			zz = zz.montgomery(z, powers[bitsToBeProcessed], m, k0, numWords)
 			z, zz = zz, z
 			yi <<= windowSize
+			k--
+ 		}
+		if i == 0 {
+			break
 		}
+		i--
+		yi = y[i]
+		k = _W/windowSize - 1
 	}
+
+
 	// convert to regular number
 	zz = zz.montgomery(z, one, m, k0, numWords)
 
@@ -1349,11 +1372,10 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 			_, zz = nat(nil).div(stk, nil, zz, m)
 		}
 	}
-
 	return zz.norm()
 }
 
-// expNNOdd calculates x**y mod m for odd m.
+// expNNOddMontgomerySize2 calculates x**y mod m for odd m.
 //
 // Asserts that m is odd, z must not alias x,y or m.
 // Uses Montgomery representation and a window of size 2.
@@ -1407,26 +1429,49 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 
 	zz = zz.make(numWords)
 
-	// same windowed exponent, but with Montgomery multiplications
-	for i := len(y) - 1; i >= 0; i-- {
-		yi := y[i]
-		for j := 0; j < _W; j += windowSize {
-			if i != len(y)-1 || j != 0 {
-				// The loop is unrolled here for (hardcoded) windowSize == 2,
-				// so changing windowSize will make the algorith (silently) fail with a wrong result.
-				// We add a check here to fail explicitly. This will be optimized away.
-				if windowSize != 2 {
-					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
-				}
+	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
+	// We also avoid the initial squarings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
+	// We follow the same loop structure as expNNPowerOfTwoWindowSize4 for this.
+	
+	i := len(y) - 1                 // index of most significant word of y.
+	yi := y[i]                      // Note: yi is guaranteed to be > 0. This differs from the expNNPowerOfTwo algorithm, where we reduce y mod phi(m)
+	bitLengthyi := nat{yi}.bitLen() // bitLen is explicitly side-channel resistant. We don't want to leak about yi here apart from the bitlength.
 
-				zz = zz.montgomery(z, z, m, k0, numWords)
-				z = z.montgomery(zz, zz, m, k0, numWords)
+	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word within that word.
+	// start by directly copying rather than multiplying 1 by this.
+	
+	copy(z, powers[yi>>(k*windowSize)])	
+	
+	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
+	k -= 1
+
+	// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure 
+	for {
+		for k >= 0 {
+			// The loop is unrolled here for (hardcoded) windowSize == 2,
+			// so changing windowSize will make the algorith (silently) fail with a wrong result.
+			// We add a check here to fail explicitly. This will be optimized away.
+			if windowSize != 2 {
+				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
 			}
-			zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
+ 			zz = zz.montgomery(z, z, m, k0, numWords)
+ 			z = z.montgomery(zz, zz, m, k0, numWords)
+
+			bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
+			zz = zz.montgomery(z, powers[bitsToBeProcessed], m, k0, numWords)
 			z, zz = zz, z
 			yi <<= windowSize
+			k--
+ 		}
+		if i == 0 {
+			break
 		}
+		i--
+		yi = y[i]
+		k = _W/windowSize - 1
 	}
+
+
 	// convert to regular number
 	zz = zz.montgomery(z, one, m, k0, numWords)
 
@@ -1445,9 +1490,9 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 			_, zz = nat(nil).div(stk, nil, zz, m)
 		}
 	}
-
 	return zz.norm()
 }
+
 
 
 // bytes writes the value of z into buf using big-endian encoding.
