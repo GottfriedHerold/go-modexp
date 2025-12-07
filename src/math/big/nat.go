@@ -1084,6 +1084,7 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
+<<<<<<< HEAD
 // expNNPowerOfTwoWindowSize2 calculates x**y mod m using a fixed, 2-bit window,
 // where m = 2**logM.
 //
@@ -1225,6 +1226,8 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 }
 
 
+=======
+>>>>>>> 028c8d0ac4 (nat.go: Move computation of Montgomery constant k0 into its own function.)
 // computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
 //
 // This value is used for Montgomery multiplication. We assert (but do not check) that
@@ -1245,7 +1248,7 @@ func computeMontgomeryk0(m0 Word) (k0 Word) {
 // expNNOdd calculates x**y mod m for odd m.
 //
 // Asserts that m is odd, z must not alias x,y or m and y != 0.
-// Uses Montgomery representation and a window of size 4.
+// Uses Montgomery representation.
 func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	const threshold_for_window_size4 = 40
 	if len(y) == 1 && nlz(y[0]) >= _W - threshold_for_window_size4{
