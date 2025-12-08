@@ -1054,12 +1054,14 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 	defer stk.restore(stk.save())
 
 	w := int((logM + _W - 1) / _W)
-	zz := stk.nat(w)
 
 	const windowSize = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
 	// where m == 2**logM
 	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
 	// Note that if you change this, you need to change the unrolled loop below.
+
+	stk.reserve((1<<windowSize)*w + 4*w)
+	zz := stk.nat(2*w)
 
 	// powers[i] contains x**i.
 	var powers [1<<windowSize] nat
@@ -1202,12 +1204,14 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 	defer stk.restore(stk.save())
 
 	w := int((logM + _W - 1) / _W)
-	zz := stk.nat(w)
 
 	const windowSize = 2 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
 	// where m == 2**logM
 	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
 	// Note that if you change this, you need to change the unrolled loop below.
+
+	stk.reserve((1<<windowSize)*w + 4*w)
+	zz := stk.nat(2*w)
 
 	// powers[i] contains x**i.
 	var powers [1<<windowSize] nat
