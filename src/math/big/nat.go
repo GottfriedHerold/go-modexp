@@ -240,6 +240,24 @@ func (z nat) modularInverseModPowerOfTwo(stk *stack, x nat, n uint) nat {
 	return z
 }
 
+// The code of addWord and mulWord below relies on the fact that [Word]'s underlying type is [uint]
+// (rather than convertible to and from it, which would also hold for e.g. [uint16])
+// We add some code here that only compiles if that assumption holds.
+func checkBasedOnInt[T ~uint](_ T) bool { return true }
+var _ = checkBasedOnInt[Word](Word(0)) // guard to make the assertion that Word is based on uint explicit.
+
+// addWord has the same semantics as [bits.Add], but works with [Word] rather than [uint]
+func addWord(x, y, carry Word) (sum Word, carryOut Word) {
+	sumUint, carryUint := bits.Add(uint(x), uint(y), uint(carry))
+	return Word(sumUint), Word(carryUint)
+}
+
+// mulWord has the same semantics as [bits.Mul], but works with [Word] rather than [uint]
+func mulWord(x, y Word) (hi Word, lo Word) {
+	hiUint, loUint := bits.Mul(uint(x), uint(y))
+	return Word(hiUint), Word(loUint)
+}
+
 // montgomery computes z mod m = x*y*2**(-n*_W) mod m,
 // assuming k = -1/m mod 2**_W.
 // z is used for storing the result which is returned;
@@ -280,6 +298,22 @@ func (z nat) montgomery(x, y, m nat, k Word, n int) nat {
 		copy(z[:n], z[n:])
 	}
 	return z[:n]
+}
+
+// montgomeryUint is a special-cased version of montgomery for the case where x, y, m only consist of a single uint.
+func montgomeryUint(x, y, m, k uint) (z uint) {
+	z, zlo := bits.Mul(x, y)
+	t := zlo * k
+	u, _ := bits.Mul(t, m) //Note: We know that the second output = -zlo
+	var c uint
+	if t != 0 {
+		c = 1
+	}
+	z, c = bits.Add(z, u, c)
+	if c == 1 {
+		z -= m
+	}
+	return z
 }
 
 // alias reports whether x and y share the same base array.
