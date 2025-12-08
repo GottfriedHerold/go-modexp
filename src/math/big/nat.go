@@ -899,7 +899,8 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	z1 = z1.subMod2N(z1, z2, n)
 
 	// Reuse z2 for p = (z₁ - z₂) [in z1] * m2⁻¹ (mod m₁ [= 2ⁿ]).
-	m2inv := nat(nil).modInverse(m2, m1)
+	// m2inv := nat(nil).modInverse(m2, m1)
+	m2inv := m1.modularInverseModPowerOfTwo(stk, m2, n) // reuse and invalidate the memory of m1.
 	z2 = z2.mul(stk, z1, m2inv)
 	z2 = z2.trunc(z2, n)
 
