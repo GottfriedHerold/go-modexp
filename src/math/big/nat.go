@@ -870,9 +870,14 @@ func (z nat) expNNSlow(stk *stack, x, y, m nat) nat {
 // We do not check these conditions.
 func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	// Split m = m₁ × m₂ where m₁ = 2ⁿ. We assume n > 0.
+	// Use a bit more memory to avoid reallocations when using m1, m2
 	n := m.trailingZeroBits()
-	m1 := nat(nil).lsh(natOne, n)
-	m2 := nat(nil).rsh(m, n)
+	defer stk.restore(stk.save())
+	m1 := stk.nat(int((n + _W) / _W))
+	m1 = m1.lsh(natOne, n)
+	m2 := stk.nat(len(m) - int(n)/_W)
+	m2 = m2.rsh(m, n)
+
 
 	// We want z = x**y mod m.
 	// z₁ = x**y mod m1 = (x**y mod m) mod m1 = z mod m1
@@ -880,9 +885,11 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	// (We are using the math/big convention for names here,
 	// where the computation is z = x**y mod m, so its parts are z1 and z2.
 	// The paper is computing x = a**e mod n; it refers to these as x2 and z1.)
-	z1 := nat(nil).expNN(stk, x, y, m1, false)
-	z2 := nat(nil).expNN(stk, x, y, m2, false)
-
+	z1 := stk.nat(2 * max(len(m1), len(m2))) // The max is because we reuse z1, z2 below.
+	z1 = z1.expNN(stk, x, y, m1, false)
+	z2 := stk.nat(2 * max(len(m1), len(m2))) // The max is because we reuse z1, z2 below.
+	z2 = z2.expNN(stk, x, y, m2, false)
+	
 	// Reconstruct z from z₁, z₂ using CRT, using algorithm from paper,
 	// which uses only a single modInverse (and an easy one at that).
 	//	p = (z₁ - z₂) × m₂⁻¹ (mod m₁)
@@ -932,7 +939,7 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 	// For that reason, we "borrow" w words from powers[i+1] when computing powers[i]; otherwise
 	// we would reallocate.
 	//
-	// Note that we must NOT defer stk.restoer(stk.save), because the memory allocated from stk
+	// Note that we must NOT defer stk.restore(stk.save), because the memory allocated from stk
 	// escapes.
 	buf := stk.nat((len(powers) + 1) * w)
 
@@ -944,6 +951,7 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 	powers[0] = powers[0][0:len(powers[0]):w]
 	powers[1] = powers[1].trunc(x, logM)
 	powers[1] = powers[1][0:len(powers[1]):w]
+	xReduced := powers[1]
 	// While we could compute each powers[i] as powers[i-1] * x,
 	// we instead compute powers[i] and powers[i+1] from powers[i/2].
 	// This replaces half the multiplications needed by squarings, which is more efficient.
@@ -953,7 +961,7 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 		*p = p.sqr(stk, *p2)
 		*p = p.trunc(*p, logM)
 		*p = (*p)[:len(*p):w]
-		*p1 = p1.mul(stk, *p, powers[1])
+		*p1 = p1.mul(stk, *p, xReduced)
 		*p1 = p1.trunc(*p1, logM)
 		*p1 = (*p1)[:len(*p1):w]
 	}
