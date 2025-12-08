@@ -1384,40 +1384,27 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 		x = rr
 	}
 
-	// Ideally the precomputations would be performed outside, and reused
-	k0 := computeMontgomeryk0(m[0])
-		
-	// RR = 2**(2*_W*len(m)) mod m
-	RR := nat(nil).setWord(1)
-	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
-	_, RR = nat(nil).div(stk, RR, zz, m)
-	if len(RR) < numWords {
-		zz = zz.make(numWords)
-		copy(zz, RR)
-		RR = zz
-	}
-	// one = 1, with equal length to that of m
-	one := make(nat, numWords)
-	one[0] = 1
-
 	const windowSize = 4
 	// Note: The current implementation asserts that windowSize divides _W
 	// and the loop below is unrolled for the hardcoded value of windowSize.
 	// If you change windowSize, you need to change the unrolled loop below.
 
+	// Ideally the precomputations would be performed outside, and reused
+
+	k0, RR, one := getMontgomeryConstants(stk, m)
+
+	var powers [1<<windowSize]nat
+
 	// powers[i] contains x^i
-	var powers [1 << windowSize]nat
-	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
-	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<windowSize; i++ {
-		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
+	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
+	for i := 0; i < 1 <<windowSize; i++{
+		powers[i] = bufWithPowers[i*numWords:(i+1)*numWords]
 	}
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(numWords)
 	copy(z, powers[0])
-
-	zz = zz.make(numWords)
+	zz := make(nat, numWords, 2*numWords)
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squarings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
@@ -1504,40 +1491,27 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 		x = rr
 	}
 
-	// Ideally the precomputations would be performed outside, and reused
-	k0 := computeMontgomeryk0(m[0])
-		
-	// RR = 2**(2*_W*len(m)) mod m
-	RR := nat(nil).setWord(1)
-	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
-	_, RR = nat(nil).div(stk, RR, zz, m)
-	if len(RR) < numWords {
-		zz = zz.make(numWords)
-		copy(zz, RR)
-		RR = zz
-	}
-	// one = 1, with equal length to that of m
-	one := make(nat, numWords)
-	one[0] = 1
-
 	const windowSize = 2
 	// Note: The current implementation asserts that windowSize divides _W
 	// and the loop below is unrolled for the hardcoded value of windowSize.
 	// If you change windowSize, you need to change the unrolled loop below.
 
+	// Ideally the precomputations would be performed outside, and reused
+	k0, RR, one := getMontgomeryConstants(stk, m)
+
+	var powers [1<<windowSize]nat
+
 	// powers[i] contains x^i
-	var powers [1 << windowSize]nat
-	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
-	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<windowSize; i++ {
-		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
+	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
+	for i := 0; i < 1 <<windowSize; i++{
+		powers[i] = bufWithPowers[i*numWords:(i+1)*numWords]
 	}
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(numWords)
 	copy(z, powers[0])
 
-	zz = zz.make(numWords)
+	zz := make(nat, numWords, 2*numWords)
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squarings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
@@ -1562,7 +1536,7 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 			// so changing windowSize will make the algorith (silently) fail with a wrong result.
 			// We add a check here to fail explicitly. This will be optimized away.
 			if windowSize != 2 {
-				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				panic("big: unrolled loop was hardcoded for windowSize == 2 and was not changed.")
 			}
  			zz = zz.montgomery(z, z, m, k0, numWords)
  			z = z.montgomery(zz, zz, m, k0, numWords)
@@ -1602,8 +1576,6 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 	}
 	return zz.norm()
 }
-
-
 
 // bytes writes the value of z into buf using big-endian encoding.
 // The value of z is encoded in the slice buf[i:]. If the value of z
