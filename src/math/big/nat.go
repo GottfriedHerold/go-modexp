@@ -1541,34 +1541,66 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
 
-	// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure 
-	for {
-		for k >= 0 {
-			// The loop is unrolled here for (hardcoded) windowSize == 4,
-			// so changing windowSize will make the algorith (silently) fail with a wrong result.
-			// We add a check here to fail explicitly. This will be optimized away.
-			if windowSize != 4 {
-				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+	if numWords > 1 {
+		// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure 
+		for {
+			for k >= 0 {
+				// The loop is unrolled here for (hardcoded) windowSize == 4,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if windowSize != 4 {
+					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				}
+				zz = zz.montgomery(z, z, m, k0, numWords)
+				z = z.montgomery(zz, zz, m, k0, numWords)
+				zz = zz.montgomery(z, z, m, k0, numWords)
+				z = z.montgomery(zz, zz, m, k0, numWords)
+
+				bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
+				zz = zz.montgomery(z, bufWithPowers[numWords*bitsToBeProcessed:numWords*(bitsToBeProcessed+1)], m, k0, numWords)
+				z, zz = zz, z
+				yi <<= windowSize
+				k--
 			}
- 			zz = zz.montgomery(z, z, m, k0, numWords)
- 			z = z.montgomery(zz, zz, m, k0, numWords)
-			zz = zz.montgomery(z, z, m, k0, numWords)
-			z = z.montgomery(zz, zz, m, k0, numWords)
-
-			bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
-			zz = zz.montgomery(z, bufWithPowers[numWords*bitsToBeProcessed:numWords*(bitsToBeProcessed+1)], m, k0, numWords)
-			z, zz = zz, z
-			yi <<= windowSize
-			k--
- 		}
-		if i == 0 {
-			break
+			if i == 0 {
+				break
+			}
+			i--
+			yi = y[i]
+			k = _W/windowSize - 1
 		}
-		i--
-		yi = y[i]
-		k = _W/windowSize - 1
+	} else{ // special-case for numWords == 1:
+		zUint := uint(z[0])
+		mUint := uint(m[0])
+		var zzUint uint
+		for {
+			for k >= 0 {
+				// The loop is unrolled here for (hardcoded) windowSize == 4,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if windowSize != 4 {
+					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				}
+				zzUint = montgomeryUint(zUint,zUint,mUint,uint(k0))
+				zUint = montgomeryUint(zzUint,zzUint,mUint,uint(k0))
+				zzUint = montgomeryUint(zUint,zUint,mUint,uint(k0))
+				zUint = montgomeryUint(zzUint,zzUint,mUint,uint(k0))
+				
+				bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
+				zzUint = montgomeryUint(zUint,uint(bufWithPowers[bitsToBeProcessed]), mUint, uint(k0) )
+				zzUint, zUint = zUint, zzUint
+				yi <<= windowSize
+				k--
+			}
+			if i == 0 {
+				break
+			}
+			i--
+			yi = y[i]
+			k = _W/windowSize - 1
+		}
+		z[0] = Word(zUint)
 	}
-
 
 	// convert to regular number
 	zz = zz.montgomery(z, one, m, k0, numWords)
@@ -1631,6 +1663,7 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 	// Ideally the precomputations would be performed outside (maybe cached), and reused
 	k0, RR, one := getMontgomeryConstants(stk, m)
 
+	// precompute x^i
 	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
 
 	z = z.make(2*numWords) // extra capacity to avoid reallocations (montomery uses that as scratch space).
@@ -1650,37 +1683,67 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 	// start by directly copying rather than multiplying 1 by this.
 	
 	relevantBits := int(yi >> (k*windowSize))
-	copy(z, bufWithPowers[numWords * relevantBits : numWords * (relevantBits+1)])
+	copy(z, bufWithPowers[numWords*relevantBits:numWords*(relevantBits+1)])
 	
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
 
-	// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure 
-	for {
-		for k >= 0 {
-			// The loop is unrolled here for (hardcoded) windowSize == 2,
-			// so changing windowSize will make the algorith (silently) fail with a wrong result.
-			// We add a check here to fail explicitly. This will be optimized away.
-			if windowSize != 2 {
-				panic("big: unrolled loop was hardcoded for windowSize == 2 and was not changed.")
+	if numWords > 1 {
+		// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure 
+		for {
+			for k >= 0 {
+				// The loop is unrolled here for (hardcoded) windowSize == 2,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if windowSize != 2 {
+					panic("big: unrolled loop was hardcoded for windowSize == 2 and was not changed.")
+				}
+				zz = zz.montgomery(z, z, m, k0, numWords)
+				z = z.montgomery(zz, zz, m, k0, numWords)
+
+				bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
+				zz = zz.montgomery(z, bufWithPowers[numWords*bitsToBeProcessed:numWords*(bitsToBeProcessed+1)], m, k0, numWords)
+				z, zz = zz, z
+				yi <<= windowSize
+				k--
 			}
-			zz = zz.montgomery(z, z, m, k0, numWords)
-			z = z.montgomery(zz, zz, m, k0, numWords)
-
-			bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
-			zz = zz.montgomery(z, bufWithPowers[numWords*bitsToBeProcessed:numWords*(bitsToBeProcessed+1)], m, k0, numWords)
-			z, zz = zz, z
-			yi <<= windowSize
-			k--
- 		}
-		if i == 0 {
-			break
+			if i == 0 {
+				break
+			}
+			i--
+			yi = y[i]
+			k = _W/windowSize - 1
 		}
-		i--
-		yi = y[i]
-		k = _W/windowSize - 1
+	} else{ // special-case for numWords == 1:
+		zUint := uint(z[0])
+		mUint := uint(m[0])
+		var zzUint uint
+		for {
+			for k >= 0 {
+				// The loop is unrolled here for (hardcoded) windowSize == 2,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if windowSize != 2 {
+					panic("big: unrolled loop was hardcoded for windowSize == 2 and was not changed.")
+				}
+				zzUint = montgomeryUint(zUint,zUint,mUint,uint(k0))
+				zUint = montgomeryUint(zzUint,zzUint,mUint,uint(k0))
+				
+				bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
+				zzUint = montgomeryUint(zUint,uint(bufWithPowers[bitsToBeProcessed]), mUint, uint(k0) )
+				zzUint, zUint = zUint, zzUint
+				yi <<= windowSize
+				k--
+			}
+			if i == 0 {
+				break
+			}
+			i--
+			yi = y[i]
+			k = _W/windowSize - 1
+		}
+		z[0] = Word(zUint)
 	}
-
 
 	// convert to regular number
 	zz = zz.montgomery(z, one, m, k0, numWords)
@@ -1702,6 +1765,7 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 	}
 	return zz.norm()
 }
+
 
 // bytes writes the value of z into buf using big-endian encoding.
 // The value of z is encoded in the slice buf[i:]. If the value of z
