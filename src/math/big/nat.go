@@ -1273,6 +1273,85 @@ func computeMontgomeryk0(m0 Word) (k0 Word) {
 	return
 }
 
+// getMontgomeryConstants returns constant value related to Montgomery multiplication:
+//
+// Notably, it returns
+// k0 = -1/m modulo 2**_W
+// RR = 2**(2*_W * len(m)) mod m
+// one = 1
+// when RR and one are considered as nat's. RR and one may be from stk.
+// Note that this means the caller needs to call stk.restore to eventually reclaim stk's memory. After
+// that call, one and RR are no longer valid.
+// RR and one are always retured as []Word with len(RR) == len(one) == len(m).
+// This implies RR and one might be not normalized, which is why we use the []Word rather than nat type.
+// When interpreted as numbers in Montgomery form, one == 1/2**(len(m)*_W) and RR = 2**(_W*len(m)), so those numbers
+// are used to convert between Montomgomery and non-Montgomery forms.
+//
+// If m is even, this function panics.
+func getMontgomeryConstants(stk *stack, m nat) (k0 Word, RR []Word, one []Word) {
+	numWords := len(m)
+	n := uint(numWords) * _W * 2
+	if numWords == 0 || m[0]&1 == 0 {
+		panic("big: called getMontgomeryConstants for even m")
+	}
+
+	// buf will hold RR and one at the end. At the time of writing this code,
+	// the implementation of nat.div would try to use 2*numWords + 2 words from buf, so we
+	// reserve this much to avoid reallocations.
+	// Note that buf must be reserved before stk.restore(stk.save()),
+	// so the memory escapes to the caller.
+	var buf []Word = stk.nat(2*numWords + 2)[0 : 2*numWords+2]
+	defer stk.restore(stk.save())
+	k0 = computeMontgomeryk0(m[0])
+	tmp := stk.nat(2*numWords + 1).setWord(1)
+	tmp = tmp.lsh(tmp, n)
+	_, RR = tmp.div(stk, buf, tmp, m)
+
+	if cap(RR) < numWords {
+		// This case does not happen with the current implementation of nat.div,
+		// so, this code may be unreachable.
+		// However, the API of nat.div does not promise it, so we
+		copy(buf[0:numWords], RR) // Note: Cannot alias
+		clear(buf[len(RR):numWords])
+		RR = buf[0:numWords:numWords]
+	} else {
+		clear(RR[len(RR):numWords])
+		RR = RR[0:numWords:numWords]
+	}
+	clear(buf[numWords : 2*numWords])
+	buf[numWords] = 1
+	one = buf[numWords : 2*numWords : 2*numWords]
+	return
+}
+
+
+// makePrecomputationPowersMontgomery precomputes a slice of powers x**i mod m in mongomery form
+// in contiguous memory.
+//
+// More precisely, given some odd x and given montgomery constants one, RR, k0 (as output by getMontgomeryConstants)
+// the returned bufWithPowers is such that bufWithPowers[i*numWords:(i+1)*numWords] contains
+// x**i mod m in Montgomery form for 0 <= i < 2**windowSize, where numWords is the length (in Words) of m.
+// The function modifies stk and the returned bufWithPowers is allocated on stk (so may become invalid as the caller calls stk.restore)
+func makePrecomputationPowersMontgomery(stk *stack, windowSize uint, x nat, m nat, one []Word, RR []Word, k0 Word) (bufWithPowers []Word) {
+	numWords := len(m)
+	tableSize := 1 << windowSize
+
+	// We allocate for tableSize + 1 many elements.
+	// The extra element is here, because computing the i'th element actually uses
+	// the memory of the i+1'th as scratch space.
+	powersbufNat := stk.nat((tableSize + 1) * numWords)[0 : numWords*tableSize]
+
+	// powers[0]
+	powersbufNat[0:numWords:2*numWords].montgomery(one, RR, m, k0, numWords)
+	montgomeryX := powersbufNat[numWords:numWords*2:numWords*3].montgomery(x, RR, m, k0, numWords)
+	for i := 2 * numWords; i < tableSize*numWords; i += numWords {
+		powersbufNat[i:i+numWords].montgomery(powersbufNat[i-numWords:i], montgomeryX, m, k0, numWords)
+	}
+	bufWithPowers = powersbufNat
+	return
+}
+
+
 // expNNOdd calculates x**y mod m for odd m.
 //
 // Asserts that m is odd, z must not alias x,y or m and y != 0.
