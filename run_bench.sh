@@ -25,5 +25,5 @@ done
 JSONOUT="${OUTNAME}.json"
 CSVOUT="${OUTNAME}.csv"
 echo "Running benchmark, outputting results to ${OUTNAME}. Extra args = ${CSVMETRICARGS}"
-go test -v -run=BenchmarkModExp -modexp=$ORIGINAL_PATH/$BASE_CONFIG -name=$CURRENT_BRANCH -jsonout=$ORIGINAL_PATH/$JSONOUT -csvout=$ORIGINAL_PATH/$CSVOUT $CSVMETRICARGS
+go test -v -timeout 0 -run=BenchmarkModExp -modexp=$ORIGINAL_PATH/$BASE_CONFIG -name=$CURRENT_BRANCH -jsonout=$ORIGINAL_PATH/$JSONOUT -csvout=$ORIGINAL_PATH/$CSVOUT $CSVMETRICARGS
 cd $ORIGINAL_PATH

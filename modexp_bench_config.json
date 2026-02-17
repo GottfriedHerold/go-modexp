@@ -20,6 +20,7 @@
 		56,
 		64,
 		72,
+		80,
 		96,
 		128,
 		256,
@@ -30,7 +31,10 @@
 	"ModulusLengths": [
 		8,
 		16,
+		24,
 		32,
+		40,
+		56,
 		64,
 		96,
 		128,
@@ -42,7 +46,7 @@
 		2048
 	],
 	"ModulusTrailingZeros": [
-		null, 4
+		null, 4,33, 65
 	],
 	"FurtherTestCases": null,
 	"Metrics": ["EIP7883"],
