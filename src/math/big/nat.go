@@ -364,6 +364,8 @@ func (x nat) trailingZeroBits() uint {
 }
 
 // isPow2 returns i, true when x == 2**i and 0, false otherwise.
+//
+// Note: This panics for x==0
 func (x nat) isPow2() (uint, bool) {
 	var i uint
 	for x[i] == 0 {
@@ -622,11 +624,17 @@ func (z nat) random(rand *rand.Rand, limit nat, n int) nat {
 // If m != 0 (i.e., len(m) != 0), expNN sets z to x**y mod m;
 // otherwise it sets z to x**y. The result is the value of z.
 // The caller may pass stk == nil to request that expNN obtain and release one itself.
+//
+// The caller of this function must ensure that m does not alias z.
+// z aliasing x or y is allowed.
 func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	if alias(z, x) || alias(z, y) {
 		// We cannot allow in-place modification of x or y.
 		z = nil
 	}
+
+	// We first check for trivial cases, then dispatch to the appropriate efficient algorithm.
+	// Note that the latter algorithms may rely on the fact that the simple cases have been handled here.
 
 	// x**y mod 1 == 0
 	if len(m) == 1 && m[0] == 1 {
@@ -666,6 +674,8 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 
 	// y > 1
 
+	// We now are guaranteed that y > 1, x > 1 and m != 1.
+
 	if len(m) != 0 {
 		// We likely end up being as long as the modulus.
 		z = z.make(len(m))
@@ -677,12 +687,14 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// instance of each of the first two cases).
 		if len(y) > 1 && !slow {
 			if m[0]&1 == 1 {
-				return z.expNNMontgomery(stk, x, y, m)
+				return z.expNNOdd(stk, x, y, m)
 			}
 			if logM, ok := m.isPow2(); ok {
-				return z.expNNWindowed(stk, x, y, logM)
+				return z.expNNPowerOfTwo(stk, x, y, logM)
 			}
-			return z.expNNMontgomeryEven(stk, x, y, m)
+			// Use CRT-based algorithm. Note that this will call into expNN twice and dispatch into both expNNOdd and expNNPowerOfTwo.
+			// (We might improve this directly call into expNNOdd and expNNPowerOfTwo later)
+			return z.expNNEven(stk, x, y, m)
 		}
 	}
 
@@ -743,16 +755,19 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	return z.norm()
 }
 
-// expNNMontgomeryEven calculates x**y mod m where m = m1 × m2 for m1 = 2ⁿ and m2 odd.
+// expNNEven calculates x**y mod m where m = m1 × m2 for m1 = 2ⁿ and m2 odd with n > 0.
 // It uses two recursive calls to expNN for x**y mod m1 and x**y mod m2
 // and then uses the Chinese Remainder Theorem to combine the results.
-// The recursive call using m1 will use expNNWindowed,
-// while the recursive call using m2 will use expNNMontgomery.
+// The recursive call using m1 will use expNNPowerOfTwo,
+// while the recursive call using m2 will use expNNOdd.
 // For more details, see Ç. K. Koç, “Montgomery Reduction with Even Modulus”,
 // IEE Proceedings: Computers and Digital Techniques, 141(5) 314-316, September 1994.
 // http://www.people.vcu.edu/~jwang3/CMSC691/j34monex.pdf
-func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
-	// Split m = m₁ × m₂ where m₁ = 2ⁿ
+//
+// This algorithm assumes m even, m > 0, z may alias x or y, but not m.
+// We do not check these conditions.
+func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
+	// Split m = m₁ × m₂ where m₁ = 2ⁿ. We assume n > 0.
 	n := m.trailingZeroBits()
 	m1 := nat(nil).lsh(natOne, n)
 	m2 := nat(nil).rsh(m, n)
@@ -792,9 +807,9 @@ func (z nat) expNNMontgomeryEven(stk *stack, x, y, m nat) nat {
 	return z
 }
 
-// expNNWindowed calculates x**y mod m using a fixed, 4-bit window,
+// expNNPowerOfTwo calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
-func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
+func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	if len(y) <= 1 {
 		panic("big: misuse of expNNWindowed")
 	}
@@ -813,15 +828,19 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 	w := int((logM + _W - 1) / _W)
 	zz := stk.nat(w)
 
-	const n = 4
+	const windowSize = 4 // size of precomputation window. We precompute x**i mod m for any i with at most windows_size bits
+	// where m == 2**logM
+	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
+	// Note that if you change this, you need to change the unrolled loop below.
+
 	// powers[i] contains x^i.
-	var powers [1 << n]nat
+	var powers [1 << windowSize]nat
 	for i := range powers {
 		powers[i] = stk.nat(w)
 	}
 	powers[0] = powers[0].set(natOne)
 	powers[1] = powers[1].trunc(x, logM)
-	for i := 2; i < 1<<n; i += 2 {
+	for i := 2; i < 1<<windowSize; i += 2 {
 		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
 		*p = p.sqr(stk, *p2)
 		*p = p.trunc(*p, logM)
@@ -850,12 +869,21 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 		if i == mtop {
 			yi &= mmask
 		}
-		for j := 0; j < _W; j += n {
+		for j := 0; j < _W; j += windowSize {
 			if advance {
+
+				// The loop is unrolled here for (hardcoded) windowSize == 4,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This check will be optimized away.
+				if windowSize != 4 {
+					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				}
+
 				// Account for use of 4 bits in previous iteration.
 				// Unrolled loop for significant performance
 				// gain. Use go test -bench=".*" in crypto/rsa
 				// to check performance before making changes.
+
 				zz = zz.sqr(stk, z)
 				zz, z = z, zz
 				z = z.trunc(z, logM)
@@ -873,11 +901,11 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 				z = z.trunc(z, logM)
 			}
 
-			zz = zz.mul(stk, z, powers[yi>>(_W-n)])
+			zz = zz.mul(stk, z, powers[yi>>(_W-windowSize)])
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 
-			yi <<= n
+			yi <<= windowSize
 			advance = true
 		}
 	}
@@ -885,9 +913,11 @@ func (z nat) expNNWindowed(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-// expNNMontgomery calculates x**y mod m using a fixed, 4-bit window.
+// expNNOdd calculates x**y mod m for odd m.
+//
+// Asserts that m is odd, z must not alias x,y or m.
 // Uses Montgomery representation.
-func (z nat) expNNMontgomery(stk *stack, x, y, m nat) nat {
+func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	numWords := len(m)
 
 	// We want the lengths of x and m to be equal.
@@ -926,12 +956,16 @@ func (z nat) expNNMontgomery(stk *stack, x, y, m nat) nat {
 	one := make(nat, numWords)
 	one[0] = 1
 
-	const n = 4
+	const windowSize = 4
+	// Note: The current implementation asserts that windowSize divides _W
+	// and the loop below is unrolled for the hardcoded value of windowSize.
+	// If you change windowSize, you need to change the unrolled loop below.
+
 	// powers[i] contains x^i
-	var powers [1 << n]nat
+	var powers [1 << windowSize]nat
 	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
 	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<n; i++ {
+	for i := 2; i < 1<<windowSize; i++ {
 		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
 	}
 
@@ -944,16 +978,23 @@ func (z nat) expNNMontgomery(stk *stack, x, y, m nat) nat {
 	// same windowed exponent, but with Montgomery multiplications
 	for i := len(y) - 1; i >= 0; i-- {
 		yi := y[i]
-		for j := 0; j < _W; j += n {
+		for j := 0; j < _W; j += windowSize {
 			if i != len(y)-1 || j != 0 {
+				// The loop is unrolled here for (hardcoded) windowSize == 4,
+				// so changing windowSize will make the algorith (silently) fail with a wrong result.
+				// We add a check here to fail explicitly. This will be optimized away.
+				if windowSize != 4 {
+					panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				}
+
 				zz = zz.montgomery(z, z, m, k0, numWords)
 				z = z.montgomery(zz, zz, m, k0, numWords)
 				zz = zz.montgomery(z, z, m, k0, numWords)
 				z = z.montgomery(zz, zz, m, k0, numWords)
 			}
-			zz = zz.montgomery(z, powers[yi>>(_W-n)], m, k0, numWords)
+			zz = zz.montgomery(z, powers[yi>>(_W-windowSize)], m, k0, numWords)
 			z, zz = zz, z
-			yi <<= n
+			yi <<= windowSize
 		}
 	}
 	// convert to regular number
