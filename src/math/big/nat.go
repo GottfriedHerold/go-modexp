@@ -680,6 +680,10 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// We likely end up being as long as the modulus.
 		z = z.make(len(m))
 
+		if slow{
+			return z.expNNSlow(stk, x, y, m)
+		}
+
 		// If the exponent is large, we use the Montgomery method for odd values,
 		// and a 4-bit, windowed exponentiation for powers of two,
 		// and a CRT-decomposed Montgomery method for the remaining values
@@ -697,7 +701,19 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 			return z.expNNEven(stk, x, y, m)
 		}
 	}
+	return z.expNNSlow(stk, x, y, m)
+}
 
+// expNNSlow computes x**y mod m by a naive square-and-multiply algorithm,
+// using nat.div for modular reduction.
+// This is the base case used for small exponents or for m == 0.
+//
+// This function assumes (but does not check) that
+// - z does not alias x,y or m.
+// - x > 0
+// - y > 1 (for y == 1, this performs no modular reduction)
+// - stk is not nil
+func (z nat) expNNSlow(stk *stack, x, y, m nat) nat {
 	z = z.set(x)
 	v := y[len(y)-1] // v > 0 because y is normalized and y > 0
 	shift := nlz(v) + 1
@@ -807,6 +823,36 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	return z
 }
 
+// buildPrecompuationWindowModPower2 builds a precomputation window for exponentiation
+// in the case of power-of-two modulus.
+// More precisely, it sets powers[i] to x**i mod m, where m == 2**logM for
+// 0 <= i < 2**windowSize
+// powers must be a non-nil slice of size *exactly* 2**windowSize.
+// Be aware that this function modifies *stk and powers[i] may be allocated on stk;
+// in particular, powers[i] may become invalid after a call to stk.restore.
+func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int, logM uint, x nat) {
+	if len(powers) != 1<<windowSize {
+		panic("big: misuse of build_precomputation_window")
+	}
+
+	w := int((logM + _W - 1) / _W) // number of words that would be needed to store numbers reduced modulo the modulus.
+	
+	// powers[i] contains x^i.
+	for i := range powers {
+		powers[i] = stk.nat(w)
+	}
+	powers[0] = powers[0].set(natOne)
+	powers[1] = powers[1].trunc(x, logM)
+	for i := 2; i < 1<<windowSize; i += 2 {
+		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
+		*p = p.sqr(stk, *p2)
+		*p = p.trunc(*p, logM)
+		*p1 = p1.mul(stk, *p, x)
+		*p1 = p1.trunc(*p1, logM)
+	}
+
+}
+
 // expNNPowerOfTwo calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
 func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
@@ -833,21 +879,9 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	// The current implementation has the constraint that windowSize must be at least 1, divides _W and is strictly less than _W.
 	// Note that if you change this, you need to change the unrolled loop below.
 
-	// powers[i] contains x^i.
-	var powers [1 << windowSize]nat
-	for i := range powers {
-		powers[i] = stk.nat(w)
-	}
-	powers[0] = powers[0].set(natOne)
-	powers[1] = powers[1].trunc(x, logM)
-	for i := 2; i < 1<<windowSize; i += 2 {
-		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
-		*p = p.sqr(stk, *p2)
-		*p = p.trunc(*p, logM)
-		*p1 = p1.mul(stk, *p, x)
-		*p1 = p1.trunc(*p1, logM)
-	}
-
+	var powers [1<<windowSize] nat
+	buildPrecomputationWindowModPower2(stk, powers[:], windowSize, logM, x)
+	
 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
 	// so we can compute x**(y mod 2**(logM-1)) instead of x**y.
 	// That is, we can throw away all but the bottom logM-1 bits of y.
@@ -913,6 +947,23 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
+// computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
+//
+// This value is used for Montgomery multiplication. We assert (but do not check) that
+// m0 is odd, as otherwise the inverse does not exists and Montgomery multiplication does not work.
+func computeMontgomeryk0(m0 Word) (k0 Word) {
+	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
+	// Iteration for Multiplicative Inverses Modulo Prime Powers".
+	k0 = 2 - m0
+	t := m0 - 1
+	for i := 1; i < _W; i <<= 1 {
+		t *= t
+		k0 *= (t + 1)
+	}
+	k0 = -k0
+	return
+}
+
 // expNNOdd calculates x**y mod m for odd m.
 //
 // Asserts that m is odd, z must not alias x,y or m.
@@ -933,16 +984,8 @@ func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	}
 
 	// Ideally the precomputations would be performed outside, and reused
-	// k0 = -m**-1 mod 2**_W. Algorithm from: Dumas, J.G. "On Newton–Raphson
-	// Iteration for Multiplicative Inverses Modulo Prime Powers".
-	k0 := 2 - m[0]
-	t := m[0] - 1
-	for i := 1; i < _W; i <<= 1 {
-		t *= t
-		k0 *= (t + 1)
-	}
-	k0 = -k0
-
+	k0 := computeMontgomeryk0(m[0])
+		
 	// RR = 2**(2*_W*len(m)) mod m
 	RR := nat(nil).setWord(1)
 	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
