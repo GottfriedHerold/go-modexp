@@ -194,7 +194,7 @@ func (z nat) modularInverseModPowerOfTwo(stk *stack, x nat, n uint) nat {
 		t *= t
 		k0 *= (t + 1)
 	}
-	
+
 	if n <= _W {
 		k0 &= (1 << n) - 1
 		return z.setWord(k0)
@@ -209,7 +209,6 @@ func (z nat) modularInverseModPowerOfTwo(stk *stack, x nat, n uint) nat {
 
 	numWords := int(n+_W-1) / _W // number of words we need for the final result; this is > 1.
 
-	
 	if alias(z, x) { // to avoid overwriting x
 		z = nil
 	}
@@ -249,6 +248,10 @@ func (z nat) modularInverseModPowerOfTwo(stk *stack, x nat, n uint) nat {
 // In the terminology of that paper, this is an "Almost Montgomery Multiplication":
 // x and y are required to satisfy 0 <= z < 2**(n*_W) and then the result
 // z is guaranteed to satisfy 0 <= z < 2**(n*_W), but it may not be < m.
+//
+// If the provided z has least 2n words, we guarantee that z is returned as-is
+// (i.e. there is no reallocation).
+// The algorithm used to precompute the windows for windowed exponentiations relies on this.
 func (z nat) montgomery(x, y, m nat, k Word, n int) nat {
 	// This code assumes x, y, m are all the same length, n.
 	// (required by addMulVVW and the for loop).
@@ -400,8 +403,6 @@ func (s *stack) reserve(n int) {
 	s.w = slices.Grow(s.w, nr)
 	s.w = s.w[:off+nr]
 }
-
-
 
 // bitLen returns the length of x in bits.
 // Unlike most methods, it works even if x is not normalized.
@@ -755,7 +756,7 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 	// The algorithm we use for the m != 0 case depends on the bitlength on y.
 
 	const threshold_for_slow_algorithm = 16 // if bitlength of y is <= this, we use a naive square-and-multiply.
-	if threshold_for_slow_algorithm > _W { // The code below assumes that we only select the naive algorithm in cases where len(y)==0
+	if threshold_for_slow_algorithm > _W {  // The code below assumes that we only select the naive algorithm in cases where len(y)==0
 		panic("big: invalid setting of threshold_for_slow_algorithm")
 	}
 
@@ -763,7 +764,7 @@ func (z nat) expNN(stk *stack, x, y, m nat, slow bool) nat {
 		// We likely end up being as long as the modulus.
 		z = z.make(len(m))
 
-		if slow{
+		if slow {
 			return z.expNNSlow(stk, x, y, m)
 		}
 
@@ -878,7 +879,6 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	m2 := stk.nat(len(m) - int(n)/_W)
 	m2 = m2.rsh(m, n)
 
-
 	// We want z = x**y mod m.
 	// z₁ = x**y mod m1 = (x**y mod m) mod m1 = z mod m1
 	// z₂ = x**y mod m2 = (x**y mod m) mod m2 = z mod m2
@@ -889,7 +889,7 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	z1 = z1.expNN(stk, x, y, m1, false)
 	z2 := stk.nat(2 * max(len(m1), len(m2))) // The max is because we reuse z1, z2 below.
 	z2 = z2.expNN(stk, x, y, m2, false)
-	
+
 	// Reconstruct z from z₁, z₂ using CRT, using algorithm from paper,
 	// which uses only a single modInverse (and an easy one at that).
 	//	p = (z₁ - z₂) × m₂⁻¹ (mod m₁)
@@ -957,7 +957,7 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 	// This replaces half the multiplications needed by squarings, which is more efficient.
 	// It may also has better memory access patterns.
 	for i := 2; i < 1<<windowSize; i += 2 {
- 		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
+		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
 		*p = p.sqr(stk, *p2)
 		*p = p.trunc(*p, logM)
 		*p = (*p)[:len(*p):w]
@@ -966,7 +966,6 @@ func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int
 		*p1 = (*p1)[:len(*p1):w]
 	}
 }
-
 
 // expNNPowerOfTwo calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
@@ -1026,8 +1025,7 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 		return z.lsh(z, uint(resulting2AdicityLo))
 	}
 
-	// because we handled the case of even x above with a recursive call, we know x that  is odd from here on.
-
+	// because we handled the case of even x above with a recursive call, we know x that is odd from here on.
 
 	// if the number of bits of the (effective) exponent is at least this threshold, we use a 4-bit windowed exponentiation.
 	// Note that we effectively cap the exponent at logM, because we will only consider the exponent modulo phi(2**logM).
@@ -1040,7 +1038,6 @@ func (z nat) expNNPowerOfTwo(stk *stack, x, y nat, logM uint) nat {
 	}
 
 }
-
 
 // expNNPowerOfTwoWindowSize4 calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
@@ -1061,27 +1058,27 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 	// Note that if you change this, you need to change the unrolled loop below.
 
 	stk.reserve((1<<windowSize)*w + 4*w)
-	zz := stk.nat(2*w)
+	zz := stk.nat(2 * w)
 
 	// powers[i] contains x**i.
-	var powers [1<<windowSize] nat
+	var powers [1 << windowSize]nat
 	buildPrecomputationWindowModPower2(stk, powers[:], windowSize, logM, x)
-	
+
 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
 	// so we can compute x**(y mod 2**(logM-1)) instead of x**y, provided
 	// gcd(x, 2**logM) == 1, i.e. if x is odd.
 	// Since we handled even x above, we are guaranteed that x is odd.
 	// This means that we can throw away all but the bottom logM-1 bits of y.
- 	// Instead of allocating a new y, we start reading y at the right word
- 	// and truncate it appropriately at the start of the loop.
+	// Instead of allocating a new y, we start reading y at the right word
+	// and truncate it appropriately at the start of the loop.
 
 	// mtop is the index of the most significant word of y mod 2**(logM-1), where we allow appropriate leading 0s in the latter.
 	// mmask is a bitmask used to select the potential non-zero bits of that word.
- 	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
- 	mmask := ^Word(0)
- 	if mbits := (logM - 1) & (_W - 1); mbits != 0 {
- 		mmask = (1 << mbits) - 1
- 	}
+	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
+	mmask := ^Word(0)
+	if mbits := (logM - 1) & (_W - 1); mbits != 0 {
+		mmask = (1 << mbits) - 1
+	}
 
 	// We perform a windowed exponentiation algorithm, processing y from y[i] down to y[0].
 	// We will special-case the first iteration handling y[i] itself.
@@ -1089,7 +1086,7 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 	if i > mtop {
 		i = mtop
 	}
-	
+
 	// special-case the first loop iteration for the mtop-word:
 	yi := y[i]
 	if i == mtop { // if i == mtop, we can skip some bits of yi due to reducing modulo phi(m)
@@ -1172,15 +1169,15 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 
-			yi <<=windowSize
+			yi <<= windowSize
 			k--
 		}
-		if i==0{
+		if i == 0 {
 			break
 		}
 		i--
 		yi = y[i]
-		k=_W/windowSize - 1 // we iterate k down to 0 (inclusive), so this gives _W/windowSize iterations.
+		k = _W/windowSize - 1 // we iterate k down to 0 (inclusive), so this gives _W/windowSize iterations.
 	}
 
 	// If we made an odd number of swaps between z and zz, z might refer to memory we obtained from calling stk.nat.
@@ -1211,27 +1208,27 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 	// Note that if you change this, you need to change the unrolled loop below.
 
 	stk.reserve((1<<windowSize)*w + 4*w)
-	zz := stk.nat(2*w)
+	zz := stk.nat(2 * w)
 
 	// powers[i] contains x**i.
-	var powers [1<<windowSize] nat
+	var powers [1 << windowSize]nat
 	buildPrecomputationWindowModPower2(stk, powers[:], windowSize, logM, x)
-	
+
 	// Because phi(2**logM) = 2**(logM-1), x**(2**(logM-1)) = 1,
 	// so we can compute x**(y mod 2**(logM-1)) instead of x**y, provided
 	// gcd(x, 2**logM) == 1, i.e. if x is odd.
 	// Since we handled even x above, we are guaranteed that x is odd.
 	// This means that we can throw away all but the bottom logM-1 bits of y.
- 	// Instead of allocating a new y, we start reading y at the right word
- 	// and truncate it appropriately at the start of the loop.
+	// Instead of allocating a new y, we start reading y at the right word
+	// and truncate it appropriately at the start of the loop.
 
 	// mtop is the index of the most significant word of y mod 2**(logM-1), where we allow appropriate leading 0s in the latter.
 	// mmask is a bitmask used to select the potential non-zero bits of that word.
- 	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
- 	mmask := ^Word(0)
- 	if mbits := (logM - 1) & (_W - 1); mbits != 0 {
- 		mmask = (1 << mbits) - 1
- 	}
+	mtop := int((logM - 2) / _W) // -2 because the top word of N bits is the (N-1)/W'th word.
+	mmask := ^Word(0)
+	if mbits := (logM - 1) & (_W - 1); mbits != 0 {
+		mmask = (1 << mbits) - 1
+	}
 
 	// We perform a windowed exponentiation algorithm, processing y from y[i] down to y[0].
 	// We will special-case the first iteration handling y[i] itself.
@@ -1239,7 +1236,7 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 	if i > mtop {
 		i = mtop
 	}
-	
+
 	// special-case the first loop iteration for the mtop-word:
 	yi := y[i]
 	if i == mtop { // if i == mtop, we can skip some bits of yi due to reducing modulo phi(m)
@@ -1314,15 +1311,15 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 			zz, z = z, zz
 			z = z.trunc(z, logM)
 
-			yi <<=windowSize
+			yi <<= windowSize
 			k--
 		}
-		if i==0{
+		if i == 0 {
 			break
 		}
 		i--
 		yi = y[i]
-		k=_W/windowSize - 1  // we iterate k down to 0 (inclusive), so this gives _W/windowSize iterations.
+		k = _W/windowSize - 1 // we iterate k down to 0 (inclusive), so this gives _W/windowSize iterations.
 	}
 
 	// If we made an odd number of swaps between z and zz, z might refer to memory we obtained from calling stk.nat.
@@ -1402,8 +1399,7 @@ func getMontgomeryConstants(stk *stack, m nat) (k0 Word, RR []Word, one []Word) 
 	return
 }
 
-
-// makePrecomputationPowersMontgomery precomputes a slice of powers x**i mod m in mongomery form
+// makePrecomputationPowersMontgomery precomputes a slice of powers x**i mod m in Montgomery form
 // in contiguous memory.
 //
 // More precisely, given some odd x and given montgomery constants one, RR, k0 (as output by getMontgomeryConstants)
@@ -1425,10 +1421,11 @@ func makePrecomputationPowersMontgomery(stk *stack, windowSize uint, x nat, m na
 	for i := 2 * numWords; i < tableSize*numWords; i += numWords {
 		powersbufNat[i:i+numWords].montgomery(powersbufNat[i-numWords:i], montgomeryX, m, k0, numWords)
 	}
-	bufWithPowers = powersbufNat
+	bufWithPowers = powersbufNat // change from nat to []Word.
+	// (the returned result is essentially a concatenation of nats, but without satisfying normalization invariants,
+	// so []Word is the more fitting data type)
 	return
 }
-
 
 // expNNOdd calculates x**y mod m for odd m.
 //
@@ -1436,9 +1433,9 @@ func makePrecomputationPowersMontgomery(stk *stack, windowSize uint, x nat, m na
 // Uses Montgomery representation.
 func (z nat) expNNOdd(stk *stack, x, y, m nat) nat {
 	const threshold_for_window_size4 = 40
-	if len(y) == 1 && nlz(y[0]) >= _W - threshold_for_window_size4{
+	if len(y) == 1 && nlz(y[0]) >= _W-threshold_for_window_size4 {
 		return z.expNNOddMontgomerySize2(stk, x, y, m)
-	} else{
+	} else {
 		return z.expNNOddMontgomerySize4(stk, x, y, m)
 	}
 }
@@ -1485,7 +1482,7 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 	// precompute x^i
 	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
 
-	z = z.make(2*numWords) // extra capacity to avoid reallocations (montomery uses that as scratch space).
+	z = z.make(2 * numWords) // extra capacity to avoid reallocations (montomery uses that as scratch space).
 	z = z[:numWords]
 
 	zz := make(nat, numWords, 2*numWords)
@@ -1493,21 +1490,21 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squarings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
 	// We follow the same loop structure as expNNPowerOfTwoWindowSize4 for this.
-	
+
 	i := len(y) - 1                 // index of most significant word of y.
 	yi := y[i]                      // Note: yi is guaranteed to be > 0. This differs from the expNNPowerOfTwo algorithm, where we reduce y mod phi(m)
 	bitLengthyi := nat{yi}.bitLen() // bitLen is explicitly side-channel resistant. We don't want to leak about yi here apart from the bitlength.
 
 	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word within that word.
 	// start by directly copying rather than multiplying 1 by this.
-	
-	relevantBits := int(yi >> (k*windowSize))
+
+	relevantBits := int(yi >> (k * windowSize))
 	copy(z, bufWithPowers[numWords*relevantBits:numWords*(relevantBits+1)])
-	
+
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
 
-	// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure 
+	// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure
 	for {
 		for k >= 0 {
 			// The loop is unrolled here for (hardcoded) windowSize == 4,
@@ -1516,8 +1513,8 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 			if windowSize != 4 {
 				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
 			}
- 			zz = zz.montgomery(z, z, m, k0, numWords)
- 			z = z.montgomery(zz, zz, m, k0, numWords)
+			zz = zz.montgomery(z, z, m, k0, numWords)
+			z = z.montgomery(zz, zz, m, k0, numWords)
 			zz = zz.montgomery(z, z, m, k0, numWords)
 			z = z.montgomery(zz, zz, m, k0, numWords)
 
@@ -1526,7 +1523,7 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 			z, zz = zz, z
 			yi <<= windowSize
 			k--
- 		}
+		}
 		if i == 0 {
 			break
 		}
@@ -1534,7 +1531,6 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 		yi = y[i]
 		k = _W/windowSize - 1
 	}
-
 
 	// convert to regular number
 	zz = zz.montgomery(z, one, m, k0, numWords)
@@ -1556,7 +1552,6 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 	}
 	return zz.norm()
 }
-
 
 // expNNOddMontgomerySize2 calculates x**y mod m for odd m.
 //
@@ -1599,7 +1594,7 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 
 	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
 
-	z = z.make(2*numWords) // extra capacity to avoid reallocations (montomery uses that as scratch space).
+	z = z.make(2 * numWords) // extra capacity to avoid reallocations (montomery uses that as scratch space).
 	z = z[:numWords]
 
 	zz := make(nat, numWords, 2*numWords)
@@ -1607,21 +1602,21 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squarings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
 	// We follow the same loop structure as expNNPowerOfTwoWindowSize4 for this.
-	
+
 	i := len(y) - 1                 // index of most significant word of y.
 	yi := y[i]                      // Note: yi is guaranteed to be > 0. This differs from the expNNPowerOfTwo algorithm, where we reduce y mod phi(m)
 	bitLengthyi := nat{yi}.bitLen() // bitLen is explicitly side-channel resistant. We don't want to leak about yi here apart from the bitlength.
 
 	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word within that word.
 	// start by directly copying rather than multiplying 1 by this.
-	
-	relevantBits := int(yi >> (k*windowSize))
-	copy(z, bufWithPowers[numWords * relevantBits : numWords * (relevantBits+1)])
-	
+
+	relevantBits := int(yi >> (k * windowSize))
+	copy(z, bufWithPowers[numWords*relevantBits:numWords*(relevantBits+1)])
+
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
 
-	// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure 
+	// See expNNPowerOfTwoWindowSize2/4 for explanation of loop structure
 	for {
 		for k >= 0 {
 			// The loop is unrolled here for (hardcoded) windowSize == 2,
@@ -1638,7 +1633,7 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 			z, zz = zz, z
 			yi <<= windowSize
 			k--
- 		}
+		}
 		if i == 0 {
 			break
 		}
@@ -1646,7 +1641,6 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 		yi = y[i]
 		k = _W/windowSize - 1
 	}
-
 
 	// convert to regular number
 	zz = zz.montgomery(z, one, m, k0, numWords)
