@@ -175,6 +175,71 @@ func (x nat) cmp(y nat) (r int) {
 	return
 }
 
+// modularInverseModPowerOfTwo computes z := x**(-1) mod 2**n and returns z.
+// z and x may alias, but we make no guarantee about whether we modify x in that case.
+// x must be odd, n must be > 0.
+//
+// Note: This function does not validate that x is odd annd n > 0.
+func (z nat) modularInverseModPowerOfTwo(stk *stack, x nat, n uint) nat {
+
+	// We start by computing x**(-1) mod 2**min(_W, n)
+
+	// We use the same algorithm for this as when computing the parameters for Montgomery multiplication (Newton-Raphson iteration),
+	// but we may abort earlier if n < _W/2.
+	n0 := min(_W, n)
+
+	k0 := 2 - x[0] // Note that x is odd, so len(x) > 0
+	t := x[0] - 1
+	for i := uint(1); i < n0; i <<= 1 {
+		t *= t
+		k0 *= (t + 1)
+	}
+	
+	if n <= _W {
+		k0 &= (1 << n) - 1
+		return z.setWord(k0)
+	}
+
+	// If we get here, n > _W and k0 equals x**(-1) mod 2**_W.
+
+	// Note that if we were to extend the above Newton-Raphson algorithm, we would have needed to compute modulo 2**n throughout the whole computation.
+	//
+	// Instead use a different algorithm that computes x**(-1) mod 2**(2n) from x**(-1) mod 2**n,
+	// and use the k0 we computed above as the starting point.
+
+	numWords := int(n+_W-1) / _W // number of words we need for the final result; this is > 1.
+
+	
+	if alias(z, x) { // to avoid overwriting x
+		z = nil
+	}
+	z = z.make(numWords + 1)
+
+	// Algorithm from: Dumas, J.G. "On Newton–Raphson
+	// Iteration for Multiplicative Inverses Modulo Prime Powers"
+	// (same source), Hensel Quadratic Modular inverse.
+	// Note that p is 2**_W in the notation of the reference (the algorithm works for prime powers rather than just for primes).
+	zz := nat(nil).make(2 * numWords)
+	lenX := uint(len(x))
+
+	z.setWord(k0)
+	for i := uint(2); i < uint(numWords); i <<= 1 {
+		zz = zz.sqr(stk, z)
+		zz = zz.trunc(zz, i*_W)
+		zz = zz.mul(stk, zz, x[:min(i, lenX)])
+		zz = zz.trunc(zz, i*_W)
+		z = z.lsh(z, 1)
+		z = z.subMod2N(z, zz, i*_W)
+	}
+	zz = zz.sqr(stk, z)
+	zz = zz.trunc(zz, n)
+	zz = zz.mul(stk, zz, x[:min(uint(numWords), lenX)])
+	zz = zz.trunc(zz, n)
+	z = z.lsh(z, 1)
+	z = z.subMod2N(z, zz, n)
+	return z
+}
+
 // montgomery computes z mod m = x*y*2**(-n*_W) mod m,
 // assuming k = -1/m mod 2**_W.
 // z is used for storing the result which is returned;
@@ -834,7 +899,8 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	z1 = z1.subMod2N(z1, z2, n)
 
 	// Reuse z2 for p = (z₁ - z₂) [in z1] * m2⁻¹ (mod m₁ [= 2ⁿ]).
-	m2inv := nat(nil).modInverse(m2, m1)
+	// m2inv := nat(nil).modInverse(m2, m1)
+	m2inv := m1.modularInverseModPowerOfTwo(stk, m2, n) // reuse and invalidate the memory of m1.
 	z2 = z2.mul(stk, z1, m2inv)
 	z2 = z2.trunc(z2, n)
 
