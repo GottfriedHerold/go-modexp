@@ -1482,13 +1482,8 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 	// Ideally the precomputations would be performed outside (maybe cached), and reused
 	k0, RR, one := getMontgomeryConstants(stk, m)
 
-	var powers [1<<windowSize]nat
-
-	// powers[i] contains x^i
+	// precompute x^i
 	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
-	for i := 0; i < 1 <<windowSize; i++{
-		powers[i] = bufWithPowers[i*numWords:(i+1)*numWords]
-	}
 
 	z = z.make(2*numWords) // extra capacity to avoid reallocations (montomery uses that as scratch space).
 	z = z[:numWords]
@@ -1506,7 +1501,8 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word within that word.
 	// start by directly copying rather than multiplying 1 by this.
 	
-	copy(z, powers[yi>>(k*windowSize)])	
+	relevantBits := int(yi >> (k*windowSize))
+	copy(z, bufWithPowers[numWords*relevantBits:numWords*(relevantBits+1)])
 	
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
@@ -1526,7 +1522,7 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 			z = z.montgomery(zz, zz, m, k0, numWords)
 
 			bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
-			zz = zz.montgomery(z, powers[bitsToBeProcessed], m, k0, numWords)
+			zz = zz.montgomery(z, bufWithPowers[numWords*bitsToBeProcessed:numWords*(bitsToBeProcessed+1)], m, k0, numWords)
 			z, zz = zz, z
 			yi <<= windowSize
 			k--
@@ -1601,13 +1597,7 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 	// Ideally the precomputations would be performed outside (maybe cached), and reused
 	k0, RR, one := getMontgomeryConstants(stk, m)
 
-	var powers [1<<windowSize]nat
-
-	// powers[i] contains x^i
 	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
-	for i := 0; i < 1 <<windowSize; i++{
-		powers[i] = bufWithPowers[i*numWords:(i+1)*numWords]
-	}
 
 	z = z.make(2*numWords) // extra capacity to avoid reallocations (montomery uses that as scratch space).
 	z = z[:numWords]
@@ -1625,7 +1615,8 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 	k := (bitLengthyi+(windowSize-1))/windowSize - 1 // index of the most significant non-zero window of the most significant word within that word.
 	// start by directly copying rather than multiplying 1 by this.
 	
-	copy(z, powers[yi>>(k*windowSize)])	
+	relevantBits := int(yi >> (k*windowSize))
+	copy(z, bufWithPowers[numWords * relevantBits : numWords * (relevantBits+1)])
 	
 	yi <<= _W - k*windowSize // move relevant bits of highest word to the left.
 	k -= 1
@@ -1643,7 +1634,7 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 			z = z.montgomery(zz, zz, m, k0, numWords)
 
 			bitsToBeProcessed := int(yi >> (_W - windowSize)) // relevant bits from the current window
-			zz = zz.montgomery(z, powers[bitsToBeProcessed], m, k0, numWords)
+			zz = zz.montgomery(z, bufWithPowers[numWords*bitsToBeProcessed:numWords*(bitsToBeProcessed+1)], m, k0, numWords)
 			z, zz = zz, z
 			yi <<= windowSize
 			k--
