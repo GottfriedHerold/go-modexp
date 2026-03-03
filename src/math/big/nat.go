@@ -327,6 +327,17 @@ func (s *stack) nat(n int) nat {
 	return x
 }
 
+// reserve grows the stack, such that we can obtain at least n more words without reallocation.
+// Calling this before multiple calls to nat may be used as an optimization.
+func (s *stack) reserve(n int) {
+	nr := (n + 3) & ^3 // round up to multiple of 4
+	off := len(s.w)
+	s.w = slices.Grow(s.w, nr)
+	s.w = s.w[:off+nr]
+}
+
+
+
 // bitLen returns the length of x in bits.
 // Unlike most methods, it works even if x is not normalized.
 func (x nat) bitLen() int {
@@ -833,34 +844,55 @@ func (z nat) expNNEven(stk *stack, x, y, m nat) nat {
 	return z
 }
 
-// buildPrecompuationWindowModPower2 builds a precomputation window for exponentiation
+// buildPrecomputationWindowModPower2 builds a precomputation window for exponentiation
 // in the case of power-of-two modulus.
 // More precisely, it sets powers[i] to x**i mod m, where m == 2**logM for
 // 0 <= i < 2**windowSize
 // powers must be a non-nil slice of size *exactly* 2**windowSize.
-// Be aware that this function modifies *stk and powers[i] may be allocated on stk;
-// in particular, powers[i] may become invalid after a call to stk.restore.
+// Be aware that this function modifies *stk and powers[i] may be allocated from stk;
+// Calling stk.restore is the responsibiity of the caller and after restoring the stack, powers[i]
+// may become invalid.
 func buildPrecomputationWindowModPower2(stk *stack, powers []nat, windowSize int, logM uint, x nat) {
 	if len(powers) != 1<<windowSize {
 		panic("big: misuse of build_precomputation_window")
 	}
 
 	w := int((logM + _W - 1) / _W) // number of words that would be needed to store numbers reduced modulo the modulus.
-	
+
+	// We reserve space for len(powers) many nats of w words.
+	// For our loop below that actually computes powers[i],
+	// we want each powers[i] to have capacity 2*w to (temporarily) store (yet unreduced) squares/products of
+	// numbers, whose factors are < 2**logM
+	// For that reason, we "borrow" w words from powers[i+1] when computing powers[i]; otherwise
+	// we would reallocate.
+	//
+	// Note that we must NOT defer stk.restoer(stk.save), because the memory allocated from stk
+	// escapes.
+	buf := stk.nat((len(powers) + 1) * w)
+
 	// powers[i] contains x^i.
 	for i := range powers {
-		powers[i] = stk.nat(w)
+		powers[i] = buf[i*w : (i+1)*w : (i+2)*w]
 	}
 	powers[0] = powers[0].set(natOne)
+	powers[0] = powers[0][0:len(powers[0]):w]
 	powers[1] = powers[1].trunc(x, logM)
+	powers[1] = powers[1][0:len(powers[1]):w]
+	// While we could compute each powers[i] as powers[i-1] * x,
+	// we instead compute powers[i] and powers[i+1] from powers[i/2].
+	// This replaces half the multiplications needed by squarings, which is more efficient.
+	// It may also has better memory access patterns.
 	for i := 2; i < 1<<windowSize; i += 2 {
-		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
+ 		p2, p, p1 := &powers[i/2], &powers[i], &powers[i+1]
 		*p = p.sqr(stk, *p2)
 		*p = p.trunc(*p, logM)
-		*p1 = p1.mul(stk, *p, x)
+		*p = (*p)[:len(*p):w]
+		*p1 = p1.mul(stk, *p, powers[1])
 		*p1 = p1.trunc(*p1, logM)
+		*p1 = (*p1)[:len(*p1):w]
 	}
 }
+
 
 // expNNPowerOfTwo calculates x**y mod m using a fixed, 4-bit window,
 // where m = 2**logM.
@@ -1084,7 +1116,6 @@ func (z nat) expNNPowerOfTwoWindowSize4(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-<<<<<<< HEAD
 // expNNPowerOfTwoWindowSize2 calculates x**y mod m using a fixed, 2-bit window,
 // where m = 2**logM.
 //
@@ -1225,9 +1256,6 @@ func (z nat) expNNPowerOfTwoWindowSize2(stk *stack, x, y nat, logM uint) nat {
 	return z.norm()
 }
 
-
-=======
->>>>>>> 028c8d0ac4 (nat.go: Move computation of Montgomery constant k0 into its own function.)
 // computeMontgomeryk0 computes k0 := -m0**(-1) modulo 2**_W and returns k0.
 //
 // This value is used for Montgomery multiplication. We assert (but do not check) that
@@ -1244,6 +1272,85 @@ func computeMontgomeryk0(m0 Word) (k0 Word) {
 	k0 = -k0
 	return
 }
+
+// getMontgomeryConstants returns constant value related to Montgomery multiplication:
+//
+// Notably, it returns
+// k0 = -1/m modulo 2**_W
+// RR = 2**(2*_W * len(m)) mod m
+// one = 1
+// when RR and one are considered as nat's. RR and one may be from stk.
+// Note that this means the caller needs to call stk.restore to eventually reclaim stk's memory. After
+// that call, one and RR are no longer valid.
+// RR and one are always retured as []Word with len(RR) == len(one) == len(m).
+// This implies RR and one might be not normalized, which is why we use the []Word rather than nat type.
+// When interpreted as numbers in Montgomery form, one == 1/2**(len(m)*_W) and RR = 2**(_W*len(m)), so those numbers
+// are used to convert between Montomgomery and non-Montgomery forms.
+//
+// If m is even, this function panics.
+func getMontgomeryConstants(stk *stack, m nat) (k0 Word, RR []Word, one []Word) {
+	numWords := len(m)
+	n := uint(numWords) * _W * 2
+	if numWords == 0 || m[0]&1 == 0 {
+		panic("big: called getMontgomeryConstants for even m")
+	}
+
+	// buf will hold RR and one at the end. At the time of writing this code,
+	// the implementation of nat.div would try to use 2*numWords + 2 words from buf, so we
+	// reserve this much to avoid reallocations.
+	// Note that buf must be reserved before stk.restore(stk.save()),
+	// so the memory escapes to the caller.
+	var buf []Word = stk.nat(2*numWords + 2)[0 : 2*numWords+2]
+	defer stk.restore(stk.save())
+	k0 = computeMontgomeryk0(m[0])
+	tmp := stk.nat(2*numWords + 1).setWord(1)
+	tmp = tmp.lsh(tmp, n)
+	_, RR = tmp.div(stk, buf, tmp, m)
+
+	if cap(RR) < numWords {
+		// This case does not happen with the current implementation of nat.div,
+		// so, this code may be unreachable.
+		// However, the API of nat.div does not promise it, so we
+		copy(buf[0:numWords], RR) // Note: Cannot alias
+		clear(buf[len(RR):numWords])
+		RR = buf[0:numWords:numWords]
+	} else {
+		clear(RR[len(RR):numWords])
+		RR = RR[0:numWords:numWords]
+	}
+	clear(buf[numWords : 2*numWords])
+	buf[numWords] = 1
+	one = buf[numWords : 2*numWords : 2*numWords]
+	return
+}
+
+
+// makePrecomputationPowersMontgomery precomputes a slice of powers x**i mod m in mongomery form
+// in contiguous memory.
+//
+// More precisely, given some odd x and given montgomery constants one, RR, k0 (as output by getMontgomeryConstants)
+// the returned bufWithPowers is such that bufWithPowers[i*numWords:(i+1)*numWords] contains
+// x**i mod m in Montgomery form for 0 <= i < 2**windowSize, where numWords is the length (in Words) of m.
+// The function modifies stk and the returned bufWithPowers is allocated on stk (so may become invalid as the caller calls stk.restore)
+func makePrecomputationPowersMontgomery(stk *stack, windowSize uint, x nat, m nat, one []Word, RR []Word, k0 Word) (bufWithPowers []Word) {
+	numWords := len(m)
+	tableSize := 1 << windowSize
+
+	// We allocate for tableSize + 1 many elements.
+	// The extra element is here, because computing the i'th element actually uses
+	// the memory of the i+1'th as scratch space.
+	powersbufNat := stk.nat((tableSize + 1) * numWords)[0 : numWords*tableSize]
+
+	// powers[0]
+	powersbufNat[0:numWords:2*numWords].montgomery(one, RR, m, k0, numWords)
+	montgomeryX := powersbufNat[numWords:numWords*2:numWords*3].montgomery(x, RR, m, k0, numWords)
+	for i := 2 * numWords; i < tableSize*numWords; i += numWords {
+		powersbufNat[i:i+numWords].montgomery(powersbufNat[i-numWords:i], montgomeryX, m, k0, numWords)
+	}
+	bufWithPowers = powersbufNat
+	return
+}
+
 
 // expNNOdd calculates x**y mod m for odd m.
 //
@@ -1277,40 +1384,27 @@ func (z nat) expNNOddMontgomerySize4(stk *stack, x, y, m nat) nat {
 		x = rr
 	}
 
-	// Ideally the precomputations would be performed outside, and reused
-	k0 := computeMontgomeryk0(m[0])
-		
-	// RR = 2**(2*_W*len(m)) mod m
-	RR := nat(nil).setWord(1)
-	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
-	_, RR = nat(nil).div(stk, RR, zz, m)
-	if len(RR) < numWords {
-		zz = zz.make(numWords)
-		copy(zz, RR)
-		RR = zz
-	}
-	// one = 1, with equal length to that of m
-	one := make(nat, numWords)
-	one[0] = 1
-
 	const windowSize = 4
 	// Note: The current implementation asserts that windowSize divides _W
 	// and the loop below is unrolled for the hardcoded value of windowSize.
 	// If you change windowSize, you need to change the unrolled loop below.
 
+	// Ideally the precomputations would be performed outside, and reused
+
+	k0, RR, one := getMontgomeryConstants(stk, m)
+
+	var powers [1<<windowSize]nat
+
 	// powers[i] contains x^i
-	var powers [1 << windowSize]nat
-	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
-	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<windowSize; i++ {
-		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
+	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
+	for i := 0; i < 1 <<windowSize; i++{
+		powers[i] = bufWithPowers[i*numWords:(i+1)*numWords]
 	}
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(numWords)
 	copy(z, powers[0])
-
-	zz = zz.make(numWords)
+	zz := make(nat, numWords, 2*numWords)
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squarings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
@@ -1397,40 +1491,27 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 		x = rr
 	}
 
-	// Ideally the precomputations would be performed outside, and reused
-	k0 := computeMontgomeryk0(m[0])
-		
-	// RR = 2**(2*_W*len(m)) mod m
-	RR := nat(nil).setWord(1)
-	zz := nat(nil).lsh(RR, uint(2*numWords*_W))
-	_, RR = nat(nil).div(stk, RR, zz, m)
-	if len(RR) < numWords {
-		zz = zz.make(numWords)
-		copy(zz, RR)
-		RR = zz
-	}
-	// one = 1, with equal length to that of m
-	one := make(nat, numWords)
-	one[0] = 1
-
 	const windowSize = 2
 	// Note: The current implementation asserts that windowSize divides _W
 	// and the loop below is unrolled for the hardcoded value of windowSize.
 	// If you change windowSize, you need to change the unrolled loop below.
 
+	// Ideally the precomputations would be performed outside, and reused
+	k0, RR, one := getMontgomeryConstants(stk, m)
+
+	var powers [1<<windowSize]nat
+
 	// powers[i] contains x^i
-	var powers [1 << windowSize]nat
-	powers[0] = powers[0].montgomery(one, RR, m, k0, numWords)
-	powers[1] = powers[1].montgomery(x, RR, m, k0, numWords)
-	for i := 2; i < 1<<windowSize; i++ {
-		powers[i] = powers[i].montgomery(powers[i-1], powers[1], m, k0, numWords)
+	bufWithPowers := makePrecomputationPowersMontgomery(stk, windowSize, x, m, one, RR, k0)
+	for i := 0; i < 1 <<windowSize; i++{
+		powers[i] = bufWithPowers[i*numWords:(i+1)*numWords]
 	}
 
 	// initialize z = 1 (Montgomery 1)
 	z = z.make(numWords)
 	copy(z, powers[0])
 
-	zz = zz.make(numWords)
+	zz := make(nat, numWords, 2*numWords)
 
 	// If the most significant word of y starts with lots of zeros, we skip the corresponding iterations.
 	// We also avoid the initial squarings of 1, followed by a multiplications of 1 by a precomputed value (we just copy that value instead).
@@ -1455,7 +1536,7 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 			// so changing windowSize will make the algorith (silently) fail with a wrong result.
 			// We add a check here to fail explicitly. This will be optimized away.
 			if windowSize != 2 {
-				panic("big: unrolled loop was hardcoded for windowSize == 4 and was not changed.")
+				panic("big: unrolled loop was hardcoded for windowSize == 2 and was not changed.")
 			}
  			zz = zz.montgomery(z, z, m, k0, numWords)
  			z = z.montgomery(zz, zz, m, k0, numWords)
@@ -1495,8 +1576,6 @@ func (z nat) expNNOddMontgomerySize2(stk *stack, x, y, m nat) nat {
 	}
 	return zz.norm()
 }
-
-
 
 // bytes writes the value of z into buf using big-endian encoding.
 // The value of z is encoded in the slice buf[i:]. If the value of z
